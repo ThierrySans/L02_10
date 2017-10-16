@@ -1,4 +1,4 @@
-# User stories:
+# Personas:
 
 This directories is for all the Personas.
 
