@@ -6,6 +6,6 @@ Dictory structure:
 ```
     root
     | -- src                (Source code)
-    | -- ProductBacklog     (User Stories and Personas)
+    | -- ProductBacklog     (User Stories, Personas and Sprints)
     | -- TeamInfo           (Team profile)
 ```
