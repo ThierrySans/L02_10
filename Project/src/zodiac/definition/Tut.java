@@ -1,6 +1,8 @@
 package zodiac.definition;
 
-public class TUT {
+import java.util.List;
+
+public class Tut {
 
   private String courseCode;
   private String tutCode;
@@ -10,14 +12,14 @@ public class TUT {
   /**
    * Initialize the class with given information.
    */
-  public TUT(String courseCode, String tutCode, List<Student> students) {
+  public Tut(String courseCode, String tutCode, List<Student> students) {
     this.courseCode = courseCode;
     this.tutCode = tutCode;
     this.students = students;
   }
 
   /**
-   * get the code of course
+   * get the code of course.
    *
    * @return the code of course
    */
@@ -26,7 +28,7 @@ public class TUT {
   }
 
   /**
-   * set the code of course
+   * set the code of course.
    */
   public void setCourseCode(String courseCode) {
     this.courseCode = courseCode;

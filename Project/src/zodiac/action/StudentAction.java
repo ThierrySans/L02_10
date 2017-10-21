@@ -8,7 +8,7 @@ public class StudentAction {
   private StudentDao studentDao;
 
   /**
-   * API to add Student objects to a Class object
+   * API to add Student objects to a Class object.
    */
   public String addStudentToClass(Student student, String courseCode) {
     return studentDao.addStudent(student, courseCode);

@@ -58,14 +58,14 @@ public class Student {
   }
 
   /**
-   * set the code of tut
+   * set the code of tut.
    */
   public void setTutCode(String tutCode) {
     this.tutCode = tutCode;
   }
 
   /**
-   * get the code of tut
+   * get the code of tut.
    *
    * @return the code of tut
    */

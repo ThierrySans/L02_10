@@ -19,7 +19,7 @@ public class Class {
   }
 
   /**
-   * get the code of course
+   * get the code of course.
    *
    * @return the code of course
    */
@@ -28,7 +28,7 @@ public class Class {
   }
 
   /**
-   * set the code of course
+   * set the code of course.
    */
   public void setCourseCode(String courseCode) {
     this.courseCode = courseCode;
