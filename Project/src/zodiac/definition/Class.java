@@ -8,6 +8,7 @@ public class Class {
   private String className;
   private List<Student> students;
 
+
   /**
    * Initialize the class with given information.
    */
@@ -17,10 +18,18 @@ public class Class {
     this.students = students;
   }
 
+  /**
+   * get the code of course
+   *
+   * @return the code of course
+   */
   public String getCourseCode() {
     return courseCode;
   }
 
+  /**
+   * set the code of course
+   */
   public void setCourseCode(String courseCode) {
     this.courseCode = courseCode;
   }
