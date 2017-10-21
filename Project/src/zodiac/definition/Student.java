@@ -2,6 +2,12 @@ package zodiac.definition;
 
 public class Student {
 
+  /*
+  For now this is okay, but a student object should not store the class code or tut code.
+  A student could be enrolled in multiple courses in the system which would also imply multiple
+  tutorials. Whenever we need to check a student's class and/or tutorial, it would be better
+  to just do a DB lookup at the time.
+   */
   private String utorId;
   private String lastName;
   private String firstName;
@@ -17,6 +23,21 @@ public class Student {
     this.firstName = firstName;
     this.classCode = classCode;
     this.tutCode = tutCode;
+  }
+
+  /**
+   * Initialize the student with only the id and name.
+   *
+   * @param utorId UTOR ID of the student
+   * @param lastName Student's last name
+   * @param firstName Student's first name
+   */
+  public Student(String utorId, String lastName, String firstName) {
+    this.utorId = utorId;
+    this.lastName = lastName;
+    this.firstName = firstName;
+    this.classCode = "";
+    this.tutCode = "";
   }
 
   /**
