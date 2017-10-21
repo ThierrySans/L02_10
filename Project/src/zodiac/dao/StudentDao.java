@@ -55,9 +55,8 @@ public class StudentDao {
   }
 
   /**
-   * Add a student to the system.
-   * Students must be registered to a course in the system
-   * Can also add an existing student to another course
+   * Add a student to the system. Students must be registered to a course in the system Can also add
+   * an existing student to another course
    *
    * @param student the student being added
    * @param courseCode the course that the student belongs to
@@ -97,9 +96,7 @@ public class StudentDao {
   }
 
   /**
-   * Edits an existing student.
-   * Can change their first and last name
-   *
+   * Edits an existing student. Can change their first and last name
    *
    * @param student student being edited
    * @param lastName new last name of the student

@@ -5,18 +5,14 @@ import zodiac.definition.Student;
 
 public class StudentAction {
 
-    private  StudentDao  studentDao;
+  private StudentDao studentDao;
 
-    /**
-     * API to add Student objects to a Class object
-     * @param student
-     * @param courseCode
-     * @return
-     */
-    public String addStudentToClass(Student student,String courseCode)
-    {
-        return studentDao.addStudent(student, courseCode);
+  /**
+   * API to add Student objects to a Class object
+   */
+  public String addStudentToClass(Student student, String courseCode) {
+    return studentDao.addStudent(student, courseCode);
 
-    }
+  }
 
 }

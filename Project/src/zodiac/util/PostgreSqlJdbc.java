@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 /**
- * This class creates a connection to the database.
- * To simply closing connections, a new connection is made for each query
+ * This class creates a connection to the database. To simply closing connections, a new connection
+ * is made for each query
  */
 public class PostgreSqlJdbc {
 

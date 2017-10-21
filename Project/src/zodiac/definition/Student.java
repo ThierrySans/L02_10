@@ -17,7 +17,8 @@ public class Student {
   /**
    * Initialize the student with given information.
    */
-  public Student(String utorId, String lastName, String firstName, String classCode, String tutCode) {
+  public Student(String utorId, String lastName, String firstName, String classCode,
+      String tutCode) {
     this.utorId = utorId;
     this.lastName = lastName;
     this.firstName = firstName;
@@ -43,26 +44,34 @@ public class Student {
   /**
    * set the class code.
    */
-  public void setClassCode(String classCode) { this.classCode = classCode; }
+  public void setClassCode(String classCode) {
+    this.classCode = classCode;
+  }
 
   /**
    * get the class code.
    *
    * @return the code of class
    */
-  public String getClassCode() { return classCode; }
+  public String getClassCode() {
+    return classCode;
+  }
 
   /**
    * set the code of tut
    */
-  public void setTutCode(String tutCode) { this.tutCode = tutCode; }
+  public void setTutCode(String tutCode) {
+    this.tutCode = tutCode;
+  }
 
   /**
    * get the code of tut
    *
    * @return the code of tut
    */
-  public String getTutCode() { return tutCode; }
+  public String getTutCode() {
+    return tutCode;
+  }
 
   /**
    * set the student UTOR ID.
