@@ -10,16 +10,12 @@ c/ Project Release (see below how to get it)
 ```
 ### 2. download Project Release
 
-To run the latest Project, you will need to
-```
-a/ go to [Relase](https://github.com/CSCC01F17/L02_10/releases) tab of the github
-b/ download the latest version zip of the project
-c/ unzip it
-```
+To run the latest Project, you will need to go to the [Relase](https://github.com/CSCC01F17/L02_10/releases) tab, and download the latest zip of the project
+
 
 ### 3. startup your command line interface
 ```
-a/ point your commandline interface to the directory of unzip Project Release
+a/ unzip the downloaded Project Release, and point your command line interface to the directory of unzip Project Release
 b/ run "java -jar Project.jar"
 
 ```
