@@ -1,6 +1,9 @@
 package zodiac.action;
 
+import java.util.List;
+
 import zodiac.dao.ClassDao;
+import zodiac.definition.Class;
 
 public class ClassAction {
 
@@ -10,6 +13,13 @@ public class ClassAction {
   public String addClass(String courseCode, String className) {
     return new ClassDao().addEditClass(courseCode, className);
   }
-
-
+  /**
+   * 
+   * @return a string the contains 
+   */
+  public List<Class> getClasses() {
+	  return new ClassDao().getClasses();
+	
+  }
+ 
 }

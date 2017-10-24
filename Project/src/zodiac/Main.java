@@ -52,10 +52,11 @@ public class Main {
           break;
         }
         case "getClasses":
-          List<Class> classes = new ClassDao().getClasses();
-          for (Class course : classes) {
-            System.out.println(course.getCourseCode() + " " + course.getClassName());
-          }
+      	  	List<Class> classes = new ClassDao().getClasses();
+            for (Class course : classes) {
+          	  System.out.println(course.getCourseCode() + " " + course.getClassName());
+            }
+
           break;
         case "getStudents": {
           System.out.print("Enter course code: ");
