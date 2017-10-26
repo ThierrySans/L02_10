@@ -13,13 +13,15 @@ public class ClassAction {
   public String addClass(String courseCode, String className) {
     return new ClassDao().addEditClass(courseCode, className);
   }
+
   /**
-   * 
-   * @return a string the contains 
+   * Gets a list of all classes.
+   *
+   * @return a string the contains
    */
   public List<Class> getClasses() {
-	  return new ClassDao().getClasses();
-	
+    return new ClassDao().getClasses();
+
   }
- 
+
 }
