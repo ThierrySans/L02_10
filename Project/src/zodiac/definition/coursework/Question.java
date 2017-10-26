@@ -9,24 +9,21 @@ import java.util.List;
  */
 public class Question {
 
-  private String qid;
+  private int qid;
   private List<String> answerList;
+  private String question;
   private String correctAnswer;
 
   // TODO: Add Javadoc
-  public Question(String qid) {
+  public Question(int qid) {
     this.qid = qid;
     answerList = new ArrayList<String>();
     this.correctAnswer = "";
 
   }
 
-  public String getQid() {
+  public int getQid() {
     return qid;
-  }
-
-  public void setQid(String qid) {
-    this.qid = qid;
   }
 
   public List<String> getAnswerList() {
@@ -45,5 +42,11 @@ public class Question {
     this.correctAnswer = correctAnswer;
   }
 
+  public String getQuestion() {
+    return question;
+  }
 
+  public void setQuestion(String question) {
+    this.question = question;
+  }
 }
