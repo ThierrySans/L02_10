@@ -85,7 +85,8 @@ public class Main {
           String AssignmentName = StringUtils.trimToEmpty(scanner.nextLine());
           System.out.print("Enter Course ID: ");
           String courseId = StringUtils.trimToEmpty(scanner.nextLine());
-          System.out.println("Assignment Id Is: " + new AssignmentAction().addAssignment(AssignmentName, courseId) + "\n");
+          System.out.println("Assignment Id Is: " +
+                  new AssignmentAction().addAssignment(AssignmentName, courseId) + "\n");
           break;
         }
 
@@ -105,7 +106,7 @@ public class Main {
           int QuestionID = Integer.valueOf(QuestionIDstr);
           System.out.print("Enter Answer: ");
           String AssignmentAnswer = StringUtils.trimToEmpty(scanner.nextLine());
-          System.out.print("Enter Boolean, Is this a correct answer?");
+          System.out.print("Enter Boolean, Is this a correct answer?: ");
           String AnswerCorectness = StringUtils.trimToEmpty(scanner.nextLine());
           Boolean Correctness = Boolean.valueOf(AnswerCorectness);
           System.out.println(new QuestionAction().addAnswer(QuestionID, AssignmentAnswer, Correctness));

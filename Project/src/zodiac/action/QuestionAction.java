@@ -13,9 +13,9 @@ public class QuestionAction {
         return new QuestionDao().addQuestionToAssignment(newQuestion, assignmentid);
     }
     public String addAnswer(int QuestionID, String answer, boolean correct) {
-        return new QuestionAction().addAnswer(QuestionID, answer, correct);
+        return new QuestionDao().addAnswerToQuestion(QuestionID, answer, correct);
     }
     public List<Question> getQid(int AssignmentId){
-        return new QuestionDao().getallQuestions(AssignmentId);
+        return new QuestionDao().getQuestions(AssignmentId);
     }
 }
