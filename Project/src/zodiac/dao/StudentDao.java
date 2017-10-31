@@ -134,4 +134,47 @@ public class StudentDao {
 
     return message;
   }
+  
+
+  /**
+   * API to add answer for specific assignment and answer 
+   * @param student the answer is added under this student
+   * @param assignmentId the assignment id this answer belong
+   * @param questionId the question id this answer belong
+   * @param answer  the answer in text
+   * @return succefully string or fail
+   */
+  public static String addAnswerToQuestion(Student student, String assignmentId, String questionId, String answer ) {
+	  String message = "";
+
+	    Connection c;
+	    PreparedStatement stmt;
+
+	    String sql = "SELECT Add_Answer(?, ?, ?, ?)";
+
+	    try {
+	      c = new PostgreSqlJdbc().getConnection();
+	      stmt = c.prepareStatement(sql);
+	      stmt.setString(1, student.getUtorId());
+	      stmt.setString(2, assignmentId);
+	      stmt.setString(3, questionId);
+	      stmt.setString(4, answer);
+
+	      ResultSet rs = stmt.executeQuery();
+
+	      rs.next();
+	      message = rs.getString(1);
+
+	      rs.close();
+	      stmt.close();
+	      c.close();
+
+	    } catch (Exception e) {
+	      // TODO Error Handling
+	      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+	    }
+
+	    return message;
+  }
+  
 }
