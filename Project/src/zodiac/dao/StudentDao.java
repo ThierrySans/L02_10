@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
+
 import zodiac.definition.Student;
+import zodiac.definition.coursework.Assignment;
+import zodiac.definition.coursework.Question;
 import zodiac.util.PostgreSqlJdbc;
 
 public class StudentDao {
@@ -144,7 +148,7 @@ public class StudentDao {
    * @param answer  the answer in text
    * @return succefully string or fail
    */
-  public static String addAnswerToQuestion(Student student, String assignmentId, String questionId, String answer ) {
+  public static String addAnswerToQuestion(Student student, int assignmentId, int questionId, String answer ) {
 	  String message = "";
 
 	    Connection c;
@@ -156,8 +160,8 @@ public class StudentDao {
 	      c = new PostgreSqlJdbc().getConnection();
 	      stmt = c.prepareStatement(sql);
 	      stmt.setString(1, student.getUtorId());
-	      stmt.setString(2, assignmentId);
-	      stmt.setString(3, questionId);
+	      stmt.setInt(2, assignmentId);
+	      stmt.setInt(3, questionId);
 	      stmt.setString(4, answer);
 
 	      ResultSet rs = stmt.executeQuery();
@@ -176,5 +180,7 @@ public class StudentDao {
 
 	    return message;
   }
+
+
   
 }
