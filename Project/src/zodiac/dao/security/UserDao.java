@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import zodiac.definition.security.User;
 import zodiac.util.PostgreSqlJdbc;
 
 public class UserDao {
@@ -92,6 +93,39 @@ public class UserDao {
     ResultSet rs = stmt.executeQuery();
     rs.next();
     return rs.getBoolean("registered");
+  }
+
+  /**
+   * Get the user with the given UTOR Id.
+   *
+   * @param utorId the UTOR_Id of the user
+   * @return the user, null if something went wrong
+   */
+  public User getUser(String utorId) {
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "SELECT last_name, first_name, role FROM users WHERE utor_id = ?";
+
+    User user = null;
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+      stmt.setString(1, utorId);
+
+      ResultSet rs = stmt.executeQuery();
+      rs.next();
+      String lastName = rs.getString("last_name");
+      String firstName = rs.getString("first_name");
+      String role = rs.getString("role");
+      user = new User(utorId, role, lastName, firstName);
+
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+    return user;
   }
 
 }
