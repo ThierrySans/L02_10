@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import org.apache.commons.lang3.StringUtils;
 import org.mindrot.jbcrypt.BCrypt;
 import zodiac.dao.security.UserDao;
+import zodiac.definition.security.User;
+import zodiac.util.ActiveUser;
 
 public class UserAction {
 
@@ -37,6 +39,50 @@ public class UserAction {
           return "Unable to register, Contact your system admin";
         }
       }
+    }
+  }
+
+  /**
+   * Attempt to login to the system. The active user can be retrieved using
+   * ActiveUser.INSTANCE.getUser()
+   *
+   * @param utorId the UTOR_Id of the user
+   * @param password the password to verify against the DB
+   * @return message to display on the UI
+   */
+  public String login(String utorId, String password) {
+    if (ActiveUser.INSTANCE.getUser() == null) {
+      return "Error: Already logged in";
+    } else {
+      String hash = new UserDao().getHash(utorId);
+      if (BCrypt.checkpw(password, hash)) {
+        // If password is correct
+        User user = new UserDao().getUser(utorId);
+        ActiveUser.INSTANCE.setUser(user);
+        if (ActiveUser.INSTANCE.getUser().getUtorId().equals(utorId)) {
+          return "Logged in";
+        } else {
+          ActiveUser.INSTANCE.logOff();
+          return "Failed to login";
+        }
+      } else {
+        // Show generic error to avoid revealing too much information to attackers
+        return "Failed to login";
+      }
+    }
+  }
+
+  /**
+   * Log off the current user.
+   *
+   * @return message to display on the UI
+   */
+  public String logoff() {
+    if (ActiveUser.INSTANCE.getUser() == null) {
+      return "Not logged in";
+    } else {
+      ActiveUser.INSTANCE.logOff();
+      return "Logged off";
     }
   }
 }
