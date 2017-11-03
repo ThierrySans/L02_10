@@ -51,7 +51,7 @@ public class UserDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "UPDATE Users SET password = ?, registered = 1 WHERE utor_id = ?";
+    String sql = "UPDATE Users SET password = ?, registered = TRUE WHERE utor_id = ?";
 
     String message = "Failed";
 
