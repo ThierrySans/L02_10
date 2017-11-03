@@ -51,7 +51,7 @@ public class UserAction {
    * @return message to display on the UI
    */
   public String login(String utorId, String password) {
-    if (ActiveUser.INSTANCE.getUser() == null) {
+    if (ActiveUser.INSTANCE.getUser() != null) {
       return "Error: Already logged in";
     } else {
       String hash = new UserDao().getHash(utorId);
