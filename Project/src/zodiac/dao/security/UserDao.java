@@ -40,8 +40,7 @@ public class UserDao {
   }
 
   /**
-   * Modify the user to set their password.
-   * Hash should be the result of jBCrypt's hash function
+   * Modify the user to set their password. Hash should be the result of jBCrypt's hash function
    *
    * @param utorId the UTOR_Id of the user
    * @param hash the salted and hashed password
