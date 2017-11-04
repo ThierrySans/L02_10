@@ -1,7 +1,15 @@
 package zodiac.gui;
 
+import zodiac.action.ClassAction;
+import zodiac.action.StudentAction;
+
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableColumn;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -28,10 +36,9 @@ public class MainMenu implements ItemListener {
     {
         // Set up the main Panel in a Grid Layout
         mainPanel = new JPanel(new GridLayout());
-
     }
 
-    private void addBasicElements(Container pane)
+    private void setupMainMenu(Container pane)
     {
         pane.add(new JLabel(WELCOME_MESSAGE), BorderLayout.NORTH);
 
@@ -42,7 +49,7 @@ public class MainMenu implements ItemListener {
         cbOptions.addItemListener(this);
         cbPanel.add(cbOptions);
 
-        createAddClassPanel();
+        createAddClassPanel(pane);
         createGetClassPanel();
 
         cards = new JPanel(new CardLayout());
@@ -51,19 +58,49 @@ public class MainMenu implements ItemListener {
 
         pane.add(cbPanel, BorderLayout.PAGE_START);
         pane.add(cards, BorderLayout.CENTER);
-
     }
 
-    private void createAddClassPanel()
+    private void createAddClassPanel(Container pane)
     {
+        // Create the AddClass panel
         panelAddClass = new JPanel();
-        panelAddClass.add(new JButton("xdddddd"));
+        panelAddClass.setLayout(new BoxLayout(panelAddClass, BoxLayout.Y_AXIS));
+
+        JLabel label1 = new JLabel("Enter Class Code: ");
+        label1.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        label1.setBorder(new EmptyBorder(0, 0, 10, 0));
+
+        JLabel label2 = new JLabel("Enter Class Name: ");
+        label2.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        label2.setBorder(new EmptyBorder(20, 0, 10, 0));
+
+        JTextField textCourseCode = new JTextField();
+        textCourseCode.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        textCourseCode.setMaximumSize(new Dimension(600, 70));
+
+        JTextField textCourseName = new JTextField();
+        textCourseName.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        textCourseName.setMaximumSize(new Dimension(600, 70));
+
+        JButton button = new JButton("Submit");
+        button.setAlignmentX(JButton.CENTER_ALIGNMENT);
+
+        button.addActionListener(new AddClassListener(textCourseCode, textCourseName));
+
+        // Add contents to the panel
+        panelAddClass.add(label1);
+        panelAddClass.add(textCourseCode);
+        panelAddClass.add(label2);
+        panelAddClass.add(textCourseName);
+        panelAddClass.add(button);
     }
 
-    public void createGetClassPanel()
+    private void createGetClassPanel()
     {
-        panelGetClass = new JPanel();
-        panelGetClass.add(new JLabel("FUCK"));
+        panelGetClass = new JPanel(new GridLayout());
+//        panelGetClass.add(new JLabel("IT'S YA BOI PLACEHOLDER"));
+
+        
     }
 
     public void itemStateChanged(ItemEvent evt)
@@ -72,98 +109,43 @@ public class MainMenu implements ItemListener {
         cl.show(cards, (String)evt.getItem());
     }
 
-    public static void main(String args[])
+    /**
+     * Class that is a listener for the Submit button in the
+     * Add class panel
+     */
+    public class AddClassListener implements ActionListener
     {
+        private JTextField classCode;
+        private JTextField className;
+
+        AddClassListener(JTextField code, JTextField name)
+        {
+            classCode = code;
+            className = name;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            System.out.println(classCode.getText());
+            System.out.println(className.getText());
+            new ClassAction().addClass(classCode.getText(), className.getText());
+        }
+    }
+
+    public static void main(String args[]) {
         JFrame frame = new JFrame("App");
         //Create and set up the content pane.
-        MainMenu demo = new MainMenu();
-        demo.addBasicElements(frame);
+
+        MainMenu menu = new MainMenu();
+        menu.setupMainMenu(frame);
 
         frame.setVisible(true);
         frame.setSize(1280, 720);
 
+        // Uncomment if you want the window to size to the contents on the screen
+//        frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-}
 
-//    JPanel cards; //a panel that uses CardLayout
-//    final static String BUTTONPANEL = "Card with JButtons";
-//    final static String TEXTPANEL = "Card with JTextField";
-//
-//    public void addComponentToPane(Container pane) {
-//        //Put the JComboBox in a JPanel to get a nicer look.
-//        JPanel comboBoxPane = new JPanel(); //use FlowLayout
-//        String comboBoxItems[] = { BUTTONPANEL, TEXTPANEL };
-//        JComboBox cb = new JComboBox(comboBoxItems);
-//        cb.setEditable(false);
-//        cb.addItemListener(this);
-//        comboBoxPane.add(cb);
-//
-//        //Create the "cards".
-//        JPanel card1 = new JPanel();
-//        card1.add(new JButton("Button 1"));
-//        card1.add(new JButton("Button 2"));
-//        card1.add(new JButton("Button 3"));
-//
-//        JPanel card2 = new JPanel();
-//        card2.add(new JTextField("TextField", 20));
-//
-//        //Create the panel that contains the "cards".
-//        cards = new JPanel(new CardLayout());
-//        cards.add(card1, BUTTONPANEL);
-//        cards.add(card2, TEXTPANEL);
-//
-//        pane.add(comboBoxPane, BorderLayout.PAGE_START);
-//        pane.add(cards, BorderLayout.CENTER);
-//    }
-//
-//    public void itemStateChanged(ItemEvent evt) {
-//        CardLayout cl = (CardLayout)(cards.getLayout());
-//        cl.show(cards, (String)evt.getItem());
-//    }
-//
-//    /**
-//     * Create the GUI and show it.  For thread safety,
-//     * this method should be invoked from the
-//     * event dispatch thread.
-//     */
-//    private static void createAndShowGUI() {
-//        //Create and set up the window.
-//        JFrame frame = new JFrame("CardLayoutDemo");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        //Create and set up the content pane.
-//        MainMenu demo = new MainMenu();
-//        demo.addComponentToPane(frame.getContentPane());
-//
-//        //Display the window.
-//        frame.pack();
-//        frame.setVisible(true);
-//    }
-//
-//    public static void main(String[] args) {
-//        /* Use an appropriate Look and Feel */
-//        try {
-//            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-//            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-//        } catch (UnsupportedLookAndFeelException ex) {
-//            ex.printStackTrace();
-//        } catch (IllegalAccessException ex) {
-//            ex.printStackTrace();
-//        } catch (InstantiationException ex) {
-//            ex.printStackTrace();
-//        } catch (ClassNotFoundException ex) {
-//            ex.printStackTrace();
-//        }
-//        /* Turn off metal's use of bold fonts */
-//        UIManager.put("swing.boldMetal", Boolean.FALSE);
-//
-//        //Schedule a job for the event dispatch thread:
-//        //creating and showing this application's GUI.
-//        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//                createAndShowGUI();
-//            }
-//        });
-//    }
+}
