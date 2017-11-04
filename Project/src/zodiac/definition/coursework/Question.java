@@ -18,6 +18,10 @@ public class Question {
   public Question(int qid) {
     this.qid = qid;
     answerList = new ArrayList<String>();
+    answerList.add("mostly right");
+    answerList.add("not right");
+    answerList.add("tricky");
+    answerList.add("right");
     this.correctAnswer = "";
 
   }
