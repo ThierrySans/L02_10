@@ -46,8 +46,15 @@ public class MainMenu implements ItemListener {
     private DefaultTableModel studentsTableModel;
     private JPanel cards;
 
+    /**
+     * Sets up the main menu GUI as a CardLayout and adds each
+     * card/menus for the various app functions (i.e add a student,
+     * add classes, etc.)
+     * @param pane : the pane to add the main menu to
+     */
     private void setupMainMenu(Container pane)
     {
+        // Create the combo box JPanel and add all the options into it
         JPanel cbPanel = new JPanel(new FlowLayout());
         String cbOptionList[] = {CREATE_CLASS, GET_CLASSES, ADD_STUDENT, GET_STUDENT};
         cbOptions = new JComboBox(cbOptionList);
@@ -55,6 +62,7 @@ public class MainMenu implements ItemListener {
         cbOptions.addItemListener(this);
         cbPanel.add(cbOptions);
 
+        // Create JPanel to hold the Combobox and a title card
         JPanel topPanel = new JPanel(new BorderLayout());
 
         JLabel msg = new JLabel(WELCOME_MESSAGE);
@@ -65,27 +73,35 @@ public class MainMenu implements ItemListener {
         topPanel.add(msg, BorderLayout.NORTH);
         topPanel.add(cbPanel, BorderLayout.PAGE_END);
 
-        createAddClassPanel(pane);
+        // create the various panels for each function
+        createAddClassPanel();
         createGetClassPanel();
         createGetStudentsPanel();
 
+        // create the JPanel to hold all the cards and add each card
         cards = new JPanel(new CardLayout());
         cards.add(panelAddClass, CREATE_CLASS);
         cards.add(panelGetClass, GET_CLASSES);
         cards.add(createAddStudentPanel(), ADD_STUDENT);
         cards.add(panelGetStudents, GET_STUDENT);
 
-
+        // Add everything to the pane
         pane.add(topPanel, BorderLayout.PAGE_START);
         pane.add(cards, BorderLayout.CENTER);
     }
 
-    private void createAddClassPanel(Container pane)
+    /**
+     * Generates the Add Class panel. The Add Class panel has 2 JTextFields
+     * for the desired course code and name. You can then submit it and
+     * enter that course into the database.
+     */
+    private void createAddClassPanel()
     {
         // Create the AddClass panel
         panelAddClass = new JPanel();
         panelAddClass.setLayout(new BoxLayout(panelAddClass, BoxLayout.Y_AXIS));
 
+        // Generate JLabels for each text field
         JLabel label1 = new JLabel("Enter Class Code: ");
         label1.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         label1.setBorder(new EmptyBorder(0, 0, 10, 0));
@@ -94,6 +110,7 @@ public class MainMenu implements ItemListener {
         label2.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         label2.setBorder(new EmptyBorder(20, 0, 10, 0));
 
+        // Create the text fields
         JTextField textCourseCode = new JTextField();
         textCourseCode.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         textCourseCode.setMaximumSize(new Dimension(600, 70));
@@ -102,6 +119,7 @@ public class MainMenu implements ItemListener {
         textCourseName.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         textCourseName.setMaximumSize(new Dimension(600, 70));
 
+        // Create the submit button and link an action listener to it
         JButton button = new JButton("Submit");
         button.setAlignmentX(JButton.CENTER_ALIGNMENT);
 
@@ -115,6 +133,10 @@ public class MainMenu implements ItemListener {
         panelAddClass.add(button);
     }
 
+    /**
+     * Creates the Get Class panel. The Get Class panel holds a table which is populated
+     * by the classes found in the database in the format (course code, course name).
+     */
     private void createGetClassPanel()
     {
         panelGetClass = new JPanel(new GridLayout());
@@ -122,11 +144,20 @@ public class MainMenu implements ItemListener {
         panelGetClass.add(classesTable);
     }
 
+    /**
+     * Generates the Add Student panel. The Add Student panel has 4 JTextFields
+     * for the student's UTOR ID, last name, first name, and course that he/she
+     * will be enrolled into. You can then submit it and
+     * enter that student into the database.
+     * @return the created Add Student Panel
+     */
     private JPanel createAddStudentPanel()
     {
+        // Create the BoxLayout for the Add Student panel
         JPanel panelAddStudent = new JPanel();
         panelAddStudent.setLayout(new BoxLayout(panelAddStudent, BoxLayout.Y_AXIS));
 
+        // Generate various labels
         JLabel label1 = new JLabel("Enter UTOR ID: ");
         label1.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         label1.setBorder(new EmptyBorder(0, 0, 10, 0));
@@ -143,6 +174,7 @@ public class MainMenu implements ItemListener {
         label2.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         label2.setBorder(new EmptyBorder(20, 0, 10, 0));
 
+        // Create text fields
         JTextField textCourseCode = new JTextField();
         textCourseCode.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         textCourseCode.setMaximumSize(new Dimension(600, 70));
@@ -159,6 +191,7 @@ public class MainMenu implements ItemListener {
         textUtorId.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         textUtorId.setMaximumSize(new Dimension(600, 70));
 
+        // Create button to submit information to database
         JButton button = new JButton("Submit");
         button.setAlignmentX(JButton.CENTER_ALIGNMENT);
 
@@ -178,6 +211,13 @@ public class MainMenu implements ItemListener {
         return panelAddStudent;
     }
 
+    /**
+     * Creates the Get Students panel. The Get Students panel holds a table which is populated
+     * by the students found in the database that are taking a particular course.
+     * There is a text field which takes a course code and upon pressing the submit button,
+     * a table is generated with all the students that are taking a course with the given course code
+     * in the format (UTOR ID, First name, Last name).
+     */
     private void createGetStudentsPanel()
     {
         panelGetStudents = new JPanel(new BorderLayout());
@@ -198,6 +238,7 @@ public class MainMenu implements ItemListener {
         panelGetStudents.add(searchPanel, BorderLayout.NORTH);
 
     }
+
 
     private void updateClassesTable()
     {
