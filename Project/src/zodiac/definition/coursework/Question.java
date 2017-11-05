@@ -7,7 +7,7 @@ import java.util.List;
  * Created by radiantwings on 10/24/17. This class represents a Question which would be included in
  * >= 0 Assignments
  */
-public class Question implements Comparable{
+public class Question {
 
   private int qid;
   private List<String> answerList;
@@ -18,6 +18,10 @@ public class Question implements Comparable{
   public Question(int qid) {
     this.qid = qid;
     answerList = new ArrayList<String>();
+    answerList.add("mostly right");
+    answerList.add("not right");
+    answerList.add("tricky");
+    answerList.add("right");
     this.correctAnswer = "";
 
   }
@@ -49,10 +53,4 @@ public class Question implements Comparable{
   public void setQuestion(String question) {
     this.question = question;
   }
-
-@Override
-public int compareTo(Object o) {
-	// TODO Auto-generated method stub
-	return this.qid - ((Question)o).qid;
-}
 }

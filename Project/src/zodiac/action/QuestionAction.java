@@ -18,7 +18,4 @@ public class QuestionAction {
     public List<Question> getQid(int AssignmentId){
         return new QuestionDao().getQuestions(AssignmentId);
     }
-    public List<Question> getQuestionsWithAnswer(int AssignmentId){
-        return new QuestionDao().getQuestions(AssignmentId,true);
-    }
 }
