@@ -21,7 +21,6 @@ public class ClassAction {
    */
   public List<Class> getClasses() {
     return new ClassDao().getClasses();
-
   }
 
 }

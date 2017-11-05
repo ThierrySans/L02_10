@@ -22,4 +22,10 @@ public class AssignmentAction {
     public List<Assignment> checkAssignments(String courseCode) {
         return new AssignmentDao().getAssignments(courseCode);
     }
+
+    public boolean changeAssignmentVisibility(Assignment assignment)
+    {
+        return new AssignmentDao().changeAssignmentVisibility(assignment);
+    }
+
 }
