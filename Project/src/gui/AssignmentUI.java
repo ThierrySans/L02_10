@@ -26,22 +26,6 @@ public class AssignmentUI {
 	private ArrayList<Question> questions;
 	private Student student;
 	
-	
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			Assignment a = new Assignment("CSCC07",7);
-			Student student = new Student("12432423432","Jhon","Smith","CSCC01","TUT01");
-			AssignmentUI window = new AssignmentUI(a,student);
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 
 
 	public AssignmentUI(Assignment ass,Student stud) {
@@ -71,7 +55,7 @@ public class AssignmentUI {
 	protected void createContents() {
 		shell = new Shell();
 		shell.setSize(450, 301);
-		shell.setText("SWT Application");
+		shell.setText("Assignment " + assignment.getId());
 		shell.setLayout(null);;
 	
 		// setting answer options 
