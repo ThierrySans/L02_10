@@ -308,12 +308,14 @@ public class MainMenu implements ItemListener {
                 studentsTableModel.addRow(data);
             }
 
-            if (studentsTable.isValid())
+            if (studentsTable != null)
             {
                 panelGetStudents.remove(studentsTable);
             }
 
-            panelGetStudents.add(new JTable(studentsTableModel), BorderLayout.CENTER);
+            JTable lol = new JTable(studentsTableModel);
+            panelGetStudents.add(lol, BorderLayout.CENTER);
+            panelGetStudents.revalidate();
         }
 
     }
