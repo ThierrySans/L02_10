@@ -28,7 +28,7 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name,Visibility "
+    String sql = "SELECT Id, Assignment_Name "
         + "FROM Assignments "
         + "WHERE Course_Code = ? "
         + "ORDER BY Id ASC";
@@ -43,7 +43,6 @@ public class AssignmentDao {
         int id = rs.getInt("Id");
         String name = rs.getString("Assignment_Name");
         Assignment assignment = new Assignment(name, id);
-        assignment.setVisibility(rs.getString("Visibility"));
         if (generateQuestions) {
           assignment.setQuestionList(new QuestionDao().getQuestions(id));
         }
@@ -141,40 +140,4 @@ public class AssignmentDao {
 
     return message;
   }
-
-  public boolean changeAssignmentVisibility(Assignment assignment)
-  {
-    boolean flag=false;
-    Connection c;
-    PreparedStatement stmt;
-
-    String sql = "UPDATE Assignments SET Visibility=? WHERE Id = ? ";
-
-    String visibility="";
-    if("on".equals(assignment.getVisibility()))
-    {
-      visibility="false";
-    }else
-    {
-      visibility="on";
-    }
-
-    try {
-      c = new PostgreSqlJdbc().getConnection();
-      stmt = c.prepareStatement(sql);
-      stmt.setString(1, visibility);
-      stmt.setInt(2, assignment.getId());
-
-      stmt.execute();
-      stmt.close();
-      c.close();
-      flag=true;
-    } catch (Exception e) {
-       return flag;
-    }
-    return flag;
-
-  }
-
-
 }
