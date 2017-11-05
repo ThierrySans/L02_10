@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
+
 import zodiac.definition.Student;
+import zodiac.definition.coursework.Assignment;
+import zodiac.definition.coursework.Question;
 import zodiac.util.PostgreSqlJdbc;
 
 public class StudentDao {
@@ -134,4 +138,49 @@ public class StudentDao {
 
     return message;
   }
+  
+
+  /**
+   * API to add answer for specific assignment and answer 
+   * @param student the answer is added under this student
+   * @param assignmentId the assignment id this answer belong
+   * @param questionId the question id this answer belong
+   * @param answer  the answer in text
+   * @return succefully string or fail
+   */
+  public static String addAnswerToQuestion(Student student, int assignmentId, int questionId, String answer ) {
+	  String message = "";
+
+	    Connection c;
+	    PreparedStatement stmt;
+
+	    String sql = "SELECT Add_Answer(?, ?, ?, ?)";
+
+	    try {
+	      c = new PostgreSqlJdbc().getConnection();
+	      stmt = c.prepareStatement(sql);
+	      stmt.setString(1, student.getUtorId());
+	      stmt.setInt(2, assignmentId);
+	      stmt.setInt(3, questionId);
+	      stmt.setString(4, answer);
+
+	      ResultSet rs = stmt.executeQuery();
+
+	      rs.next();
+	      message = rs.getString(1);
+
+	      rs.close();
+	      stmt.close();
+	      c.close();
+
+	    } catch (Exception e) {
+	      // TODO Error Handling
+	      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+	    }
+
+	    return message;
+  }
+
+
+  
 }
