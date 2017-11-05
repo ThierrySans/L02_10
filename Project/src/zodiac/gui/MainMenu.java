@@ -2,16 +2,23 @@ package zodiac.gui;
 
 import zodiac.action.ClassAction;
 import zodiac.action.StudentAction;
+import zodiac.dao.ClassDao;
+import zodiac.definition.Class;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+
+import java.util.List;
 
 /**
  * Created by radiantwings on 11/1/17.
@@ -30,6 +37,7 @@ public class MainMenu implements ItemListener {
     private JComboBox cbOptions;
     private JPanel panelAddClass;
     private JPanel panelGetClass;
+    private JTable classesTable;
     private JPanel cards;
 
     public MainMenu()
@@ -98,9 +106,22 @@ public class MainMenu implements ItemListener {
     private void createGetClassPanel()
     {
         panelGetClass = new JPanel(new GridLayout());
-//        panelGetClass.add(new JLabel("IT'S YA BOI PLACEHOLDER"));
 
-        
+        // Create the Table Model for the class table
+        List<Class> classes = new ClassDao().getClasses();
+        String colNames[] = {"Class Code", "Class Name"};
+        DefaultTableModel tableMod = new DefaultTableModel(0, colNames.length);
+
+        for (Class c : classes)
+        {
+            Object[] data = {c.getCourseCode(), c.getClassName()};
+            tableMod.addRow(data);
+        }
+
+        classesTable = new JTable(tableMod);
+
+        panelGetClass.add(classesTable);
+
     }
 
     public void itemStateChanged(ItemEvent evt)
@@ -126,8 +147,6 @@ public class MainMenu implements ItemListener {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println(classCode.getText());
-            System.out.println(className.getText());
             new ClassAction().addClass(classCode.getText(), className.getText());
         }
     }
