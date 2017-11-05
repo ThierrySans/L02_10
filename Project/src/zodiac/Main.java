@@ -3,6 +3,7 @@ package zodiac;
 import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
+import zodiac.GUI.AssignmentGUI;
 import zodiac.action.ClassAction;
 import zodiac.action.StudentAction;
 import zodiac.dao.ClassDao;
@@ -20,6 +21,14 @@ public class Main {
    * Console app to showcase first functions.
    */
   public static void main(String[] args) {
+
+    /**
+     * GUI
+     */
+    AssignmentGUI gui = new AssignmentGUI();
+
+
+
     Scanner scanner = new Scanner(System.in);
     boolean exit = false;
     String input;
@@ -144,4 +153,6 @@ public class Main {
       }
     }
   }
+  }
+
 }
