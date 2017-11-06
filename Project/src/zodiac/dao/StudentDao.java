@@ -180,7 +180,44 @@ public class StudentDao {
 
 	    return message;
   }
+  
 
+  /**
+   * 
+   * @param userID the id of student you want to get
+   * @param courseId the course the student belong to 
+   * @return the Student object, null if the student does not exist
+   */
+  public static Student getStudent(String userID,String courseId) {
 
+	    Connection c;
+	    PreparedStatement stmt;
+	    
+	    String sql = "SELECT * FROM Users Where UTOR_Id = ? AND (SELECT COUNT(*) FROM UserClassMap Where UTOR_Id = ? AND Course_Code = ?) > 0";
+
+	    try {
+	      c = new PostgreSqlJdbc().getConnection();
+	      stmt = c.prepareStatement(sql);
+	      stmt.setString(1, userID);
+	      stmt.setString(2, userID);
+	      stmt.setString(3,courseId);
+	      ResultSet rs = stmt.executeQuery();
+	      rs.next();
+	      String lastname = rs.getString("Last_Name");
+	      String firstname = rs.getString("First_Name");
+	    		  
+	      rs.close();
+	      stmt.close();
+	      c.close();
+	      return new Student(userID,lastname,firstname,courseId,"");
+
+	    } catch (Exception e) {
+	      // TODO Error Handling
+	      System.err.println("Student with utorid "+ userID + "does not exist in class " + courseId);
+	      return null;
+	    }
+
+	  
+  }
   
 }

@@ -3,6 +3,8 @@ package zodiac;
 import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
+
+import gui.AssignmentUI;
 //import zodiac.GUI.AssignmentGUI;
 import zodiac.action.ClassAction;
 import zodiac.action.StudentAction;
@@ -46,6 +48,8 @@ public class Main {
           System.out.println("Get all assignment ID by course: getAssignments");
           System.out.println("Add a question to assignment by Assignment ID: addQuestion");
           System.out.println("Add an answer to a question by QID: addAnswer");
+          System.out.println("Start answer on an assignment: answerAssignment");
+          
           System.out.println("Exit: exit");
           break;
         }
@@ -143,6 +147,30 @@ public class Main {
             System.out.println(assignment.getName() + " Id: " + assignment.getId());
           }
           break;
+        }
+        case "answerAssignment":{
+        	 System.out.print("Enter User ID: ");
+       	 String userId = StringUtils.trimToEmpty(scanner.nextLine());
+        	 System.out.print("Enter Course ID: ");
+        	 String courseId = StringUtils.trimToEmpty(scanner.nextLine());
+        	 System.out.print("Enter Assignment ID");
+        	 String assId = StringUtils.trimToEmpty(scanner.nextLine());
+        		try {
+        			Assignment a = new Assignment(courseId,Integer.valueOf(assId));
+        			Student student = StudentAction.getStudent(userId,courseId);
+        			if(student!=null) {
+        				
+        				AssignmentUI window = new AssignmentUI(a,student);
+            			window.open();
+            			Thread.sleep(1000);
+            			break;
+        			}
+        			
+        		} catch (Exception e) {
+        			e.printStackTrace();
+        		}
+        	
+        	
         }
         case "exit":
           exit = true;

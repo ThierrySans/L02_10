@@ -19,6 +19,14 @@ public class StudentAction {
 
   }
   
+  
+  /**
+   * API to get a Student obejct
+   */
+  public static Student getStudent(String userID,String courseId) {
+	  return StudentDao.getStudent(userID, courseId);
+  }
+  
   /**
    * API to add answer for specific assignment and answer 
    * @param student the answer is added under this student

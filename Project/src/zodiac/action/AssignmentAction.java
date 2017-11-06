@@ -23,3 +23,9 @@ public class AssignmentAction {
         return new AssignmentDao().getAssignments(courseCode);
     }
 }
+
+    public boolean changeAssignmentVisibility(Assignment assignment){
+        return new AssignmentDao().changeAssignmentVisibility(assignment);
+    }
+
+}
