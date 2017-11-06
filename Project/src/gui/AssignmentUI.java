@@ -1,249 +1,231 @@
 package gui;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 
 import zodiac.action.QuestionAction;
 import zodiac.action.StudentAction;
 import zodiac.definition.Student;
 import zodiac.definition.coursework.*;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
-public class AssignmentUI {
+public class AssignmentUI extends JFrame implements  ActionListener{
 
-	protected Shell shell;
+	private JPanel contentPane;
 	private Assignment assignment;
 	private ArrayList<Question> questions;
 	private Student student;
-	
-
-
+	private AssignmentUI ref = this;
+	private  int currentAt = 0;
+	ArrayList<Integer> answers;
+	ArrayList<JRadioButton> rdbts;
+	JButton btnSaveNext;
+	JButton btnCancle;
+	JButton btnPrev;
+	JLabel lblNewLabel;
+	ButtonGroup group;
 	public AssignmentUI(Assignment ass,Student stud) {
 	    // -1 id marks a new assignment not in the database
+		super("Assignment " + ass.getId());
 	    this.student = stud;
-	    	this.assignment = ass;
+		this.assignment = ass;
 	    this.questions = (ArrayList<Question>)new QuestionAction().getQuestionsWithAnswer(ass.getId());
+	    this.createContents();
+
+
+
 	 }
-	/**
-	 * Open the window.
-	 */
-	public void open() {
-		Display display = Display.getDefault();
-		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-	}
+
 
 	/**
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shell = new Shell();
-		shell.setSize(450, 301);
-		shell.setText("Assignment " + assignment.getId());
-		shell.setLayout(null);;
-	
-		// setting answer options 
-		Group rdgroup = new Group(shell,SWT.NONE);
-		RowLayout rowL = new RowLayout(SWT.VERTICAL);
-		rowL.spacing = 20;
-		rdgroup.setBackground(shell.getBackground());
-		rdgroup.setLayout(rowL);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+
+
 		//  buttons
-		Button btnSaveNext = new Button(shell, SWT.NONE);
+		btnSaveNext = new JButton();
 		btnSaveNext.setBounds(238, 241, 94, 28);
 		btnSaveNext.setText("Save & Next");
 		btnSaveNext.setEnabled(false);
+		contentPane.add(btnSaveNext);
 									
-		Button btnCancle = new Button(shell, SWT.NONE);
+		btnCancle = new JButton();
 		btnCancle.setBounds(346, 241, 94, 28);
-		btnCancle.setText("Cancle");
+		btnCancle.setText("Cancel");
+		contentPane.add(btnCancle);
 									
-									
-		Button btnPrev = new Button(shell, SWT.NONE);
+		btnPrev = new JButton();
 		btnPrev.setBounds(130, 241, 94, 28);
 		btnPrev.setText("prev");
 		btnPrev.setEnabled(false);
+		contentPane.add(btnPrev);
 		// question label				
-		Label lblNewLabel = new Label(shell, SWT.NONE);
+		lblNewLabel = new JLabel("1. "+this.questions.get(0).getQuestion());
 		lblNewLabel.setBounds(40, 34, 350, 40);
-		lblNewLabel.setText("1. "+this.questions.get(0).getQuestion());
-		
-		ArrayList<Integer> answers = new ArrayList<Integer>();
-		ArrayList<Button> rdbts = new ArrayList<Button>();		
-		Listener answerListener = new Listener() {
-			
-			 public void handleEvent(Event e) {
-				 Button bt = (Button)e.widget;
-				    switch (e.type) {
-			          case SWT.Selection:
-			        	  if(bt.getSelection()) {
-			        		  btnSaveNext.setEnabled(true);
-			        	  }
-			
-				    }
-			 }
-		};
-		
-		
-		
-	
-		for (String answer:this.questions.get(0).getAnswerList()) {
-			rdbts.add(new Button(rdgroup, SWT.RADIO));
-			rdbts.get(rdbts.size() - 1).setText(answer + String.valueOf(0));
-			rdbts.get(rdbts.size() - 1).addListener(SWT.Selection,answerListener);
+		contentPane.add(lblNewLabel);
+		// setting answer options
+		group = new ButtonGroup();
+
+
+		answers = new ArrayList<Integer>();
+		rdbts = new ArrayList<JRadioButton>();
+		int i;
+		for (i=0;i<5;i++){
+			JRadioButton rb = new JRadioButton();
+			rdbts.add(rb);
+			group.add(rb);
+			rb.setBounds(50 , 80+ i * 50, 350, 37 );
+			rb.addActionListener(this);
+			contentPane.add(rb);
 		}
-		
-		rdgroup.setBounds(50, 80, 350, (int) (37.5 * this.questions.get(0).getAnswerList().size()) );
-		
-		
-	     
-	    Listener prevNext = new Listener() {
-	    		private  int currentAt = 0;
-	        public void handleEvent(Event e) {
-	        	 
-	          switch (e.type) {
-	          case SWT.Selection:
-	        	 
-	        	  if(e.widget == btnSaveNext) {
-	        		  // get the answer 
-	        		  Integer answerInt = 0;
-	        		  for(Button rdb:rdbts) {
-	        			  if(rdb.getSelection()) {
-	        				  break;
-	        			  }
-	        			  answerInt += 1;
-	        		  }
-	        		  // save the answer or change the existing answer
-	        		  try {
-	        			  answers.get(currentAt);
-	        			  answers.set(currentAt, answerInt);
-	        		  }catch(IndexOutOfBoundsException ex) {
-	        			  answers.add(answerInt);
-	        		  }
-	        		  if(currentAt == questions.size() - 1) {
-	        			  // close uI and submit the answers
-		        		  shell.dispose();
-		        		 	TreeMap<Question,String> qa = new TreeMap<Question,String>();
-			        	  	for(int i=0;i < questions.size();i++) {
-			        	  		Question q = questions.get(i);
-			        	  		String a = String.valueOf(answers.get(i));
-			        	  		qa.put(q, a);
-			        	  		
-			        	  	}
-			        	  	StudentAction.addAnswerToAssignment(student, assignment, qa);
-		        	  }else {
-		      
-		        		
-		        
-		        		  currentAt += 1;
-		        		  // trying to see if we have next answer
-		        		  try {
-		        			  answers.get(currentAt);
-		        		 }catch(IndexOutOfBoundsException ex) {
-		        			  btnSaveNext.setEnabled(false);
-		        		 }
-		        		  // rendering the next question and answers
-		        		  lblNewLabel.setText( String.valueOf(currentAt+1)+". " + questions.get(currentAt).getQuestion());
-		        		  for (Button each:rdbts) {
-		        			  each.dispose();
-		        		  }
-		        		  rdbts.clear();
-			        	  for (String answer:questions.get(currentAt).getAnswerList()) {
-			      			rdbts.add(new Button(rdgroup, SWT.RADIO));
-			      		
-			      			rdbts.get(rdbts.size() - 1).setText(answer +String.valueOf(currentAt));
-			      			rdbts.get(rdbts.size() - 1).addListener(SWT.Selection,answerListener);
-			      	  }
-			        	  // setting anwser for rendered question if we have
-			        	  try {
-			        		  int answer =  answers.get(currentAt);
-			        		  rdbts.get(answer).setSelection(true);
-			        	  }catch(IndexOutOfBoundsException ex) {
-			        		  
-			        	  }
-			        	  // setting rendering range
-			        	  rdgroup.setBounds(50, 80, 350, (int) (37.5 * questions.get(currentAt).getAnswerList().size()) );
-			        	  rdgroup.layout();
-			        	  btnPrev.setEnabled(true);
-			        	  // see if we have reach the end
-			          if(currentAt == questions.size() - 1) {
-			        		  btnSaveNext.setText("Submit");
-			        	  }
-		        	  }
-		        	  
-		        	
-	        	  }else if(e.widget == btnPrev) {
-	        		  if(currentAt == questions.size() - 1 ) {
-	        			  btnSaveNext.setText("Save & Next");
-		        	  }
-	        		  currentAt -= 1;
-	        		
-	        		  
-	        		  for (Button each:rdbts) {
-	        			  each.dispose();
-	        		  }
-	        		  rdbts.clear();
-	        		  lblNewLabel.setText(String.valueOf(currentAt+1)+". "+questions.get(currentAt).getQuestion());
-		        	  for (String answer:questions.get(currentAt).getAnswerList()) {
-		      			rdbts.add(new Button(rdgroup, SWT.RADIO));
-		      			
-		      			rdbts.get(rdbts.size() - 1).setText(answer + String.valueOf(currentAt));
-		      			rdbts.get(rdbts.size() - 1).addListener(SWT.Selection,answerListener);
-		      	  }
-		        	  // trying to see if we have prev answer, and set it 
-	        		  try {
-	        			  int answer = answers.get(currentAt);
-	        			  rdbts.get(answer).setSelection(true);
-	        			  btnSaveNext.setEnabled(true);
-	        		 }catch(IndexOutOfBoundsException ex) {
-	        		 }
-		        	  rdgroup.setBounds(50, 80, 350, (int) (37.5*questions.get(currentAt).getAnswerList().size()) );
-		         	rdgroup.layout();
-		          if(currentAt == 0) {
-		        	  	btnPrev.setEnabled(false);
-		 
-		        	  }
-	        	  }
-	        	 
-	          break;
-	          }
-	        }
-	      };
+
+		i = 0;
+		for (String answer:this.questions.get(0).getAnswerList()) {
+			JRadioButton rb = rdbts.get(i);
+			rb.setText(answer + String.valueOf(0));
+			i += 1;
+		}
+
+		for (int j = i;j<5;j++){
+			JRadioButton rb = rdbts.get(j);
+			rb.setVisible(false);
+		}
 	   
-	      btnSaveNext.addListener(SWT.Selection, prevNext);  
-	      btnPrev.addListener(SWT.Selection, prevNext);
+	      btnSaveNext.addActionListener(this);
+	      btnPrev.addActionListener(this);
 	      
-	    btnCancle.addListener(SWT.Selection, new Listener() {
-	        public void handleEvent(Event e) {
-	          switch (e.type) {
-	          case SWT.Selection:
-	        	  	shell.dispose();
-	            break;
-	          }
-	        }
-	      });
+	    btnCancle.addActionListener(this);
 	  
 		
 	}
 
-	
-	
-	
+	public void actionPerformed(ActionEvent e) {
+
+
+
+					if(e.getActionCommand() == btnSaveNext.getActionCommand()) {
+						// get the answer
+						Integer answerInt = 0;
+						for(JRadioButton rdb:rdbts) {
+							if(rdb.isSelected()) {
+								group.clearSelection();
+								break;
+							}
+							answerInt += 1;
+						}
+
+						// save the answer or change the existing answer
+						try {
+							answers.get(currentAt);
+							answers.set(currentAt, answerInt);
+						}catch(IndexOutOfBoundsException ex) {
+							answers.add(answerInt);
+						}
+						if(currentAt == questions.size() - 1) {
+							// close uI and submit the answers
+							setVisible(false);
+							dispose();
+							TreeMap<Question,String> qa = new TreeMap<Question,String>();
+							for(int i=0;i < questions.size();i++) {
+								Question q = questions.get(i);
+								String a = String.valueOf(answers.get(i));
+								qa.put(q, a);
+
+							}
+							StudentAction.addAnswerToAssignment(student, assignment, qa);
+						}else {
+
+
+
+							currentAt += 1;
+							// trying to see if we have next answer
+							try {
+								answers.get(currentAt);
+							}catch(IndexOutOfBoundsException ex) {
+								btnSaveNext.setEnabled(false);
+							}
+							// rendering the next question and answers
+							lblNewLabel.setText( String.valueOf(currentAt+1)+". " + questions.get(currentAt).getQuestion());
+							int i = 0;
+							for (String answer:questions.get(currentAt).getAnswerList()) {
+								JRadioButton rb = rdbts.get(i);
+								rb.setText(answer + String.valueOf(0));
+								i += 1;
+							}
+							for (int j = i;j<5;j++){
+								JRadioButton rb = rdbts.get(j);
+								rb.setVisible(false);
+							}
+							// setting anwser for rendered question if we have
+							try {
+								int answer =  answers.get(currentAt);
+								rdbts.get(answer).setSelected(true);
+							}catch(IndexOutOfBoundsException ex) {
+
+							}
+							// setting rendering rang
+							btnPrev.setEnabled(true);
+							// see if we have reach the end
+							if(currentAt == questions.size() - 1) {
+								btnSaveNext.setText("Submit");
+							}
+						}
+
+
+					}else if(e.getActionCommand() == btnPrev.getActionCommand()) {
+						if (currentAt == questions.size() - 1) {
+							btnSaveNext.setText("Save & Next");
+						}
+						currentAt -= 1;
+
+
+
+						lblNewLabel.setText(String.valueOf(currentAt + 1) + ". " + questions.get(currentAt).getQuestion());
+						int i = 0;
+						for (String answer:questions.get(currentAt).getAnswerList()) {
+							JRadioButton rb = rdbts.get(i);
+							rb.setText(answer + String.valueOf(0));
+							i += 1;
+						}
+						for (int j = i;j<5;j++){
+							JRadioButton rb = rdbts.get(j);
+							rb.setVisible(false);
+						}
+						// trying to see if we have prev answer, and set it
+						try {
+							int answer = answers.get(currentAt);
+							rdbts.get(answer).setSelected(true);
+							btnSaveNext.setEnabled(true);
+						} catch (IndexOutOfBoundsException ex) {
+						}
+
+						if (currentAt == 0) {
+							btnPrev.setEnabled(false);
+
+						}
+					}else if (e.getActionCommand()==btnCancle.getActionCommand()){
+						dispose();
+					}else{
+						btnSaveNext.setEnabled(true);
+					}
+		}
+
+
+
+
 }
 
