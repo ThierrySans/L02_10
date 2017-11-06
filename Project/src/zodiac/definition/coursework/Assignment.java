@@ -15,6 +15,11 @@ public class Assignment {
   private int highScore;
   private String name;
 
+
+
+  //field added
+  private String visibility;
+
   /**
    * Constructor for Assignment.
    */
@@ -25,6 +30,7 @@ public class Assignment {
     this.currScore = 0;
     this.highScore = 0;
     this.name = name;
+    this.visibility="on";
   }
 
   public Assignment(String name, int id) {
@@ -86,5 +92,13 @@ public class Assignment {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getVisibility() {
+    return visibility;
+  }
+
+  public void setVisibility(String visibility) {
+    this.visibility = visibility;
   }
 }
