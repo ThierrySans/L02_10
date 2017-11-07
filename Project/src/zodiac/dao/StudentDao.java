@@ -219,5 +219,35 @@ public class StudentDao {
 
 	  
   }
+
+  public static void saveMark(Student student, Assignment ass,Integer mark){
+      String message = "";
+
+      Connection c;
+      PreparedStatement stmt;
+
+      String sql = "SELECT Add_Mark(?, ?, ?)";
+
+      try {
+          c = new PostgreSqlJdbc().getConnection();
+          stmt = c.prepareStatement(sql);
+          stmt.setString(1, student.getUtorId());
+          stmt.setInt(2, ass.getId());
+          stmt.setInt(3, mark);
+
+          ResultSet rs = stmt.executeQuery();
+
+          rs.next();
+          message = rs.getString(1);
+
+          rs.close();
+          stmt.close();
+          c.close();
+
+      } catch (Exception e) {
+          // TODO Error Handling
+          System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      }
+  }
   
 }

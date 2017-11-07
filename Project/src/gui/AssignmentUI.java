@@ -70,7 +70,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 									
 		btnPrev = new JButton();
 		btnPrev.setBounds(130, 241, 94, 28);
-		btnPrev.setText("prev");
+		btnPrev.setText("Back");
 		btnPrev.setEnabled(false);
 		contentPane.add(btnPrev);
 		// question label				
@@ -136,17 +136,27 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							answers.add(answerInt);
 						}
 						if(currentAt == questions.size() - 1) {
-							// close uI and submit the answers
-							setVisible(false);
-							dispose();
+							// close uI and submit the answer
 							TreeMap<Question,String> qa = new TreeMap<Question,String>();
 							for(int i=0;i < questions.size();i++) {
 								Question q = questions.get(i);
-								String a = String.valueOf(answers.get(i));
+								String a = String.valueOf(rdbts.get(answers.get(i)).getText());
 								qa.put(q, a);
 
 							}
 							StudentAction.addAnswerToAssignment(student, assignment, qa);
+							Integer result = StudentAction.validateAnswer(qa);
+							StudentAction.saveMark(student,assignment,result);
+							lblNewLabel.setText("Your result: " + result);
+							for (int j = 0;j<5;j++){
+								JRadioButton rb = rdbts.get(j);
+								rb.setVisible(false);
+							}
+							btnPrev.setEnabled(false);
+							btnSaveNext.setEnabled(false);
+							// display all the answers
+
+
 						}else {
 
 
@@ -163,7 +173,8 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							int i = 0;
 							for (String answer:questions.get(currentAt).getAnswerList()) {
 								JRadioButton rb = rdbts.get(i);
-								rb.setText(answer + String.valueOf(0));
+								rb.setText(answer);
+								rb.setVisible(true);
 								i += 1;
 							}
 							for (int j = i;j<5;j++){
@@ -198,7 +209,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 						int i = 0;
 						for (String answer:questions.get(currentAt).getAnswerList()) {
 							JRadioButton rb = rdbts.get(i);
-							rb.setText(answer + String.valueOf(0));
+							rb.setText(answer);
 							i += 1;
 						}
 						for (int j = i;j<5;j++){

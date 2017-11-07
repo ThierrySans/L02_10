@@ -47,18 +47,22 @@ public class StudentAction {
    * @return a map from Question object to true or false, depends on if the answer is correct for that Question
    */
   
-  public static TreeMap<Question,Boolean> validateAnswerToaAssignment(TreeMap<Question,String> QA) {
-	  TreeMap<Question,Boolean> res = new TreeMap<Question,Boolean>();
+  public static Integer validateAnswer(TreeMap<Question,String> QA) {
+  	  Integer res = 0;
 	  for(Question question:QA.keySet()) {
 		  if(question.getCorrectAnswer() == QA.get(question)) {
-			  res.put(question, new Boolean(true));
-		  }else {
-			  res.put(question, new Boolean(false));
+			  res += 1;
 		  }
 	  }
 	  return res;
   }
-  
-  
+
+	/**
+	 * API for saving mark into database
+	 *
+	 */
+	public static void saveMark(Student student,Assignment ass,Integer mark){
+		StudentDao.saveMark(student,ass,mark);
+	}
 }
 
