@@ -1,22 +1,10 @@
 package zodiac.gui;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
-import com.intellij.ui.components.JBScrollPane;
-import com.intellij.ui.components.JBList;
-import org.bouncycastle.util.Pack;
-import zodiac.dao.coursework.AssignmentDao;
-import zodiac.definition.coursework.Assignment;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class AssignmentManagerMenu {
     public static String TITLE_LABEL = "ASSIGNMENT MANAGER";
@@ -25,7 +13,6 @@ public class AssignmentManagerMenu {
     public static String ADD_QUESTION = "Add Question";
     public static String ADD_QUESTION_TO_ASS = "Add Question to Assignment";
 
-    private JPanel panel;
     private JPanel cards;
     private JPanel getAssignmentsPanel;
 
@@ -60,7 +47,7 @@ public class AssignmentManagerMenu {
         cards = new JPanel(new CardLayout());
         cards.add(getAssignmentsPanel, GET_ASSIGNMENT);
         cards.add(new AddAssignmentMenu().generateContents(), ADD_ASSIGNMENT);
-//        cards.add(createAddStudentPanel(), ADD_STUDENT);
+        cards.add(new AddQuestionMenu().generateContents(), ADD_QUESTION);
 //        cards.add(panelGetStudents, GET_STUDENT);
 
         // Add everything to the pane
