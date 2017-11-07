@@ -15,6 +15,7 @@ public class AssignmentManagerMenu {
 
     private JPanel cards;
     private JPanel getAssignmentsPanel;
+    private JPanel addQtoAssignmentPanel;
 
     public void generateContents(Container window)
     {
@@ -26,7 +27,7 @@ public class AssignmentManagerMenu {
         cbOptions.addItemListener(new OptionsItemListener());
         cbPanel.add(cbOptions);
 
-        // Create JPanel to hold the Combobox and a title card
+        // Create JPanel to hold the ComboBox and a title card
         JPanel topPanel = new JPanel(new BorderLayout());
 
         JLabel msg = new JLabel(TITLE_LABEL);
@@ -39,16 +40,14 @@ public class AssignmentManagerMenu {
 
         // create the various panels for each function
         getAssignmentsPanel = new GetAssignmentsMenu().generateContents();
-
-//        createGetClassPanel();
-//        createGetStudentsPanel();
+        addQtoAssignmentPanel = new AddQuestionToAssignmentMenu().generateContents();
 
         // create the JPanel to hold all the cards and add each card
         cards = new JPanel(new CardLayout());
         cards.add(getAssignmentsPanel, GET_ASSIGNMENT);
         cards.add(new AddAssignmentMenu().generateContents(), ADD_ASSIGNMENT);
         cards.add(new AddQuestionMenu().generateContents(), ADD_QUESTION);
-//        cards.add(panelGetStudents, GET_STUDENT);
+        cards.add(addQtoAssignmentPanel, ADD_QUESTION_TO_ASS);
 
         // Add everything to the pane
         window.add(topPanel, BorderLayout.PAGE_START);
