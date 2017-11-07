@@ -59,7 +59,7 @@ public class AssignmentManagerMenu {
         // create the JPanel to hold all the cards and add each card
         cards = new JPanel(new CardLayout());
         cards.add(getAssignmentsPanel, GET_ASSIGNMENT);
-//        cards.add(panelGetClass, GET_CLASSES);
+        cards.add(new AddAssignmentMenu().generateContents(), ADD_ASSIGNMENT);
 //        cards.add(createAddStudentPanel(), ADD_STUDENT);
 //        cards.add(panelGetStudents, GET_STUDENT);
 
