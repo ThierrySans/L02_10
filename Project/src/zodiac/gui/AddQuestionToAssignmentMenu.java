@@ -1,7 +1,7 @@
 package zodiac.gui;
 
-import com.intellij.ui.components.JBList;
-import com.intellij.ui.components.JBScrollPane;
+//import com.intellij.ui.components.JBList;
+//import com.intellij.ui.components.JBScrollPane;
 import zodiac.dao.coursework.AssignmentDao;
 import zodiac.dao.coursework.QuestionDao;
 import zodiac.definition.coursework.Assignment;
@@ -27,7 +27,7 @@ public class AddQuestionToAssignmentMenu {
     private JPanel panel;
     private Assignment currAssign;
     private List<Integer> selectedQuestions;
-    private JBList<Question> questionList;
+    private JList<Question> questionList;
     private DefaultListModel<Question> model;
 
     /**
@@ -52,9 +52,9 @@ public class AddQuestionToAssignmentMenu {
 
         // Create the Question list
         this.model = new DefaultListModel<>();
-        this.questionList = new JBList<>(this.model);
+        this.questionList = new JList<>(this.model);
         this.questionList.getSelectionModel().addListSelectionListener(new QuestionListSelectListener(this.questionList));
-        JScrollPane pane = new JBScrollPane(this.questionList);
+        JScrollPane pane = new JScrollPane(this.questionList);
 
         // Add elements to the panel
         panel.add(assignmentCb);
@@ -101,7 +101,7 @@ public class AddQuestionToAssignmentMenu {
                 }
             }
 
-            questionList = new JBList(model);
+            questionList = new JList(model);
             questionList.getSelectionModel().addListSelectionListener(new QuestionListSelectListener(questionList));
             panel.revalidate();
 

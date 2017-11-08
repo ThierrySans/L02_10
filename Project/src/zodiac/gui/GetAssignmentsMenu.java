@@ -3,8 +3,8 @@ package zodiac.gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import com.intellij.ui.components.JBScrollPane;
-import com.intellij.ui.components.JBList;
+//import com.intellij.ui.components.JBScrollPane;
+//import com.intellij.ui.components.JBList;
 import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.coursework.Assignment;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class GetAssignmentsMenu {
     private JPanel panel;
-    private JBList assignList;
+    private JList assignList;
     private DefaultListModel model;
 
     /**
@@ -43,8 +43,8 @@ public class GetAssignmentsMenu {
 
         this.model = new DefaultListModel();
 
-        assignList = new JBList(model);
-        JBScrollPane scrollPane = new JBScrollPane(assignList);
+        assignList = new JList(model);
+        JScrollPane scrollPane = new JScrollPane(assignList);
 
 
         this.panel.add(searchPanel);
@@ -72,7 +72,7 @@ public class GetAssignmentsMenu {
                 model.addElement(a.getName());
             }
 
-            assignList = new JBList(model);
+            assignList = new JList(model);
             panel.revalidate();
         }
     }
