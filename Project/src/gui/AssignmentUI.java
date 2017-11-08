@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JScrollPane;
 
 public class AssignmentUI extends JFrame implements  ActionListener{
 
@@ -31,6 +32,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 	JButton btnPrev;
 	JLabel lblNewLabel;
 	ButtonGroup group;
+	JScrollPane scrollPane;
 	public AssignmentUI(Assignment ass,Student stud) {
 	    // -1 id marks a new assignment not in the database
 		super("Assignment " + ass.getId());
@@ -49,28 +51,29 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 	 */
 	protected void createContents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 350);
 		contentPane = new JPanel();
+		contentPane.setLayout(null);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
+
 		setContentPane(contentPane);
 
 
 		//  buttons
 		btnSaveNext = new JButton();
-		btnSaveNext.setBounds(238, 241, 94, 28);
+		btnSaveNext.setBounds(238, 291, 94, 28);
 		btnSaveNext.setText("Save & Next");
 		btnSaveNext.setEnabled(false);
 		contentPane.add(btnSaveNext);
 									
 		btnCancle = new JButton();
-		btnCancle.setBounds(346, 241, 94, 28);
+		btnCancle.setBounds(346, 291, 94, 28);
 		btnCancle.setText("Cancel");
 		contentPane.add(btnCancle);
 									
 		btnPrev = new JButton();
-		btnPrev.setBounds(130, 241, 94, 28);
-		btnPrev.setText("prev");
+		btnPrev.setBounds(130, 291, 94, 28);
+		btnPrev.setText("Back");
 		btnPrev.setEnabled(false);
 		contentPane.add(btnPrev);
 		// question label				
@@ -109,7 +112,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 	      btnPrev.addActionListener(this);
 	      
 	    btnCancle.addActionListener(this);
-	  
+
 		
 	}
 
@@ -136,17 +139,53 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							answers.add(answerInt);
 						}
 						if(currentAt == questions.size() - 1) {
-							// close uI and submit the answers
-							setVisible(false);
-							dispose();
+							// close uI and submit the answer
 							TreeMap<Question,String> qa = new TreeMap<Question,String>();
 							for(int i=0;i < questions.size();i++) {
 								Question q = questions.get(i);
-								String a = String.valueOf(answers.get(i));
+								String a = String.valueOf(rdbts.get(answers.get(i)).getText());
 								qa.put(q, a);
 
 							}
 							StudentAction.addAnswerToAssignment(student, assignment, qa);
+							Integer result = StudentAction.validateAnswer(qa);
+							StudentAction.saveMark(student,assignment,result);
+							lblNewLabel.setText("Your result: " + result);
+							Font f = lblNewLabel.getFont();
+							lblNewLabel.setFont(new Font(f.getName(), Font.BOLD, f.getSize()+4));
+							for (int j = 0;j<5;j++){
+								JRadioButton rb = rdbts.get(j);
+								rb.setVisible(false);
+								contentPane.remove(rb);
+							}
+							btnPrev.setEnabled(false);
+							btnSaveNext.setEnabled(false);
+							// display all the answers
+							// setting all answers
+							GridLayout grid = new GridLayout(0,1);
+							grid.setVgap(10);
+							JPanel panel = new JPanel(grid);
+							int k;
+							for ( k = 0; k < questions.size(); k++) {
+								Question q = this.questions.get(k);
+								lblNewLabel = new JLabel(String.valueOf(k+1) + ": " + q.getQuestion());
+								panel.add(lblNewLabel);
+								lblNewLabel = new JLabel("    Answer: " + q.getCorrectAnswer());
+								panel.add(lblNewLabel);
+
+							}
+							panel.revalidate();
+
+							scrollPane = new JScrollPane(panel);
+
+							scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+							scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+							scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+							scrollPane.setBounds(35, 80, 380, 200);
+							scrollPane.getViewport().setMinimumSize(new Dimension(380, 200));
+							scrollPane.getViewport().setPreferredSize(new Dimension(380, 200));
+
+							contentPane.add(scrollPane);
 						}else {
 
 
@@ -163,7 +202,8 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							int i = 0;
 							for (String answer:questions.get(currentAt).getAnswerList()) {
 								JRadioButton rb = rdbts.get(i);
-								rb.setText(answer + String.valueOf(0));
+								rb.setText(answer);
+								rb.setVisible(true);
 								i += 1;
 							}
 							for (int j = i;j<5;j++){
@@ -198,7 +238,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 						int i = 0;
 						for (String answer:questions.get(currentAt).getAnswerList()) {
 							JRadioButton rb = rdbts.get(i);
-							rb.setText(answer + String.valueOf(0));
+							rb.setText(answer);
 							i += 1;
 						}
 						for (int j = i;j<5;j++){
