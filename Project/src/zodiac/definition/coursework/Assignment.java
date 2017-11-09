@@ -13,6 +13,7 @@ public class Assignment {
   private List<Question> questionList;
   private int currScore;
   private int highScore;
+  private int maxAttempt;
   private String name;
 
 
@@ -31,6 +32,7 @@ public class Assignment {
     this.highScore = 0;
     this.name = name;
     this.visibility="on";
+    this.maxAttempt = 0;
   }
 
   public Assignment(String name, int id) {
@@ -100,5 +102,19 @@ public class Assignment {
 
   public void setVisibility(String visibility) {
     this.visibility = visibility;
+  }
+
+  /**
+   * Return the number of maximum attempts allowed for an assignment.
+   * Returns 0 if infinite attempts are allowed.
+   *
+   * @return maximum number of attempts allowed. 0 if infinite attempts
+   */
+  public int getMaxAttempt() {
+    return maxAttempt;
+  }
+
+  public void setMaxAttempt(int maxAttempt) {
+    this.maxAttempt = maxAttempt;
   }
 }
