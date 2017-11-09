@@ -63,7 +63,14 @@ public class StudentAction {
     }
   }
 
-  private static boolean usedMaxAttempts(Student student, Assignment assignment) {
+  /**
+   * Return whether the student has used all their attempts of an assignment or not.
+   *
+   * @param student the student doing the assignment
+   * @param assignment the assignment being done
+   * @return true if the student has used all their attempts, false otherwise
+   */
+  public static boolean usedMaxAttempts(Student student, Assignment assignment) {
     if (assignment.getMaxAttempt() > 0) {
       return (new AssignmentDao().getStudentUsedAttempts(assignment, student)
           >= assignment.getMaxAttempt());
