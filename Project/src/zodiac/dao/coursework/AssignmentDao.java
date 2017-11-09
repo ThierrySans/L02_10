@@ -69,6 +69,43 @@ public class AssignmentDao {
   }
 
   /**
+   * Gets the ID, name, and Visibility status of all assignments.
+   * @return list of all assignments
+   */
+  public List<Assignment> getAllAssignments() {
+    List<Assignment> assignments = new ArrayList<>();
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "SELECT Id, Assignment_Name,Visibility "
+            + "FROM Assignments";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+      ResultSet rs = stmt.executeQuery();
+
+      while (rs.next()) {
+        int id = rs.getInt("Id");
+        String name = rs.getString("Assignment_Name");
+        Assignment assignment = new Assignment(name, id);
+        assignment.setVisibility(rs.getString("Visibility"));
+        assignments.add(assignment);
+      }
+
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return assignments;
+  }
+
+  /**
    * Add an assignment to the database.
    *
    * @param assignmentName name of the assignment

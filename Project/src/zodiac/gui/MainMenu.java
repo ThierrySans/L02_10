@@ -34,6 +34,7 @@ public class MainMenu implements ItemListener {
     public static String GET_CLASSES = "Get a list of classes";
     public static String ADD_STUDENT = "Add a student";
     public static String GET_STUDENT = "Get a list of students";
+    public static String ASS_MANAGER = "Open Assignment Manager";
 
     private JPanel cbPanel;
     private JComboBox cbOptions;
@@ -56,7 +57,7 @@ public class MainMenu implements ItemListener {
     {
         // Create the combo box JPanel and add all the options into it
         JPanel cbPanel = new JPanel(new FlowLayout());
-        String cbOptionList[] = {CREATE_CLASS, GET_CLASSES, ADD_STUDENT, GET_STUDENT};
+        String cbOptionList[] = {CREATE_CLASS, GET_CLASSES, ADD_STUDENT, GET_STUDENT, ASS_MANAGER};
         cbOptions = new JComboBox(cbOptionList);
         cbOptions.setEditable(false);
         cbOptions.addItemListener(this);
@@ -271,6 +272,15 @@ public class MainMenu implements ItemListener {
         if (choice.equals(GET_CLASSES))
         {
             updateClassesTable();
+        }
+        else if (choice.equals(ASS_MANAGER))
+        {
+            JFrame managerWindow = new JFrame("Assignment Manager");
+            new AssignmentManagerMenu().generateContents(managerWindow);
+
+            managerWindow.pack();
+            managerWindow.setVisible(true);
+
         }
         cl.show(cards, (String)evt.getItem());
     }

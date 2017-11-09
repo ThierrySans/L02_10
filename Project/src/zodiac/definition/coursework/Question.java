@@ -50,9 +50,14 @@ public class Question implements Comparable{
     this.question = question;
   }
 
-@Override
-public int compareTo(Object o) {
-	// TODO Auto-generated method stub
-	return this.qid - ((Question)o).qid;
-}
+  @Override
+  public int compareTo(Object o) {
+      // TODO Auto-generated method stub
+      return this.qid - ((Question)o).qid;
+  }
+
+  @Override
+  public String toString() {
+    return question;
+  }
 }

@@ -2,6 +2,7 @@ package zodiac.definition.coursework;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by radiantwings on 10/24/17. This class represents an Assignment that Students will
@@ -116,5 +117,10 @@ public class Assignment {
 
   public void setMaxAttempt(int maxAttempt) {
     this.maxAttempt = maxAttempt;
+  }
+
+  public String toString() {
+    Integer myInt = new Integer(this.id);
+    return StringUtils.join(myInt, " " ,this.name);
   }
 }
