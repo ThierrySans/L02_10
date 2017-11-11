@@ -5,7 +5,14 @@
  */
 package zodiac.gui;
 
+import org.apache.commons.lang3.StringUtils;
+import zodiac.action.AssignmentAction;
+import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.coursework.Assignment;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -13,13 +20,50 @@ import zodiac.definition.coursework.Assignment;
  */
 public class EditAssignmentMenu extends javax.swing.JFrame {
 
+    private Assignment assignment;
+
     /**
      * Creates new form EditAssignmentMenu
      */
     public EditAssignmentMenu(Assignment assignment) {
         initComponents();
+        this.assignment = assignment;
         nameTextField.setText(assignment.getName());
         maxTextField.setText(assignment.getMaxAttempt() + "");
+
+        saveNameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JOptionPane.showMessageDialog(new JFrame(), "Nothing yet");
+            }
+        });
+
+        saveMaxButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String input = StringUtils.trimToEmpty(maxTextField.getText());
+                try {
+                    JOptionPane.showMessageDialog(new JFrame(), editMax(Integer.parseInt(input)));
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Invalid input");
+                }
+            }
+        });
+
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                close();
+            }
+        });
+    }
+
+    private String editMax(int max) {
+        return new AssignmentAction().setAssignmentMaxAttempt(assignment, max);
+    }
+
+    private void close() {
+        this.dispose();
     }
 
     /**
@@ -40,7 +84,7 @@ public class EditAssignmentMenu extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(null);
 
         nameTextField.setText("jTextField1");
