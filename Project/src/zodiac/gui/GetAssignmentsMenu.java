@@ -1,18 +1,18 @@
 package zodiac.gui;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
-//import com.intellij.ui.components.JBScrollPane;
-//import com.intellij.ui.components.JBList;
 import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.coursework.Assignment;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
+
+//import com.intellij.ui.components.JBScrollPane;
+//import com.intellij.ui.components.JBList;
 
 
 public class GetAssignmentsMenu {
@@ -23,8 +23,7 @@ public class GetAssignmentsMenu {
     /**
      * Generate the contents of the Assignment manager menu.
      */
-    public JPanel generateContents()
-    {
+    public JPanel generateContents() {
         this.panel = new JPanel();
         this.panel.setLayout(new BoxLayout(this.panel, BoxLayout.Y_AXIS));
 
@@ -50,14 +49,30 @@ public class GetAssignmentsMenu {
         this.panel.add(searchPanel);
         this.panel.add(scrollPane);
 
+        addMouseListener(assignList);
+
         return this.panel;
     }
 
-    private class getAssignmentsListener implements ActionListener
-    {
+    // Open assignment editor when on double click assignment
+    private void addMouseListener(JList list) {
+        list.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList) evt.getSource();
+                if (evt.getClickCount() == 2) {
+                    // Double-click detected
+                    int index = list.locationToIndex(evt.getPoint());
+                    Assignment assignment = (Assignment)model.get(index);
+                    new EditAssignmentMenu(assignment).setVisible(true);
+                }
+            }
+        });
+    }
+
+    private class getAssignmentsListener implements ActionListener {
         private JTextField courseCode;
-        getAssignmentsListener(JTextField code)
-        {
+
+        getAssignmentsListener(JTextField code) {
             this.courseCode = code;
         }
 
@@ -66,10 +81,10 @@ public class GetAssignmentsMenu {
             System.out.println(this.courseCode);
             List<Assignment> results = new AssignmentDao().getAssignments(this.courseCode.getText());
             model.clear();
-            for (Assignment a : results)
-            {
+            for (Assignment a : results) {
 //                System.out.println(a.getName());
-                model.addElement(a.getName());
+                // What the model displays is defined in Assignment.ToString
+                model.addElement(a);
             }
 
             assignList = new JList(model);
