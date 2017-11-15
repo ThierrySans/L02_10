@@ -1,4 +1,4 @@
-package zodiac.gui;
+package zodiac.gui.admin;
 
 import javax.swing.*;
 

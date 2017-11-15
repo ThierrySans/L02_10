@@ -1,4 +1,4 @@
-package zodiac.gui;
+package zodiac.gui.admin;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

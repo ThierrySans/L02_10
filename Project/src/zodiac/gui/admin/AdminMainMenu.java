@@ -1,4 +1,4 @@
-package zodiac.gui;
+package zodiac.gui.admin;
 
 import zodiac.action.ClassAction;
 import zodiac.action.StudentAction;
@@ -8,12 +8,8 @@ import zodiac.definition.Class;
 import zodiac.definition.Student;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,10 +20,10 @@ import java.util.List;
 
 /**
  * Created by radiantwings on 11/1/17.
- * The MainMenu class is the GUI of the
+ * The AdminMainMenu class is the GUI of the
  * Mainmenu for the app. This main menu is for admins.
  */
-public class MainMenu implements ItemListener {
+public class AdminMainMenu implements ItemListener {
     //Constants
     public static String WELCOME_MESSAGE = "Welcome to the STAT_TRAKER admin app!";
     public static String CREATE_CLASS = "Create a class";
@@ -375,7 +371,7 @@ public class MainMenu implements ItemListener {
         JFrame frame = new JFrame("App");
         //Create and set up the content pane.
 
-        MainMenu menu = new MainMenu();
+        AdminMainMenu menu = new AdminMainMenu();
         menu.setupMainMenu(frame);
 
         frame.setVisible(true);

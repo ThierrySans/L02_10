@@ -1,4 +1,4 @@
-package gui;
+package zodiac.gui.admin;
 
 
 import zodiac.action.QuestionAction;
@@ -8,7 +8,6 @@ import zodiac.definition.coursework.*;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

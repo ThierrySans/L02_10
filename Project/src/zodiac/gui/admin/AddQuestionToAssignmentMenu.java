@@ -1,4 +1,4 @@
-package zodiac.gui;
+package zodiac.gui.admin;
 
 //import com.intellij.ui.components.JBList;
 //import com.intellij.ui.components.JBScrollPane;
