@@ -15,6 +15,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import zodiac.action.QuestionAction;
 import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.Student;
 import zodiac.definition.coursework.Assignment;
@@ -97,11 +99,12 @@ public class GetAssignmentsMenu {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
       System.out.println(this.courseCode);
-      List<Assignment> results = new AssignmentDao().getAssignments(this.courseCode.getText());
+      List<Assignment> results = new AssignmentDao().getAssignments (this.courseCode.getText());
       model.clear();
       for (Assignment a : results) {
 //                System.out.println(a.getName());
         // What the model displays is defined in Assignment.ToString
+        a.setQuestionList(new QuestionAction().getQuestionsWithAnswer(a.getId()));
         model.addElement(a);
       }
 

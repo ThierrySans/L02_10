@@ -21,7 +21,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 
 	private JPanel contentPane;
 	private Assignment assignment;
-	private ArrayList<Question> questions;
+	private List<Question> questions;
 	private  TreeMap<Question,List<String>> qas;
 	private Student student;
 	private AssignmentUI ref = this;
@@ -39,7 +39,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		super("Assignment " + ass.getId());
 	    this.student = stud;
 		this.assignment = ass;
-	    this.questions = (ArrayList<Question>)new QuestionAction().getQuestionsWithAnswer(ass.getId());
+	    this.questions = ass.getQuestionList();
 	    this.createContents();
 
 
@@ -98,17 +98,21 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		}
 		// init temporal answer
 
-
+		TreeMap<Question, String> temporalAnswer = StudentAction.fetchTempAnswerFromAssignment(student,assignment);
 		for(Question question:questions){
-			String temporalAnswer = StudentAction.fetchTempAnswerFromQuestion(student,assignment,question);
-			if(temporalAnswer != null){
-				int rs = 0;
+			if(temporalAnswer.get(question) != null){
+				Integer rs = null;
 				for(int p=0;p<question.getAnswerList().size();p++){
-					if(question.getAnswerList().get(p) == temporalAnswer){
-						rs ++;
+					if(qas.get(question).get(p).equals(temporalAnswer.get(question))){
+
+						rs = p;
 					}
+
 				}
-				answers.add(rs);
+				if(rs != null){
+					answers.add(rs);
+				}
+
 			}
 
 
@@ -247,7 +251,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							// rendering the next question and answers
 							lblNewLabel.setText( String.valueOf(currentAt+1)+". " + questions.get(currentAt).getQuestion());
 							int i = 0;
-							for (String answer:this.qas.get(this.questions.get(0))) {
+							for (String answer:this.qas.get(this.questions.get(currentAt))) {
 								JRadioButton rb = rdbts.get(i);
 								rb.setText(answer);
 								rb.setVisible(true);
@@ -283,7 +287,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 
 						lblNewLabel.setText(String.valueOf(currentAt + 1) + ". " + questions.get(currentAt).getQuestion());
 						int i = 0;
-						for (String answer:this.qas.get(this.questions.get(0))) {
+						for (String answer:this.qas.get(this.questions.get(currentAt))) {
 							JRadioButton rb = rdbts.get(i);
 							rb.setText(answer);
 							i += 1;

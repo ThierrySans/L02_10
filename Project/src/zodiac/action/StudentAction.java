@@ -92,26 +92,6 @@ public class StudentAction {
   }
 
   /**
-   * API to add answer for specific assignment and answer
-   *
-   * @param student the answer is added under this student
-   * @param question the questions
-   * @param   assignment the assignment this answer belong
-   * @return empty qa set if student has no permission, else question answers map
-   */
-  public static String fetchTempAnswerFromQuestion(Student student,Assignment assignment, Question question) {
-
-
-
-    if (ActiveUser.INSTANCE.canRead(
-            new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
-
-        return StudentDao.fetchTempAnswerFromQuestion(student,assignment.getId(),question.getQid());
-      }
-    return null;
-  }
-
-  /**
    * API validating answers for questions
    *
    * @param QA a map from Question object to answer string
