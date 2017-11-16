@@ -1,6 +1,8 @@
 package zodiac.action;
 
 import java.util.TreeMap;
+
+import org.apache.commons.lang3.ObjectUtils;
 import zodiac.dao.StudentDao;
 import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.MessageConstants;
@@ -45,10 +47,53 @@ public class StudentAction {
   }
 
   /**
+   * API to add answer for specific assignment and answer
+   *
+   * @param student the answer is added under this student
+   * @param assignment the assignment this answer belong
+   * @param qa the question to answers map
+   * @return true if added succ, false otherwise
+   */
+  public static boolean addTempAnswerToAssignment(Student student, Assignment assignment,
+                                              TreeMap<Question, String> qa) {
+    if (ActiveUser.INSTANCE.canRead(
+            new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
+      for (Question question : qa.keySet()) {
+        StudentDao
+                .addTempAnswerToQuestion(student, assignment.getId(), question.getQid(), qa.get(question));
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * API to add answer for specific assignment and answer
+   *
+   * @param student the answer is added under this student
+   * @param assignment the assignment this answer belong
+   * @return empty qa set if student has no permission, else question answers map
+   */
+  public static TreeMap<Question, String> fetchTempAnswerFromAssignment(Student student, Assignment assignment) {
+
+    TreeMap<Question,String> qa = new TreeMap<Question, String>();
+
+    if (ActiveUser.INSTANCE.canRead(
+            new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
+      for(Question question:assignment.getQuestionList()){
+        qa.put(question, StudentDao.fetchTempAnswerFromQuestion(student,assignment.getId(),question.getQid()));
+      }
+
+    }
+    return qa;
+  }
+
+  /**
    * API validating answers for questions
    *
    * @param QA a map from Question object to answer string
-   * @return a map from Question object to true or false, depends on if the answer is correct for
+   * @return Score in interger, depends on if the answer is correct for
    * that Question
    */
 
@@ -63,7 +108,7 @@ public class StudentAction {
   }
 
   /**
-   * API for saving mark into database
+   * API for saving mark into database if max attempt has not been excceded
    */
   public static void saveMark(Student student, Assignment ass, Integer mark) {
     if (!usedMaxAttempts(student, ass)
@@ -73,6 +118,7 @@ public class StudentAction {
       StudentDao.saveMark(student, ass, mark);
     }
   }
+
 
   /**
    * Return whether the student has used all their attempts of an assignment or not.

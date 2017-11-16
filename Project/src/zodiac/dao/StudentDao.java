@@ -11,6 +11,94 @@ import zodiac.util.PostgreSqlJdbc;
 
 public class StudentDao {
 
+
+  /**
+   * API to add answer for specific assignment and answer
+   *
+   * @param student the answer is added under this student
+   * @param assignmentId the assignment id this answer belong
+   * @param questionId the question id this answer belong
+   * @return succefully string or null
+   */
+  public static String fetchTempAnswerFromQuestion(Student student, int assignmentId, int questionId) {
+    String message = "";
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "SELECT temp_answer From userassignquesansmap"
+            + " WHERE utor_id  = ? AND assignment_id = ? AND question_id = ?";
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+      stmt.setString(1, student.getUtorId());
+      stmt.setInt(2, assignmentId);
+      stmt.setInt(3, questionId);
+
+      ResultSet rs = stmt.executeQuery();
+     if(rs.next()){
+       message = rs.getString(1);
+
+     }else{
+       message = null;
+     };
+
+      rs.close();
+      stmt.close();
+      c.close();
+
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return message;
+  }
+
+
+  /**
+   * API to add answer for specific assignment and answer
+   *
+   * @param student the answer is added under this student
+   * @param assignmentId the assignment id this answer belong
+   * @param questionId the question id this answer belong
+   * @param temp_answer the temp answer in text
+   * @return succefully string or fail
+   */
+  public static String addTempAnswerToQuestion(Student student, int assignmentId, int questionId,
+                                           String temp_answer) {
+    String message = "";
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "SELECT Add_Temp_Answer(?, ?, ?, ?)";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+      stmt.setString(1, student.getUtorId());
+      stmt.setInt(2, assignmentId);
+      stmt.setInt(3, questionId);
+      stmt.setString(4, temp_answer);
+
+      ResultSet rs = stmt.executeQuery();
+
+      rs.next();
+      message = rs.getString(1);
+
+      rs.close();
+      stmt.close();
+      c.close();
+
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return message;
+  }
+
   /**
    * API to add answer for specific assignment and answer
    *
@@ -91,6 +179,9 @@ public class StudentDao {
 
   }
 
+  /**
+   * Save mark of particular assignment for student into database, also increase an attempt.
+   */
   public static void saveMark(Student student, Assignment ass, Integer mark) {
     String message = "";
 

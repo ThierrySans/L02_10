@@ -109,6 +109,10 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		}
 	   
 	      btnSaveNext.addActionListener(this);
+		if(this.questions.size()==1){
+			btnSaveNext.setText("Submit");
+		}
+
 	      btnPrev.addActionListener(this);
 	      
 	    btnCancle.addActionListener(this);
@@ -179,7 +183,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							scrollPane = new JScrollPane(panel);
 
 							scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-							scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+							scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 							scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 							scrollPane.setBounds(35, 80, 380, 200);
 							scrollPane.getViewport().setMinimumSize(new Dimension(380, 200));
