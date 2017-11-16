@@ -1,5 +1,6 @@
 package zodiac.action;
 
+import java.util.List;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -51,17 +52,18 @@ public class StudentAction {
    *
    * @param student the answer is added under this student
    * @param assignment the assignment this answer belong
-   * @param qa the question to answers map
+   * @param question the question to answers map
+   * @param  tempAnswer the temporal answer
    * @return true if added succ, false otherwise
    */
-  public static boolean addTempAnswerToAssignment(Student student, Assignment assignment,
-                                              TreeMap<Question, String> qa) {
+  public static boolean addTempAnswerToQuestion(Student student, Assignment assignment,
+                                             Question question,String tempAnswer) {
     if (ActiveUser.INSTANCE.canRead(
             new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
-      for (Question question : qa.keySet()) {
+
         StudentDao
-                .addTempAnswerToQuestion(student, assignment.getId(), question.getQid(), qa.get(question));
-      }
+                .addTempAnswerToQuestion(student, assignment.getId(), question.getQid(),tempAnswer);
+
       return true;
     } else {
       return false;
@@ -87,6 +89,26 @@ public class StudentAction {
 
     }
     return qa;
+  }
+
+  /**
+   * API to add answer for specific assignment and answer
+   *
+   * @param student the answer is added under this student
+   * @param question the questions
+   * @param   assignment the assignment this answer belong
+   * @return empty qa set if student has no permission, else question answers map
+   */
+  public static String fetchTempAnswerFromQuestion(Student student,Assignment assignment, Question question) {
+
+
+
+    if (ActiveUser.INSTANCE.canRead(
+            new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
+
+        return StudentDao.fetchTempAnswerFromQuestion(student,assignment.getId(),question.getQid());
+      }
+    return null;
   }
 
   /**

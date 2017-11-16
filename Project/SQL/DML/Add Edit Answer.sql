@@ -13,14 +13,14 @@
  	END;
  	$$ LANGUAGE plpgsql;
 
- CREATE OR REPLACE FUNCTION Add_Temp_Answer(Users varchar(100), assignmentID int , questionId int,temp_answer varchar(255))
+ CREATE OR REPLACE FUNCTION Add_Temp_Answer(Users varchar(100), assignmentID int , questionId int,temporal_answer varchar(255))
  	RETURNS varchar AS $$
  	BEGIN
 	 	IF EXISTS (SELECT 1 FROM UserAssignQuesAnsMap WHERE UTOR_Id=Users AND Assignment_Id=assignmentID AND Question_Id=questionId) THEN
- 			UPDATE UserAssignQuesAnsMap SET Temp_Answer=temp_answer WHERE UTOR_Id=Users AND Assignment_Id=assignmentID AND Question_Id=questionId;
+ 			UPDATE UserAssignQuesAnsMap SET Temp_Answer=temporal_answer WHERE UTOR_Id=Users AND Assignment_Id=assignmentID AND Question_Id=questionId;
  			RETURN 'Temporal Answer Modified';
  		ELSE
-		  	INSERT INTO UserAssignQuesAnsMap (UTOR_Id, Assignment_Id,Question_Id,Temp_Answer) VALUES (Users, assignmentID,questionId,temp_answer);
+		  	INSERT INTO UserAssignQuesAnsMap (UTOR_Id, Assignment_Id,Question_Id,Temp_Answer) VALUES (Users, assignmentID,questionId,temporal_answer);
  			RETURN 'Temporal Answer Added';
  		END IF;
 

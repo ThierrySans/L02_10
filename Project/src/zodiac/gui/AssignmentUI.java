@@ -22,6 +22,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 	private JPanel contentPane;
 	private Assignment assignment;
 	private ArrayList<Question> questions;
+	private  TreeMap<Question,List<String>> qas;
 	private Student student;
 	private AssignmentUI ref = this;
 	private  int currentAt = 0;
@@ -80,12 +81,41 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		lblNewLabel = new JLabel("1. "+this.questions.get(0).getQuestion());
 		lblNewLabel.setBounds(40, 34, 350, 40);
 		contentPane.add(lblNewLabel);
+		// note label
+		JLabel newLable = new JLabel("Note: your progress will be saved.");
+		newLable .setBounds(130, 261, 350, 40);
+		contentPane.add(newLable);
 		// setting answer options
 		group = new ButtonGroup();
 
 
 		answers = new ArrayList<Integer>();
+		// initialize qa set
+		qas = new TreeMap<Question,List<String>>();
+
+		for (Question question:this.questions){
+			qas.put(question,question.getAnswerList());
+		}
+		// init temporal answer
+
+
+		for(Question question:questions){
+			String temporalAnswer = StudentAction.fetchTempAnswerFromQuestion(student,assignment,question);
+			if(temporalAnswer != null){
+				int rs = 0;
+				for(int p=0;p<question.getAnswerList().size();p++){
+					if(question.getAnswerList().get(p) == temporalAnswer){
+						rs ++;
+					}
+				}
+				answers.add(rs);
+			}
+
+
+		}
+
 		rdbts = new ArrayList<JRadioButton>();
+		// adding answer option
 		int i;
 		for (i=0;i<5;i++){
 			JRadioButton rb = new JRadioButton();
@@ -97,16 +127,25 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		}
 
 		i = 0;
-		for (String answer:this.questions.get(0).getAnswerList()) {
+		// only set avaliable option visible
+		for (String answer: this.qas.get(this.questions.get(0))) {
 			JRadioButton rb = rdbts.get(i);
 			rb.setText(answer + String.valueOf(0));
 			i += 1;
 		}
+		try{
+			 rdbts.get(this.answers.get(0)).setSelected(true);
+			 btnSaveNext.setEnabled(true);
+		}catch(IndexOutOfBoundsException ex) {
 
+		}
+
+		// set the rest of options invisible
 		for (int j = i;j<5;j++){
 			JRadioButton rb = rdbts.get(j);
 			rb.setVisible(false);
 		}
+		// change to submit immediately
 	   
 	      btnSaveNext.addActionListener(this);
 		if(this.questions.size()==1){
@@ -142,6 +181,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 						}catch(IndexOutOfBoundsException ex) {
 							answers.add(answerInt);
 						}
+
 						if(currentAt == questions.size() - 1) {
 							// close uI and submit the answer
 							TreeMap<Question,String> qa = new TreeMap<Question,String>();
@@ -167,7 +207,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							// display all the answers
 							// setting all answers
 							GridLayout grid = new GridLayout(0,1);
-							grid.setVgap(10);
+							grid.setVgap(8);
 							JPanel panel = new JPanel(grid);
 							int k;
 							for ( k = 0; k < questions.size(); k++) {
@@ -175,6 +215,8 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 								lblNewLabel = new JLabel(String.valueOf(k+1) + ": " + q.getQuestion());
 								panel.add(lblNewLabel);
 								lblNewLabel = new JLabel("    Answer: " + q.getCorrectAnswer());
+								panel.add(lblNewLabel);
+								lblNewLabel = new JLabel("    Your Answer: " +  rdbts.get((answers.get(k))).getText());
 								panel.add(lblNewLabel);
 
 							}
@@ -191,7 +233,8 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 
 							contentPane.add(scrollPane);
 						}else {
-
+							// save current answer into database
+							StudentAction.addTempAnswerToQuestion(student,assignment,questions.get(currentAt),rdbts.get(answers.get(currentAt)).getText());
 
 
 							currentAt += 1;
@@ -204,7 +247,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							// rendering the next question and answers
 							lblNewLabel.setText( String.valueOf(currentAt+1)+". " + questions.get(currentAt).getQuestion());
 							int i = 0;
-							for (String answer:questions.get(currentAt).getAnswerList()) {
+							for (String answer:this.qas.get(this.questions.get(0))) {
 								JRadioButton rb = rdbts.get(i);
 								rb.setText(answer);
 								rb.setVisible(true);
@@ -240,7 +283,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 
 						lblNewLabel.setText(String.valueOf(currentAt + 1) + ". " + questions.get(currentAt).getQuestion());
 						int i = 0;
-						for (String answer:questions.get(currentAt).getAnswerList()) {
+						for (String answer:this.qas.get(this.questions.get(0))) {
 							JRadioButton rb = rdbts.get(i);
 							rb.setText(answer);
 							i += 1;
