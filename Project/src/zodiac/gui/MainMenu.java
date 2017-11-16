@@ -6,6 +6,9 @@ import zodiac.dao.ClassDao;
 import zodiac.dao.StudentDao;
 import zodiac.definition.Class;
 import zodiac.definition.Student;
+import zodiac.definition.security.SecurityConstants;
+import zodiac.definition.security.User;
+import zodiac.util.ActiveUser;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -371,6 +374,8 @@ public class MainMenu implements ItemListener {
 
     }
 
+
+
     public static void main(String args[]) {
         JFrame frame = new JFrame("App");
         //Create and set up the content pane.
@@ -381,6 +386,9 @@ public class MainMenu implements ItemListener {
         frame.setVisible(true);
         frame.setSize(1280, 720);
 
+        // hardcoding the user
+        User us = new User(  "wandavi2", SecurityConstants.STUDENT_ROLE,"wang","david");
+        ActiveUser.INSTANCE.setUser(us);
         // Uncomment if you want the window to size to the contents on the screen
 //        frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -16,7 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import zodiac.dao.coursework.AssignmentDao;
+import zodiac.definition.Student;
 import zodiac.definition.coursework.Assignment;
+import zodiac.definition.security.SecurityConstants;
+import zodiac.definition.security.User;
+import zodiac.util.ActiveUser;
 
 //import com.intellij.ui.components.JBScrollPane;
 //import com.intellij.ui.components.JBList;
@@ -70,7 +74,13 @@ public class GetAssignmentsMenu {
           // Double-click detected
           int index = list.locationToIndex(evt.getPoint());
           Assignment assignment = (Assignment) model.get(index);
-          new EditAssignmentMenu(assignment).setVisible(true);
+          User user = ActiveUser.INSTANCE.getUser();
+          if(user.getRole() == SecurityConstants.STUDENT_ROLE){
+            new AssignmentUI(assignment,new Student(user.getUtorId(),user.getLastName(),user.getFirstName())).setVisible(true);
+          }else{
+            new EditAssignmentMenu(assignment).setVisible(true);
+          }
+
         }
       }
     });

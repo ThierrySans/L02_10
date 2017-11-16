@@ -1,4 +1,4 @@
-package gui;
+package zodiac.gui;
 
 
 import zodiac.action.QuestionAction;
@@ -263,23 +263,6 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 						btnSaveNext.setEnabled(true);
 					}
 		}
-
-	public static void main(String args[])
-	{
-		JFrame frame = new JFrame("App");
-		//Create and set up the content pane.
-
-		frame.add(new AssignmentUI(new Assignment("A1", 1), new Student("xd123", "Wan", "David")));
-
-		frame.setVisible(true);
-		frame.setSize(1280, 720);
-
-		// Uncomment if you want the window to size to the contents on the screen
-//        frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
-
 
 }
 
