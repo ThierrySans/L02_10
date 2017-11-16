@@ -1,6 +1,7 @@
 package zodiac.util;
 
 import org.apache.commons.lang3.StringUtils;
+import zodiac.definition.Class;
 import zodiac.definition.security.SecurityConstants;
 import zodiac.definition.security.User;
 
@@ -42,6 +43,10 @@ public enum ActiveUser {
     }
   }
 
+  public boolean canRead(Class course) {
+    return canRead(course.getCourseCode());
+  }
+
   /**
    * Check if user has write permission of a given course.
    *
@@ -55,6 +60,10 @@ public enum ActiveUser {
       return StringUtils.trimToEmpty(user.getPermissions().get(course)).equals(
           SecurityConstants.WRITE_PERMISSION);
     }
+  }
+
+  public boolean canWrite(Class course) {
+    return canWrite(course.getCourseCode());
   }
 
 }
