@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
 
-import gui.AssignmentUI;
 //import zodiac.GUI.AssignmentGUI;
 import zodiac.action.ClassAction;
 import zodiac.action.StudentAction;
@@ -149,40 +148,40 @@ public class Main {
           }
           break;
         }
-        case "answerAssignment":{
-        	 System.out.print("Enter User ID: ");
-       	 String userId = StringUtils.trimToEmpty(scanner.nextLine());
-        	 System.out.print("Enter Course ID: ");
-        	 String courseId = StringUtils.trimToEmpty(scanner.nextLine());
-        	 System.out.print("Enter Assignment ID: ");
-        	 String assId = StringUtils.trimToEmpty(scanner.nextLine());
-        		try {
-                  Assignment a = new Assignment(courseId,Integer.valueOf(assId));
-                  Student student = StudentAction.getStudent(userId,courseId);
-
-
-        			if(student!=null) {
-
-                      EventQueue.invokeLater(new Runnable() {
-                        public void run() {
-                          try {
-                            AssignmentUI frame = new AssignmentUI(a,student);
-                            frame.setVisible(true);
-                          } catch (Exception e) {
-                            e.printStackTrace();
-                          }
-                        }
-                      });
-
-            			break;
-        			}
-        			
-        		} catch (Exception e) {
-        			e.printStackTrace();
-        		}
-        	
-        break;
-        }
+//        case "answerAssignment":{
+//        	 System.out.print("Enter User ID: ");
+//       	 String userId = StringUtils.trimToEmpty(scanner.nextLine());
+//        	 System.out.print("Enter Course ID: ");
+//        	 String courseId = StringUtils.trimToEmpty(scanner.nextLine());
+//        	 System.out.print("Enter Assignment ID: ");
+//        	 String assId = StringUtils.trimToEmpty(scanner.nextLine());
+//        		try {
+//                  Assignment a = new Assignment(courseId,Integer.valueOf(assId));
+//                  Student student = StudentAction.getStudent(userId,courseId);
+//
+//
+//        			if(student!=null) {
+//
+//                      EventQueue.invokeLater(new Runnable() {
+//                        public void run() {
+//                          try {
+//                            AssignmentUI frame = new AssignmentUI(a,student);
+//                            frame.setVisible(true);
+//                          } catch (Exception e) {
+//                            e.printStackTrace();
+//                          }
+//                        }
+//                      });
+//
+//            			break;
+//        			}
+//
+//        		} catch (Exception e) {
+//        			e.printStackTrace();
+//        		}
+//
+//        break;
+//        }
         case "exit":
           exit = true;
           break;
