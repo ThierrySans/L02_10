@@ -25,12 +25,12 @@ import java.util.List;
  */
 public class AdminMainMenu implements ItemListener {
     //Constants
-    public static String WELCOME_MESSAGE = "Welcome to the STAT_TRAKER admin app!";
-    public static String CREATE_CLASS = "Create a class";
-    public static String GET_CLASSES = "Get a list of classes";
-    public static String ADD_STUDENT = "Add a student";
-    public static String GET_STUDENT = "Get a list of students";
-    public static String ASS_MANAGER = "Open Assignment Manager";
+    public static final String WELCOME_MESSAGE = "Welcome to the STAT_TRAKER admin app!";
+    public static final String CREATE_CLASS = "Create a class";
+    public static final String GET_CLASSES = "Get a list of classes";
+    public static final String ADD_STUDENT = "Add a student";
+    public static final String GET_STUDENT = "Get a list of students";
+    public static final String ASS_MANAGER = "Open Assignment Manager";
 
     private JPanel cbPanel;
     private JComboBox cbOptions;

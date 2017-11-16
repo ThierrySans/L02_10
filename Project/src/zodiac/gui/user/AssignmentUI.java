@@ -1,4 +1,4 @@
-package zodiac.gui.admin;
+package zodiac.gui.user;
 
 
 import zodiac.action.QuestionAction;

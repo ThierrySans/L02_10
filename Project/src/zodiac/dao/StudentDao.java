@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import zodiac.definition.Class;
 import zodiac.definition.Student;
 import zodiac.definition.coursework.Assignment;
 import zodiac.definition.coursework.Question;
@@ -249,5 +250,45 @@ public class StudentDao {
           System.err.println(e.getClass().getName() + ": " + e.getMessage());
       }
   }
+
+    /**
+     * Returns a list of Course codes that the student
+     * with the UTOR ID utorID is enrolled in.
+     * @param utorID : UTOR ID of the student
+     * @return list of course codes belonging to courses that the student is enrolled in.
+     */
+    public static List<String> getEnrolledClasses(String utorID) {
+
+        Connection c;
+        PreparedStatement stmt;
+        List<String> codes = new ArrayList<>();
+
+        String sql = "SELECT Course_Code FROM UserClassMap Where UTOR_Id = ? ORDER BY Course_Code ASC";
+
+        try {
+            c = new PostgreSqlJdbc().getConnection();
+            stmt = c.prepareStatement(sql);
+            stmt.setString(1, utorID);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+                String code = rs.getString("Course_Code");
+                codes.add(code);
+            }
+
+            rs.close();
+            stmt.close();
+            c.close();
+            return codes;
+
+        } catch (Exception e) {
+            // TODO Error Handling
+            System.err.println("Student with utorid "+ utorID + "does not exist");
+            return null;
+        }
+
+
+    }
   
 }
