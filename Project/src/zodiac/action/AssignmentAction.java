@@ -59,7 +59,12 @@ public class AssignmentAction {
 
 
   public boolean changeAssignmentVisibility(Assignment assignment) {
-    return new AssignmentDao().changeAssignmentVisibility(assignment);
+    if (ActiveUser.INSTANCE.canWrite(
+        new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
+      return new AssignmentDao().changeAssignmentVisibility(assignment);
+    } else {
+      return false;
+    }
   }
 
 }
