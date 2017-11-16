@@ -145,6 +145,13 @@ public class UserDao {
     return user;
   }
 
+  /**
+   * Return a map of permissions mapping course code to permissions.
+   * See SecurityConstants for permission strings
+   *
+   * @param utorId user's utorId
+   * @return permissions mapped from course code to permission
+   */
   public Map<String, String> getPermissions(String utorId) {
 
     Map<String, String> permissions = new HashMap<>();
@@ -152,7 +159,8 @@ public class UserDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT u.Role, c.Course_Code FROM UserClassMap c INNER JOIN Users u ON u.utor_Id=c.utor_Id WHERE u.utor_Id = ?";
+    String sql = "SELECT u.Role, c.Course_Code FROM UserClassMap c INNER JOIN Users u "
+        + "ON u.utor_Id=c.utor_Id WHERE u.utor_Id = ?";
 
     try {
       c = new PostgreSqlJdbc().getConnection();
@@ -161,7 +169,7 @@ public class UserDao {
 
       ResultSet rs = stmt.executeQuery();
 
-      while(rs.next()) {
+      while (rs.next()) {
         String role = rs.getString("Role");
         String course = rs.getString("Course_Code");
 
