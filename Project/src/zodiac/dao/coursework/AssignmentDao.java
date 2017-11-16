@@ -339,9 +339,9 @@ public class AssignmentDao {
       c = new PostgreSqlJdbc().getConnection();
       stmt = c.prepareStatement(sql);
 
-      ResultSet rs = stmt.executeQuery();
-
       stmt.setInt(1, id);
+
+      ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) {
         String utorId = rs.getString("UTOR_Id");
@@ -362,6 +362,45 @@ public class AssignmentDao {
 
   public Map<String, Integer> getAllStudentsUsedAttempts(Assignment assignment) {
     return getAllStudentsUsedAttempts(assignment.getId());
+  }
+
+  /**
+   * Get the course an assignment id belongs to.
+   * Used when only the assignment id is known and nothing else
+   *
+   * @param id the known id of the assignment
+   * @return the course code the assignment belongs to
+   */
+  public String getCourseOfAssignment(int id) {
+    String courseCode = "";
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "SELECT Course_Code FROM Assignments WHERE Id=?";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+
+      stmt.setInt(1, id);
+
+      ResultSet rs = stmt.executeQuery();
+
+      while (rs.next()) {
+        courseCode = rs.getString("Course_Code");
+      }
+
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return courseCode;
+
   }
 
 }

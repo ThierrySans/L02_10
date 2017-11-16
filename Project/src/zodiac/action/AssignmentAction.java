@@ -1,8 +1,11 @@
 package zodiac.action;
 
+import java.util.ArrayList;
 import java.util.List;
 import zodiac.dao.coursework.AssignmentDao;
+import zodiac.definition.MessageConstants;
 import zodiac.definition.coursework.Assignment;
+import zodiac.util.ActiveUser;
 
 public class AssignmentAction {
 
@@ -10,7 +13,11 @@ public class AssignmentAction {
    * Add API to create a an assignment.
    */
   public int addAssignment(String assignmentName, String courseCode) {
-    return new AssignmentDao().addAssignment(assignmentName, courseCode);
+    if (ActiveUser.INSTANCE.canWrite(courseCode)) {
+      return new AssignmentDao().addAssignment(assignmentName, courseCode);
+    } else {
+      return -1;
+    }
   }
 
   /**
@@ -19,7 +26,11 @@ public class AssignmentAction {
    * @return List<Assignment>
    */
   public List<Assignment> checkAssignments(String courseCode) {
-    return new AssignmentDao().getAssignments(courseCode);
+    if (ActiveUser.INSTANCE.canRead(courseCode)) {
+      return new AssignmentDao().getAssignments(courseCode);
+    } else {
+      return new ArrayList<>();
+    }
   }
 
   /**
@@ -31,10 +42,14 @@ public class AssignmentAction {
    * @return message to display on the GUI
    */
   public String setAssignmentMaxAttempt(int id, int maxAttempt) {
-    if (new AssignmentDao().editAssignmentMaxAttempt(id, maxAttempt)) {
-      return "Max attempt changed";
+    if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(id))) {
+      if (new AssignmentDao().editAssignmentMaxAttempt(id, maxAttempt)) {
+        return "Max attempt changed";
+      } else {
+        return "Unable to change max attempt";
+      }
     } else {
-      return "Unable to change max attempt";
+      return MessageConstants.NO_PERMISSION_MESSAGE;
     }
   }
 
