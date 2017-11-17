@@ -146,8 +146,8 @@ public class UserDao {
   }
 
   /**
-   * Return a map of permissions mapping course code to permissions.
-   * See SecurityConstants for permission strings
+   * Return a map of permissions mapping course code to permissions. See SecurityConstants for
+   * permission strings
    *
    * @param utorId user's utorId
    * @return permissions mapped from course code to permission
@@ -192,12 +192,12 @@ public class UserDao {
         }
 
         permissions.put(course, permissionType);
-
-        rs.close();
-        stmt.close();
-        c.close();
-
       }
+
+      rs.close();
+      stmt.close();
+      c.close();
+
 
     } catch (Exception e) {
       // TODO Error Handling
