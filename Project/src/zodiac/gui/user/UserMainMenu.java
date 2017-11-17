@@ -6,12 +6,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static zodiac.util.Constants.*;
+
 public class UserMainMenu {
-    public static final String MAIN_MENU = "Main Menu";
-    public static final String WELCOME_BANNER = "Welcome to STAT_TRAKER";
-    public static final String START_ASS = "Start an assignment";
-    public static final String VIEW_MARKS = "View your marks";
-    public static final String LOGOFF = "Log off your account";
+
 
     private JPanel cards;
 

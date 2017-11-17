@@ -39,9 +39,6 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		this.assignment = ass;
 	    this.questions = (ArrayList<Question>)new QuestionAction().getQuestionsWithAnswer(ass.getId());
 	    this.createContents();
-
-
-
 	 }
 
 
@@ -49,70 +46,71 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 350);
-		contentPane = new JPanel();
-		contentPane.setLayout(null);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		if (this.questions != null && this.questions.size() > 0)
+		{
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			setBounds(100, 100, 450, 350);
+			contentPane = new JPanel();
+			contentPane.setLayout(null);
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-
-
-		//  buttons
-		btnSaveNext = new JButton();
-		btnSaveNext.setBounds(238, 291, 94, 28);
-		btnSaveNext.setText("Save & Next");
-		btnSaveNext.setEnabled(false);
-		contentPane.add(btnSaveNext);
-									
-		btnCancle = new JButton();
-		btnCancle.setBounds(346, 291, 94, 28);
-		btnCancle.setText("Cancel");
-		contentPane.add(btnCancle);
-									
-		btnPrev = new JButton();
-		btnPrev.setBounds(130, 291, 94, 28);
-		btnPrev.setText("Back");
-		btnPrev.setEnabled(false);
-		contentPane.add(btnPrev);
-		// question label				
-		lblNewLabel = new JLabel("1. "+this.questions.get(0).getQuestion());
-		lblNewLabel.setBounds(40, 34, 350, 40);
-		contentPane.add(lblNewLabel);
-		// setting answer options
-		group = new ButtonGroup();
+			setContentPane(contentPane);
 
 
-		answers = new ArrayList<Integer>();
-		rdbts = new ArrayList<JRadioButton>();
-		int i;
-		for (i=0;i<5;i++){
-			JRadioButton rb = new JRadioButton();
-			rdbts.add(rb);
-			group.add(rb);
-			rb.setBounds(50 , 80+ i * 50, 350, 37 );
-			rb.addActionListener(this);
-			contentPane.add(rb);
+			//  buttons
+			btnSaveNext = new JButton();
+			btnSaveNext.setBounds(238, 291, 94, 28);
+			btnSaveNext.setText("Save & Next");
+			btnSaveNext.setEnabled(false);
+			contentPane.add(btnSaveNext);
+
+			btnCancle = new JButton();
+			btnCancle.setBounds(346, 291, 94, 28);
+			btnCancle.setText("Cancel");
+			contentPane.add(btnCancle);
+
+			btnPrev = new JButton();
+			btnPrev.setBounds(130, 291, 94, 28);
+			btnPrev.setText("Back");
+			btnPrev.setEnabled(false);
+			contentPane.add(btnPrev);
+			// question label
+			lblNewLabel = new JLabel("1. "+this.questions.get(0).getQuestion());
+			lblNewLabel.setBounds(40, 34, 350, 40);
+			contentPane.add(lblNewLabel);
+			// setting answer options
+			group = new ButtonGroup();
+
+
+			answers = new ArrayList<Integer>();
+			rdbts = new ArrayList<JRadioButton>();
+			int i;
+			for (i=0;i<5;i++){
+				JRadioButton rb = new JRadioButton();
+				rdbts.add(rb);
+				group.add(rb);
+				rb.setBounds(50 , 80+ i * 50, 350, 37 );
+				rb.addActionListener(this);
+				contentPane.add(rb);
+			}
+
+			i = 0;
+			for (String answer:this.questions.get(0).getAnswerList()) {
+				JRadioButton rb = rdbts.get(i);
+				rb.setText(answer + String.valueOf(0));
+				i += 1;
+			}
+
+			for (int j = i;j<5;j++){
+				JRadioButton rb = rdbts.get(j);
+				rb.setVisible(false);
+			}
+
+			btnSaveNext.addActionListener(this);
+			btnPrev.addActionListener(this);
+
+			btnCancle.addActionListener(this);
 		}
-
-		i = 0;
-		for (String answer:this.questions.get(0).getAnswerList()) {
-			JRadioButton rb = rdbts.get(i);
-			rb.setText(answer + String.valueOf(0));
-			i += 1;
-		}
-
-		for (int j = i;j<5;j++){
-			JRadioButton rb = rdbts.get(j);
-			rb.setVisible(false);
-		}
-	   
-	      btnSaveNext.addActionListener(this);
-	      btnPrev.addActionListener(this);
-	      
-	    btnCancle.addActionListener(this);
-
-		
 	}
 
 	public void actionPerformed(ActionEvent e) {

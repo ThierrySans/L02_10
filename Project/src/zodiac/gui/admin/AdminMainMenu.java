@@ -7,6 +7,8 @@ import zodiac.dao.StudentDao;
 import zodiac.definition.Class;
 import zodiac.definition.Student;
 
+import static zodiac.util.Constants.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -24,13 +26,6 @@ import java.util.List;
  * Mainmenu for the app. This main menu is for admins.
  */
 public class AdminMainMenu implements ItemListener {
-    //Constants
-    public static final String WELCOME_MESSAGE = "Welcome to the STAT_TRAKER admin app!";
-    public static final String CREATE_CLASS = "Create a class";
-    public static final String GET_CLASSES = "Get a list of classes";
-    public static final String ADD_STUDENT = "Add a student";
-    public static final String GET_STUDENT = "Get a list of students";
-    public static final String ASS_MANAGER = "Open Assignment Manager";
 
     private JPanel cbPanel;
     private JComboBox cbOptions;

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
 
-import gui.AssignmentUI;
+import zodiac.gui.user.AssignmentUI;
 //import zodiac.GUI.AssignmentGUI;
 import zodiac.action.ClassAction;
 import zodiac.action.StudentAction;
