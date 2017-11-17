@@ -1,6 +1,7 @@
 package zodiac.definition.coursework;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,7 +17,8 @@ public class Assignment {
   private int highScore;
   private int maxAttempt;
   private String name;
-
+  private Date openDate;
+  private Date closeDate;
 
 
   //field added
@@ -117,6 +119,22 @@ public class Assignment {
 
   public void setMaxAttempt(int maxAttempt) {
     this.maxAttempt = maxAttempt;
+  }
+
+  public Date getOpenDate() {
+    return openDate;
+  }
+
+  public void setOpenDate(Date openDate) {
+    this.openDate = openDate;
+  }
+
+  public Date getCloseDate() {
+    return closeDate;
+  }
+
+  public void setCloseDate(Date closeDate) {
+    this.closeDate = closeDate;
   }
 
   public String toString() {
