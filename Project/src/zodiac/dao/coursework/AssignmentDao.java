@@ -3,7 +3,9 @@ package zodiac.dao.coursework;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt "
+    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time "
         + "FROM Assignments "
         + "WHERE Course_Code = ? "
         + "ORDER BY Id ASC";
@@ -50,6 +52,11 @@ public class AssignmentDao {
         // Returns 0 if value is null, therefore 0 means infinite attempts
         int maxAttempts = rs.getInt("Max_Attempt");
         assignment.setMaxAttempt(maxAttempts);
+
+        Date openTime = rs.getTimestamp("Open_Time");
+        Date closeTime = rs.getTimestamp("Close_Time");
+        assignment.setOpenDate(openTime);
+        assignment.setCloseDate(closeTime);
 
         if (generateQuestions) {
           assignment.setQuestionList(new QuestionDao().getQuestions(id));
@@ -78,7 +85,7 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name,Visibility "
+    String sql = "SELECT Id, Assignment_Name,Visibility, Max_Attempt, Open_Time, Close_Time "
             + "FROM Assignments";
 
     try {
@@ -91,6 +98,15 @@ public class AssignmentDao {
         String name = rs.getString("Assignment_Name");
         Assignment assignment = new Assignment(name, id);
         assignment.setVisibility(rs.getString("Visibility"));
+
+        int maxAttempt = rs.getInt("Max_Attempt");
+        Date openTime = rs.getTimestamp("Open_Time");
+        Date closeTime = rs.getTimestamp("Close_Time");
+
+        assignment.setMaxAttempt(maxAttempt);
+        assignment.setOpenDate(openTime);
+        assignment.setCloseDate(closeTime);
+
         assignments.add(assignment);
       }
 
@@ -400,6 +416,38 @@ public class AssignmentDao {
     }
 
     return courseCode;
+
+  }
+
+  public Boolean editOpenCloseTime(int id, Date openTime, Date closeDate) {
+
+    Boolean successful = false;
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "UPDATE Assignments SET Open_Time = ?, Close_Time = ? "
+        + "WHERE id = ?";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+
+      stmt.setTimestamp(1, new Timestamp(openTime.getTime()));
+      stmt.setTimestamp(2, new Timestamp(closeDate.getTime()));
+      stmt.setInt(3, id);
+
+      successful = stmt.executeUpdate() > 0;
+
+      c.close();
+      stmt.close();
+
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return successful;
 
   }
 
