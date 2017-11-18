@@ -419,14 +419,21 @@ public class AssignmentDao {
 
   }
 
-  public Boolean editOpenCloseTime(int id, Date openTime, Date closeDate) {
+  /**
+   * Change an assignment open time on the database.
+   *
+   * @param id the id of the assignment
+   * @param openTime the new open time
+   * @return whether the change was successful
+   */
+  public Boolean editOpenTime(int id, Date openTime) {
 
     Boolean successful = false;
 
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "UPDATE Assignments SET Open_Time = ?, Close_Time = ? "
+    String sql = "UPDATE Assignments SET Open_Time = ? "
         + "WHERE id = ?";
 
     try {
@@ -434,8 +441,45 @@ public class AssignmentDao {
       stmt = c.prepareStatement(sql);
 
       stmt.setTimestamp(1, new Timestamp(openTime.getTime()));
-      stmt.setTimestamp(2, new Timestamp(closeDate.getTime()));
-      stmt.setInt(3, id);
+      stmt.setInt(2, id);
+
+      successful = stmt.executeUpdate() > 0;
+
+      c.close();
+      stmt.close();
+
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return successful;
+
+  }
+
+  /**
+   * Change an assignment close time on the database.
+   *
+   * @param id the id of the assignment
+   * @param closeDate the new open time
+   * @return whether the change was successful
+   */
+  public Boolean editCloseTime(int id, Date closeDate) {
+
+    Boolean successful = false;
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "UPDATE Assignments SET Close_Time = ? "
+        + "WHERE id = ?";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+
+      stmt.setTimestamp(1, new Timestamp(closeDate.getTime()));
+      stmt.setInt(2, id);
 
       successful = stmt.executeUpdate() > 0;
 
