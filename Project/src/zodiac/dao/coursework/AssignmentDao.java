@@ -47,7 +47,7 @@ public class AssignmentDao {
         int id = rs.getInt("Id");
         String name = rs.getString("Assignment_Name");
         Assignment assignment = new Assignment(name, id);
-        assignment.setVisibility(rs.getString("Visibility"));
+        assignment.setVisibility(rs.getBoolean("Visibility"));
 
         // Returns 0 if value is null, therefore 0 means infinite attempts
         int maxAttempts = rs.getInt("Max_Attempt");
@@ -97,7 +97,7 @@ public class AssignmentDao {
         int id = rs.getInt("Id");
         String name = rs.getString("Assignment_Name");
         Assignment assignment = new Assignment(name, id);
-        assignment.setVisibility(rs.getString("Visibility"));
+        assignment.setVisibility(rs.getBoolean("Visibility"));
 
         int maxAttempt = rs.getInt("Max_Attempt");
         Date openTime = rs.getTimestamp("Open_Time");
@@ -269,17 +269,10 @@ public class AssignmentDao {
 
     String sql = "UPDATE Assignments SET Visibility=? WHERE Id = ? ";
 
-    String visibility = "";
-    if ("on".equals(assignment.getVisibility())) {
-      visibility = "false";
-    } else {
-      visibility = "on";
-    }
-
     try {
       c = new PostgreSqlJdbc().getConnection();
       stmt = c.prepareStatement(sql);
-      stmt.setString(1, visibility);
+      stmt.setBoolean(1, assignment.getVisibility());
       stmt.setInt(2, assignment.getId());
 
       stmt.execute();

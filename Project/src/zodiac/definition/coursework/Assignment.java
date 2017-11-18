@@ -22,7 +22,7 @@ public class Assignment {
 
 
   //field added
-  private String visibility;
+  private Boolean visibility;
 
   /**
    * Constructor for Assignment.
@@ -34,7 +34,7 @@ public class Assignment {
     this.currScore = 0;
     this.highScore = 0;
     this.name = name;
-    this.visibility="on";
+    this.visibility=true;
     this.maxAttempt = 0;
   }
 
@@ -99,11 +99,11 @@ public class Assignment {
     this.name = name;
   }
 
-  public String getVisibility() {
+  public Boolean getVisibility() {
     return visibility;
   }
 
-  public void setVisibility(String visibility) {
+  public void setVisibility(Boolean visibility) {
     this.visibility = visibility;
   }
 
