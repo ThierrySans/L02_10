@@ -1,6 +1,8 @@
 package zodiac.action;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.MessageConstants;
@@ -64,6 +66,58 @@ public class AssignmentAction {
       return new AssignmentDao().changeAssignmentVisibility(assignment);
     } else {
       return false;
+    }
+  }
+
+  /**
+   * Change the open time of an assignment.
+   *
+   * @param id the id of the assignment
+   * @param year the year to set it to
+   * @param month the month to set it to
+   * @param day the day of month to set it to
+   * @param hour the hour of day to set it to
+   * @param minute the minute of hour to set it to
+   * @return message to display on the UI
+   */
+  public String setAssignmentOpenTime(int id, int year, int month, int day, int hour, int minute) {
+    if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(id))) {
+      Calendar calendar = Calendar.getInstance();
+      calendar.clear();
+      calendar.set(year, month, day, hour, minute);
+      if (new AssignmentDao().editOpenTime(id, calendar.getTime())) {
+        return MessageConstants.EDIT_SUCCEED;
+      } else {
+        return MessageConstants.EDIT_FAILED;
+      }
+    } else {
+      return MessageConstants.NO_PERMISSION_MESSAGE;
+    }
+  }
+
+  /**
+   * Change the close time of an assignment.
+   *
+   * @param id the id of the assignment
+   * @param year the year to set it to
+   * @param month the month to set it to
+   * @param day the day of month to set it to
+   * @param hour the hour of day to set it to
+   * @param minute the minute of hour to set it to
+   * @return message to display on the UI
+   */
+  public String setAssignmentCloseTime(int id, int year, int month, int day, int hour, int minute) {
+    if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(id))) {
+      Calendar calendar = Calendar.getInstance();
+      calendar.clear();
+      calendar.set(year, month, day, hour, minute);
+      if (new AssignmentDao().editCloseTime(id, calendar.getTime())) {
+        return MessageConstants.EDIT_SUCCEED;
+      } else {
+        return MessageConstants.EDIT_FAILED;
+      }
+    } else {
+      return MessageConstants.NO_PERMISSION_MESSAGE;
     }
   }
 
