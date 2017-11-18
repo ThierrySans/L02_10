@@ -1,12 +1,15 @@
 package zodiac.action;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import zodiac.dao.coursework.AssignmentDao;
+import zodiac.dao.security.UtilDao;
 import zodiac.definition.MessageConstants;
 import zodiac.definition.coursework.Assignment;
+import zodiac.definition.security.SecurityConstants;
 import zodiac.util.ActiveUser;
 
 public class AssignmentAction {
@@ -26,10 +29,13 @@ public class AssignmentAction {
    * Added api to check all assignments in a course
    *
    * @return List<Assignment>
+   * @throws SQLException Catch this exception and display error message on UI when caught
    */
-  public List<Assignment> checkAssignments(String courseCode) {
-    if (ActiveUser.INSTANCE.canRead(courseCode)) {
+  public List<Assignment> checkAssignments(String courseCode) throws SQLException {
+    if (ActiveUser.INSTANCE.canWrite(courseCode)) {
       return new AssignmentDao().getAssignments(courseCode);
+    } else if (ActiveUser.INSTANCE.canRead(courseCode)) {
+      return onlyVisibleAssignments(new AssignmentDao().getAssignments(courseCode));
     } else {
       return new ArrayList<>();
     }
@@ -118,6 +124,38 @@ public class AssignmentAction {
       }
     } else {
       return MessageConstants.NO_PERMISSION_MESSAGE;
+    }
+  }
+
+  private List<Assignment> onlyVisibleAssignments(List<Assignment> assignments)
+      throws SQLException {
+    // Returns a list if only the visible assignments based on their open/close dates or
+    // visibility setting
+    List<Assignment> visibleAssignments = new ArrayList<>();
+
+    for (Assignment assignment : assignments) {
+      if (isVisible(assignment)) {
+        visibleAssignments.add(assignment);
+      }
+    }
+
+    return visibleAssignments;
+  }
+
+  private boolean isVisible(Assignment assignment) throws SQLException {
+
+    Date openDate = assignment.getOpenDate();
+    Date closeDate = assignment.getCloseDate();
+
+    if (openDate == null && closeDate == null) {
+      return assignment.getVisibility();
+    } else {
+      // Ignore assignment visibility if both are not null
+      Date now = new UtilDao().getServerTime();
+      // Null open date means always open before close
+      // Null close date means always open after open
+      return (openDate == null || now.compareTo(openDate) >= 0)
+          && (closeDate == null || now.before(closeDate));
     }
   }
 
