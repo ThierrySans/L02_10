@@ -7,7 +7,7 @@ import zodiac.dao.StudentDao;
 import zodiac.definition.Class;
 import zodiac.definition.Student;
 
-import static zodiac.util.Constants.*;
+import static zodiac.util.AdminMainMenuConstants.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

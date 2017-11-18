@@ -1,12 +1,11 @@
 package zodiac.gui.user;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static zodiac.util.Constants.*;
+import static zodiac.util.UserMainMenuConstants.*;
 
 public class UserMainMenu {
 
@@ -23,7 +22,8 @@ public class UserMainMenu {
 
         this.cards = new JPanel(new CardLayout());
         this.cards.add(this.generateMainMenu(), MAIN_MENU);
-        this.cards.add(new SelectAssignmentMenu().setUpMenu(), START_ASS);
+        this.cards.add(new UserSelectAssignmentMenu().setUpMenu(), START_ASS);
+        this.cards.add(new UserViewMarks().setUpMenu(), VIEW_MARKS);
 
         panel.add(this.cards);
 
@@ -37,26 +37,33 @@ public class UserMainMenu {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 
-        JButton button1 = new JButton(START_ASS);
-        button1.addActionListener(new StartAssignmentListener());
+        JButton buttonStartAssignment = new JButton(START_ASS);
+        buttonStartAssignment.addActionListener(new SwapMenuListener(START_ASS));
 
-        JButton button2 = new JButton(VIEW_MARKS);
+        JButton buttonViewMarks = new JButton(VIEW_MARKS);
+        buttonViewMarks.addActionListener(new SwapMenuListener(VIEW_MARKS));
 
         JButton button3 = new JButton(LOGOFF);
 
-        panel.add(button1);
-        panel.add(button2);
+        panel.add(buttonStartAssignment);
+        panel.add(buttonViewMarks);
         panel.add(button3);
 
         return panel;
     }
 
-    private class StartAssignmentListener implements ActionListener
+    private class SwapMenuListener implements ActionListener
     {
+        private String toMenu;
+
+        public SwapMenuListener(String toMenu) {
+            this.toMenu = toMenu;
+        }
+
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             CardLayout cl = (CardLayout)(cards.getLayout());
-            cl.show(cards, START_ASS);
+            cl.show(cards, this.toMenu);
         }
     }
 

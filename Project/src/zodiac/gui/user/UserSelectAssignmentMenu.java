@@ -6,7 +6,8 @@ import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.Student;
 import zodiac.definition.coursework.Assignment;
 
-import static zodiac.util.Constants.*;
+import static zodiac.util.UserAssignmentSelectConstants.*;
+import static zodiac.util.UserMainMenuConstants.MAIN_MENU;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -18,13 +19,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class SelectAssignmentMenu extends Component {
+public class UserSelectAssignmentMenu extends UserSubMenu {
 
     private DefaultTableModel tblmodel;
 
     /**
-     *
-     * @return the complete SelectAssignmentMenu JPanel
+     * Creates the JPanel for the UserSelectAssignmentMenu.
+     * @return the complete UserSelectAssignmentMenu JPanel
      */
     public JPanel setUpMenu()
     {
@@ -32,8 +33,8 @@ public class SelectAssignmentMenu extends Component {
 
         JPanel assignmentPanel = new JPanel(new FlowLayout());
 
-//        String colNames[] = {ASS_ID, ASS_NAME, ASS_CLASS, ASS_HIGH_SCORE};
-        this.tblmodel = new DefaultTableModel(0, colNames.length) {
+//        String COL_NAMES[] = {ASS_ID, ASS_NAME, ASS_CLASS, ASS_HIGH_SCORE};
+        this.tblmodel = new DefaultTableModel(0, COL_NAMES.length) {
             @Override
             public boolean isCellEditable(int i, int i1)
             {
@@ -41,7 +42,7 @@ public class SelectAssignmentMenu extends Component {
             }
         };
 
-        this.tblmodel.addRow(colNames);
+        this.tblmodel.addRow(COL_NAMES);
 
         // Currently holds debug value
         List<String> enrolled = StudentDao.getEnrolledClasses(DEBUG_ID);

@@ -18,7 +18,7 @@ public class AssignmentAction {
    *
    * @return List<Assignment>
    */
-  public List<Assignment> checkAssignments(String courseCode) {
+  public List<Assignment> getAssignments(String courseCode) {
     return new AssignmentDao().getAssignments(courseCode);
   }
 

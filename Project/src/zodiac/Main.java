@@ -143,7 +143,7 @@ public class Main {
         case "getAssignments": {
           System.out.print("Enter Course ID: ");
           String courseId = StringUtils.trimToEmpty(scanner.nextLine());
-          List<Assignment> assignments = new AssignmentAction().checkAssignments(courseId);
+          List<Assignment> assignments = new AssignmentAction().getAssignments(courseId);
           for (Assignment assignment: assignments) {
             System.out.println(assignment.getName() + " Id: " + assignment.getId());
           }
