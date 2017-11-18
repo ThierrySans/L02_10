@@ -1,6 +1,7 @@
 package zodiac;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import zodiac.action.StudentAction;
 import zodiac.dao.ClassDao;
 import zodiac.dao.StudentDao;
 import zodiac.definition.Class;
+import zodiac.definition.MessageConstants;
 import zodiac.definition.Student;
 import zodiac.action.AssignmentAction;
 import zodiac.action.QuestionAction;
@@ -143,9 +145,13 @@ public class Main {
         case "getAssignments": {
           System.out.print("Enter Course ID: ");
           String courseId = StringUtils.trimToEmpty(scanner.nextLine());
-          List<Assignment> assignments = new AssignmentAction().checkAssignments(courseId);
-          for (Assignment assignment: assignments) {
-            System.out.println(assignment.getName() + " Id: " + assignment.getId());
+          try {
+            List<Assignment> assignments = new AssignmentAction().checkAssignments(courseId);
+            for (Assignment assignment : assignments) {
+              System.out.println(assignment.getName() + " Id: " + assignment.getId());
+            }
+          } catch (SQLException e) {
+            System.out.println(MessageConstants.ERROR);
           }
           break;
         }
