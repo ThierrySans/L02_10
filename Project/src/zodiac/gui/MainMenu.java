@@ -7,11 +7,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.List;
 import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
@@ -22,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import zodiac.action.ClassAction;
@@ -38,6 +32,19 @@ import zodiac.definition.coursework.Assignment;
 import zodiac.definition.security.SecurityConstants;
 import zodiac.definition.security.User;
 import zodiac.util.ActiveUser;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.List;
 
 /**
  * Created by radiantwings on 11/1/17.
@@ -54,6 +61,7 @@ public class MainMenu implements ItemListener {
     public static String ASS_MANAGER = "Open Assignment Manager";
     public static String ADD_ASSIGNMENT_MARK = "Add assignment mark";
     public static String GET_CLASS_MARK = "Get course mark";
+
     private JPanel cbPanel;
     private JComboBox cbOptions;
     private JPanel panelAddClass;
@@ -78,7 +86,9 @@ public class MainMenu implements ItemListener {
     {
         // Create the combo box JPanel and add all the options into it
         JPanel cbPanel = new JPanel(new FlowLayout());
+
         String cbOptionList[] = {CREATE_CLASS, GET_CLASSES, ADD_STUDENT, GET_STUDENT,ADD_ASSIGNMENT_MARK,GET_CLASS_MARK, ASS_MANAGER};
+
         cbOptions = new JComboBox(cbOptionList);
         cbOptions.setEditable(false);
         cbOptions.addItemListener(this);
@@ -532,6 +542,8 @@ public class MainMenu implements ItemListener {
 			}
         }
     }
+
+
 
     public static void main(String args[]) {
         JFrame frame = new JFrame("App");
