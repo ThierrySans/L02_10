@@ -37,7 +37,7 @@ public class ClassDao {
       while (rs.next()) {
         String code = rs.getString("Course_Code");
         String name = rs.getString("Class_Name");
-        Class newClass = new Class(code, name, new StudentDao().getStudentsInClass(code));
+        Class newClass = new Class(code, name, null);
         classes.add(newClass);
       }
 

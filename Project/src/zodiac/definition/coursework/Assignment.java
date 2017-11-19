@@ -1,7 +1,9 @@
 package zodiac.definition.coursework;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by radiantwings on 10/24/17. This class represents an Assignment that Students will
@@ -13,8 +15,10 @@ public class Assignment {
   private List<Question> questionList;
   private int currScore;
   private int highScore;
+  private int maxAttempt;
   private String name;
-
+  private Date openDate;
+  private Date closeDate;
 
 
   //field added
@@ -31,6 +35,7 @@ public class Assignment {
     this.highScore = 0;
     this.name = name;
     this.visibility="on";
+    this.maxAttempt = 0;
   }
 
   public Assignment(String name, int id) {
@@ -100,5 +105,40 @@ public class Assignment {
 
   public void setVisibility(String visibility) {
     this.visibility = visibility;
+  }
+
+  /**
+   * Return the number of maximum attempts allowed for an assignment.
+   * Returns 0 if infinite attempts are allowed.
+   *
+   * @return maximum number of attempts allowed. 0 if infinite attempts
+   */
+  public int getMaxAttempt() {
+    return maxAttempt;
+  }
+
+  public void setMaxAttempt(int maxAttempt) {
+    this.maxAttempt = maxAttempt;
+  }
+
+  public Date getOpenDate() {
+    return openDate;
+  }
+
+  public void setOpenDate(Date openDate) {
+    this.openDate = openDate;
+  }
+
+  public Date getCloseDate() {
+    return closeDate;
+  }
+
+  public void setCloseDate(Date closeDate) {
+    this.closeDate = closeDate;
+  }
+
+  public String toString() {
+    Integer myInt = new Integer(this.id);
+    return StringUtils.join(myInt, " " ,this.name);
   }
 }
