@@ -1,4 +1,4 @@
-package gui;
+package zodiac.gui;
 
 
 import zodiac.action.QuestionAction;
@@ -21,7 +21,8 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 
 	private JPanel contentPane;
 	private Assignment assignment;
-	private ArrayList<Question> questions;
+	private List<Question> questions;
+	private  TreeMap<Question,List<String>> qas;
 	private Student student;
 	private AssignmentUI ref = this;
 	private  int currentAt = 0;
@@ -38,7 +39,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		super("Assignment " + ass.getId());
 	    this.student = stud;
 		this.assignment = ass;
-	    this.questions = (ArrayList<Question>)new QuestionAction().getQuestionsWithAnswer(ass.getId());
+	    this.questions = ass.getQuestionList();
 	    this.createContents();
 
 
@@ -80,12 +81,45 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		lblNewLabel = new JLabel("1. "+this.questions.get(0).getQuestion());
 		lblNewLabel.setBounds(40, 34, 350, 40);
 		contentPane.add(lblNewLabel);
+		// note label
+		JLabel newLable = new JLabel("Note: your progress will be saved.");
+		newLable .setBounds(130, 261, 350, 40);
+		contentPane.add(newLable);
 		// setting answer options
 		group = new ButtonGroup();
 
 
 		answers = new ArrayList<Integer>();
+		// initialize qa set
+		qas = new TreeMap<Question,List<String>>();
+
+		for (Question question:this.questions){
+			qas.put(question,question.getAnswerList());
+		}
+		// init temporal answer
+
+		TreeMap<Question, String> temporalAnswer = StudentAction.fetchTempAnswerFromAssignment(student,assignment);
+		for(Question question:questions){
+			if(temporalAnswer.get(question) != null){
+				Integer rs = null;
+				for(int p=0;p<question.getAnswerList().size();p++){
+					if(qas.get(question).get(p).equals(temporalAnswer.get(question))){
+
+						rs = p;
+					}
+
+				}
+				if(rs != null){
+					answers.add(rs);
+				}
+
+			}
+
+
+		}
+
 		rdbts = new ArrayList<JRadioButton>();
+		// adding answer option
 		int i;
 		for (i=0;i<5;i++){
 			JRadioButton rb = new JRadioButton();
@@ -97,18 +131,31 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		}
 
 		i = 0;
-		for (String answer:this.questions.get(0).getAnswerList()) {
+		// only set avaliable option visible
+		for (String answer: this.qas.get(this.questions.get(0))) {
 			JRadioButton rb = rdbts.get(i);
 			rb.setText(answer + String.valueOf(0));
 			i += 1;
 		}
+		try{
+			 rdbts.get(this.answers.get(0)).setSelected(true);
+			 btnSaveNext.setEnabled(true);
+		}catch(IndexOutOfBoundsException ex) {
 
+		}
+
+		// set the rest of options invisible
 		for (int j = i;j<5;j++){
 			JRadioButton rb = rdbts.get(j);
 			rb.setVisible(false);
 		}
+		// change to submit immediately
 	   
 	      btnSaveNext.addActionListener(this);
+		if(this.questions.size()==1){
+			btnSaveNext.setText("Submit");
+		}
+
 	      btnPrev.addActionListener(this);
 	      
 	    btnCancle.addActionListener(this);
@@ -138,6 +185,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 						}catch(IndexOutOfBoundsException ex) {
 							answers.add(answerInt);
 						}
+
 						if(currentAt == questions.size() - 1) {
 							// close uI and submit the answer
 							TreeMap<Question,String> qa = new TreeMap<Question,String>();
@@ -163,7 +211,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							// display all the answers
 							// setting all answers
 							GridLayout grid = new GridLayout(0,1);
-							grid.setVgap(10);
+							grid.setVgap(8);
 							JPanel panel = new JPanel(grid);
 							int k;
 							for ( k = 0; k < questions.size(); k++) {
@@ -172,6 +220,8 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 								panel.add(lblNewLabel);
 								lblNewLabel = new JLabel("    Answer: " + q.getCorrectAnswer());
 								panel.add(lblNewLabel);
+								lblNewLabel = new JLabel("    Your Answer: " +  rdbts.get((answers.get(k))).getText());
+								panel.add(lblNewLabel);
 
 							}
 							panel.revalidate();
@@ -179,7 +229,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							scrollPane = new JScrollPane(panel);
 
 							scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-							scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+							scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 							scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 							scrollPane.setBounds(35, 80, 380, 200);
 							scrollPane.getViewport().setMinimumSize(new Dimension(380, 200));
@@ -187,7 +237,8 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 
 							contentPane.add(scrollPane);
 						}else {
-
+							// save current answer into database
+							StudentAction.addTempAnswerToQuestion(student,assignment,questions.get(currentAt),rdbts.get(answers.get(currentAt)).getText());
 
 
 							currentAt += 1;
@@ -200,7 +251,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 							// rendering the next question and answers
 							lblNewLabel.setText( String.valueOf(currentAt+1)+". " + questions.get(currentAt).getQuestion());
 							int i = 0;
-							for (String answer:questions.get(currentAt).getAnswerList()) {
+							for (String answer:this.qas.get(this.questions.get(currentAt))) {
 								JRadioButton rb = rdbts.get(i);
 								rb.setText(answer);
 								rb.setVisible(true);
@@ -236,7 +287,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 
 						lblNewLabel.setText(String.valueOf(currentAt + 1) + ". " + questions.get(currentAt).getQuestion());
 						int i = 0;
-						for (String answer:questions.get(currentAt).getAnswerList()) {
+						for (String answer:this.qas.get(this.questions.get(currentAt))) {
 							JRadioButton rb = rdbts.get(i);
 							rb.setText(answer);
 							i += 1;
@@ -263,23 +314,6 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 						btnSaveNext.setEnabled(true);
 					}
 		}
-
-	public static void main(String args[])
-	{
-		JFrame frame = new JFrame("App");
-		//Create and set up the content pane.
-
-		frame.add(new AssignmentUI(new Assignment("A1", 1), new Student("xd123", "Wan", "David")));
-
-		frame.setVisible(true);
-		frame.setSize(1280, 720);
-
-		// Uncomment if you want the window to size to the contents on the screen
-//        frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
-
 
 }
 
