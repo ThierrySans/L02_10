@@ -48,8 +48,8 @@ public class AssignmentAction {
   }
 
 
-  public boolean changeAssignmentVisibility(Assignment assignment) {
-    return new AssignmentDao().changeAssignmentVisibility(assignment);
+  public boolean changeAssignmentVisibility(int aId, boolean visible) {
+    return new AssignmentDao().changeAssignmentVisibility(aId, visible);
   }
 
 }

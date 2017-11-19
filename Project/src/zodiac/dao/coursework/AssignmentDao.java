@@ -292,25 +292,18 @@ public class AssignmentDao {
     return message;
   }
 
-  public boolean changeAssignmentVisibility(Assignment assignment) {
+  public boolean changeAssignmentVisibility(int aId, boolean visible) {
     boolean flag = false;
     Connection c;
     PreparedStatement stmt;
 
     String sql = "UPDATE Assignments SET Visibility=? WHERE Id = ? ";
 
-    String visibility = "";
-    if ("on".equals(assignment.getVisibility())) {
-      visibility = "false";
-    } else {
-      visibility = "on";
-    }
-
     try {
       c = new PostgreSqlJdbc().getConnection();
       stmt = c.prepareStatement(sql);
-      stmt.setString(1, visibility);
-      stmt.setInt(2, assignment.getId());
+      stmt.setBoolean(1, visible);
+      stmt.setInt(2, aId);
 
       stmt.execute();
       stmt.close();

@@ -55,7 +55,7 @@ public class AssignmentDaoTest {
         int newVal = 12;
         int targetId = 27;
         new AssignmentDao().editAssignmentMaxAttempt(targetId, newVal);
-        assertEquals(new AssignmentAction().getAssignment(targetId).getMaxAttempt(), newVal);
+        assertEquals(newVal, new AssignmentAction().getAssignment(targetId).getMaxAttempt());
     }
 
     @Test
@@ -66,6 +66,27 @@ public class AssignmentDaoTest {
         Assignment a = new Assignment("testAssign", targetId);
         a.setMaxAttempt(newVal);
         new AssignmentDao().editAssignmentMaxAttempt(a);
-        assertEquals(new AssignmentAction().getAssignment(targetId).getMaxAttempt(), newVal);
+        assertEquals(newVal, new AssignmentAction().getAssignment(targetId).getMaxAttempt());
+    }
+
+    @Test
+    public void testEditAssignmentName()
+    {
+        int targetId = 26;
+        Assignment a = new Assignment("MemeLord", targetId);
+//        a.setMaxAttempt(5);
+        String res = new AssignmentDao().editAssignment(a);
+        assertEquals("Assignment Name Modified", res);
+    }
+
+    @Test
+    public void testChangeAssigmentVisibility()
+    {
+        int targetId = 26;
+        Assignment a = new Assignment("MemeLord", targetId);
+//        a.setVisibility("on");
+        boolean res = new AssignmentDao().changeAssignmentVisibility(targetId, false);
+        assertTrue(res);
+
     }
 }
