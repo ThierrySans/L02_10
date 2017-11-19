@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.apache.commons.lang3.StringUtils;
 import zodiac.action.AssignmentAction;
+import zodiac.definition.MessageConstants;
 import zodiac.definition.coursework.Assignment;
 
 /**
@@ -58,7 +59,8 @@ public class EditAssignmentMenu extends javax.swing.JFrame {
       Calendar openDate = Calendar.getInstance();
       openDate.setTime(assignment.getOpenDate());
       openYearField.setText(openDate.get(Calendar.YEAR) + "");
-      openMonthField.setText(openDate.get(Calendar.MONTH) + "");
+      // Since months start at 0, add 1 so that 1=January,12=December
+      openMonthField.setText((openDate.get(Calendar.MONTH) + 1) + "");
       openDayField.setText(openDate.get(Calendar.DAY_OF_MONTH) + "");
       openHourField.setText(openDate.get(Calendar.HOUR_OF_DAY) + "");
       openMinuteField.setText(openDate.get(Calendar.MINUTE) + "");
@@ -72,9 +74,10 @@ public class EditAssignmentMenu extends javax.swing.JFrame {
 
     if (assignment.getCloseDate() != null) {
       Calendar closeDate = Calendar.getInstance();
-      closeDate.setTime(assignment.getOpenDate());
+      closeDate.setTime(assignment.getCloseDate());
       closeYearField.setText(closeDate.get(Calendar.YEAR) + "");
-      closeMonthField.setText(closeDate.get(Calendar.MONTH) + "");
+      // Since months start at 0, add 1 so that 1=January,12=December
+      closeMonthField.setText((closeDate.get(Calendar.MONTH) + 1) + "");
       closeDayField.setText(closeDate.get(Calendar.DAY_OF_MONTH) + "");
       closeHourField.setText(closeDate.get(Calendar.HOUR_OF_DAY) + "");
       closeMinuteField.setText(closeDate.get(Calendar.MINUTE) + "");
@@ -111,6 +114,35 @@ public class EditAssignmentMenu extends javax.swing.JFrame {
         close();
       }
     });
+
+    saveOpenTimeButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // Trim inputs
+        openYearField.setText(StringUtils.trimToEmpty(openYearField.getText()));
+        openMonthField.setText(StringUtils.trimToEmpty(openMonthField.getText()));
+        openDayField.setText(StringUtils.trimToEmpty(openDayField.getText()));
+        openHourField.setText(StringUtils.trimToEmpty(openHourField.getText()));
+        openMinuteField.setText(StringUtils.trimToEmpty(openMinuteField.getText()));
+        
+        JOptionPane.showMessageDialog(new JFrame(), saveOpenTime());
+      }
+    });
+
+    saveCloseTimeButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // Trim inputs
+        closeYearField.setText(StringUtils.trimToEmpty(closeYearField.getText()));
+        closeMonthField.setText(StringUtils.trimToEmpty(closeMonthField.getText()));
+        closeDayField.setText(StringUtils.trimToEmpty(closeDayField.getText()));
+        closeHourField.setText(StringUtils.trimToEmpty(closeHourField.getText()));
+        closeMinuteField.setText(StringUtils.trimToEmpty(closeMinuteField.getText()));
+        
+        JOptionPane.showMessageDialog(new JFrame(), saveCloseTime());
+      }
+    });
+
   }
 
   private String editMax(int max) {
@@ -119,6 +151,34 @@ public class EditAssignmentMenu extends javax.swing.JFrame {
 
   private void close() {
     this.dispose();
+  }
+
+  private String saveOpenTime() {
+    if (new AssignmentAction()
+        .validateTime(openYearField.getText(), openMonthField.getText(), openDayField.getText(),
+            openHourField.getText(), openMinuteField.getText())) {
+      return new AssignmentAction()
+          .setAssignmentOpenTime(assignment.getId(), Integer.parseInt(openYearField.getText()),
+              Integer.parseInt(openMonthField.getText()), Integer.parseInt(openDayField.getText()),
+              Integer.parseInt(openHourField.getText()),
+              Integer.parseInt(openMinuteField.getText()));
+    } else {
+      return MessageConstants.INVALID_INPUT;
+    }
+  }
+
+  private String saveCloseTime() {
+    if (new AssignmentAction()
+        .validateTime(closeYearField.getText(), closeMonthField.getText(), closeDayField.getText(),
+            closeHourField.getText(), closeMinuteField.getText())) {
+      return new AssignmentAction()
+          .setAssignmentCloseTime(assignment.getId(), Integer.parseInt(closeYearField.getText()),
+              Integer.parseInt(closeMonthField.getText()),
+              Integer.parseInt(closeDayField.getText()), Integer.parseInt(closeHourField.getText()),
+              Integer.parseInt(closeMinuteField.getText()));
+    } else {
+      return MessageConstants.INVALID_INPUT;
+    }
   }
 
   /**

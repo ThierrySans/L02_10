@@ -9,8 +9,8 @@ import zodiac.dao.coursework.AssignmentDao;
 import zodiac.dao.security.UtilDao;
 import zodiac.definition.MessageConstants;
 import zodiac.definition.coursework.Assignment;
-import zodiac.definition.security.SecurityConstants;
 import zodiac.util.ActiveUser;
+import zodiac.util.ValidationUtil;
 
 public class AssignmentAction {
 
@@ -42,8 +42,7 @@ public class AssignmentAction {
   }
 
   /**
-   * Set the max attempt of an assignment.
-   * 0 max attempts means infinite max attempts
+   * Set the max attempt of an assignment. 0 max attempts means infinite max attempts
    *
    * @param id the id of the assignment
    * @param maxAttempt the max attempt to set it to
@@ -87,6 +86,9 @@ public class AssignmentAction {
    * @return message to display on the UI
    */
   public String setAssignmentOpenTime(int id, int year, int month, int day, int hour, int minute) {
+    // Months start at 0 but user input uses it as if it starts at 1
+    month -= 1;
+
     if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(id))) {
       Calendar calendar = Calendar.getInstance();
       calendar.clear();
@@ -113,6 +115,9 @@ public class AssignmentAction {
    * @return message to display on the UI
    */
   public String setAssignmentCloseTime(int id, int year, int month, int day, int hour, int minute) {
+    // Months start at 0 but user input uses it as if it starts at 1
+    month -= 1;
+
     if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(id))) {
       Calendar calendar = Calendar.getInstance();
       calendar.clear();
@@ -125,6 +130,24 @@ public class AssignmentAction {
     } else {
       return MessageConstants.NO_PERMISSION_MESSAGE;
     }
+  }
+
+  /**
+   * Validate strings and check if they create a valid date. Year is between 1914 AD and 294276 AD
+   * Month is between 1 and 12 Day exists on the given month and year Hour is between 0 and 23
+   * Minute is between 0 and 59
+   *
+   * @param year the year as a string
+   * @param month the month as a string
+   * @param day the day as a string
+   * @param hour the hour as a string
+   * @param minute the minute as a string
+   * @return true if everything is valid
+   */
+  public boolean validateTime(String year, String month, String day, String hour, String minute) {
+    return ValidationUtil.isValidYear(year) && ValidationUtil.isValidMonth(month) && ValidationUtil
+        .isValidDay(day, Integer.parseInt(month), Integer.parseInt(year)) && ValidationUtil
+        .isValidHour(hour) && ValidationUtil.isValidMinute(minute);
   }
 
   private List<Assignment> onlyVisibleAssignments(List<Assignment> assignments)
