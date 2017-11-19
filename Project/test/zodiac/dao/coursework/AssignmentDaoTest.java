@@ -84,7 +84,6 @@ public class AssignmentDaoTest {
     {
         int targetId = 26;
         Assignment a = new Assignment("MemeLord", targetId);
-//        a.setVisibility("on");
         boolean res = new AssignmentDao().changeAssignmentVisibility(targetId, false);
         assertTrue(res);
 
