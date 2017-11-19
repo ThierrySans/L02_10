@@ -22,6 +22,11 @@ public class AssignmentAction {
     return new AssignmentDao().getAssignments(courseCode);
   }
 
+  public Assignment getAssignment(Integer id)
+  {
+    return new AssignmentDao().getAssignments(id).get(0);
+  }
+
   /**
    * Set the max attempt of an assignment.
    * 0 max attempts means infinite max attempts

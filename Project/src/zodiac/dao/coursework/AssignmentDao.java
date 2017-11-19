@@ -18,6 +18,52 @@ public class AssignmentDao {
   }
 
   /**
+   * Gets an assignment which has the assignment ID aId.
+   * @param aId the desired assignment ID.
+   * @return the Assignment with the id aId.
+   */
+  public List<Assignment> getAssignments(Integer aId)
+  {
+    List<Assignment> assignments = new ArrayList<>();
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt "
+            + "FROM Assignments "
+            + "WHERE id = ? ";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+      stmt.setInt(1, aId);
+      ResultSet rs = stmt.executeQuery();
+
+      while (rs.next())
+      {
+        int id = rs.getInt("Id");
+        String name = rs.getString("Assignment_Name");
+        Assignment assignment = new Assignment(name, id);
+        assignment.setVisibility(rs.getString("Visibility"));
+
+        int maxAttempts = rs.getInt("Max_Attempt");
+        assignment.setMaxAttempt(maxAttempts);
+
+        assignments.add(assignment);
+      }
+
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return assignments;
+  }
+
+  /**
    * Get all assignments of a given course. generateQuestions is false by default.
    *
    * @param courseCode the course code of the assignments
