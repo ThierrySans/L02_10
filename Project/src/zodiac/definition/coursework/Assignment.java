@@ -1,6 +1,7 @@
 package zodiac.definition.coursework;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,11 +17,12 @@ public class Assignment {
   private int highScore;
   private int maxAttempt;
   private String name;
-
+  private Date openDate;
+  private Date closeDate;
 
 
   //field added
-  private String visibility;
+  private Boolean visibility;
 
   /**
    * Constructor for Assignment.
@@ -32,7 +34,7 @@ public class Assignment {
     this.currScore = 0;
     this.highScore = 0;
     this.name = name;
-    this.visibility="on";
+    this.visibility=true;
     this.maxAttempt = 0;
   }
 
@@ -97,11 +99,11 @@ public class Assignment {
     this.name = name;
   }
 
-  public String getVisibility() {
+  public Boolean getVisibility() {
     return visibility;
   }
 
-  public void setVisibility(String visibility) {
+  public void setVisibility(Boolean visibility) {
     this.visibility = visibility;
   }
 
@@ -117,6 +119,22 @@ public class Assignment {
 
   public void setMaxAttempt(int maxAttempt) {
     this.maxAttempt = maxAttempt;
+  }
+
+  public Date getOpenDate() {
+    return openDate;
+  }
+
+  public void setOpenDate(Date openDate) {
+    this.openDate = openDate;
+  }
+
+  public Date getCloseDate() {
+    return closeDate;
+  }
+
+  public void setCloseDate(Date closeDate) {
+    this.closeDate = closeDate;
   }
 
   public String toString() {

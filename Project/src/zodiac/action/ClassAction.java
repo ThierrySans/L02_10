@@ -1,9 +1,11 @@
 package zodiac.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import zodiac.dao.ClassDao;
 import zodiac.definition.Class;
+import zodiac.util.ActiveUser;
 
 public class ClassAction {
 
@@ -15,12 +17,24 @@ public class ClassAction {
   }
 
   /**
-   * Gets a list of all classes.
+   * Gets a list of all classes with read or write access.
    *
    * @return a string the contains
    */
   public List<Class> getClasses() {
-    return new ClassDao().getClasses();
+    List<Class> classes = new ClassDao().getClasses();
+
+    List<Class> classesToRemove = new ArrayList<>();
+
+    // Remove courses without read permission
+    for (Class course : classes) {
+      if (!ActiveUser.INSTANCE.canRead(course)) {
+        classesToRemove.add(course);
+      }
+    }
+
+    classes.removeAll(classesToRemove);
+    return classes;
 
   }
 

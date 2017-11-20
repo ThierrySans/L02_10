@@ -3,7 +3,9 @@ package zodiac.dao.coursework;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +78,7 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt "
+    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time "
         + "FROM Assignments "
         + "WHERE Course_Code = ? "
         + "ORDER BY Id ASC";
@@ -91,11 +93,16 @@ public class AssignmentDao {
         int id = rs.getInt("Id");
         String name = rs.getString("Assignment_Name");
         Assignment assignment = new Assignment(name, id);
-        assignment.setVisibility(rs.getString("Visibility"));
+        assignment.setVisibility(rs.getBoolean("Visibility"));
 
         // Returns 0 if value is null, therefore 0 means infinite attempts
         int maxAttempts = rs.getInt("Max_Attempt");
         assignment.setMaxAttempt(maxAttempts);
+
+        Date openTime = rs.getTimestamp("Open_Time");
+        Date closeTime = rs.getTimestamp("Close_Time");
+        assignment.setOpenDate(openTime);
+        assignment.setCloseDate(closeTime);
 
         if (generateQuestions) {
           assignment.setQuestionList(new QuestionDao().getQuestions(id));
@@ -124,7 +131,7 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name,Visibility "
+    String sql = "SELECT Id, Assignment_Name,Visibility, Max_Attempt, Open_Time, Close_Time "
             + "FROM Assignments";
 
     try {
@@ -136,7 +143,16 @@ public class AssignmentDao {
         int id = rs.getInt("Id");
         String name = rs.getString("Assignment_Name");
         Assignment assignment = new Assignment(name, id);
-        assignment.setVisibility(rs.getString("Visibility"));
+        assignment.setVisibility(rs.getBoolean("Visibility"));
+
+        int maxAttempt = rs.getInt("Max_Attempt");
+        Date openTime = rs.getTimestamp("Open_Time");
+        Date closeTime = rs.getTimestamp("Close_Time");
+
+        assignment.setMaxAttempt(maxAttempt);
+        assignment.setOpenDate(openTime);
+        assignment.setCloseDate(closeTime);
+
         assignments.add(assignment);
       }
 
@@ -292,7 +308,7 @@ public class AssignmentDao {
     return message;
   }
 
-  public boolean changeAssignmentVisibility(int aId, boolean visible) {
+  public boolean changeAssignmentVisibility(Assignment assignment) {
     boolean flag = false;
     Connection c;
     PreparedStatement stmt;
@@ -302,8 +318,8 @@ public class AssignmentDao {
     try {
       c = new PostgreSqlJdbc().getConnection();
       stmt = c.prepareStatement(sql);
-      stmt.setBoolean(1, visible);
-      stmt.setInt(2, aId);
+      stmt.setBoolean(1, assignment.getVisibility());
+      stmt.setInt(2, assignment.getId());
 
       stmt.execute();
       stmt.close();
@@ -378,9 +394,9 @@ public class AssignmentDao {
       c = new PostgreSqlJdbc().getConnection();
       stmt = c.prepareStatement(sql);
 
-      ResultSet rs = stmt.executeQuery();
-
       stmt.setInt(1, id);
+
+      ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) {
         String utorId = rs.getString("UTOR_Id");
@@ -401,6 +417,121 @@ public class AssignmentDao {
 
   public Map<String, Integer> getAllStudentsUsedAttempts(Assignment assignment) {
     return getAllStudentsUsedAttempts(assignment.getId());
+  }
+
+  /**
+   * Get the course an assignment id belongs to.
+   * Used when only the assignment id is known and nothing else
+   *
+   * @param id the known id of the assignment
+   * @return the course code the assignment belongs to
+   */
+  public String getCourseOfAssignment(int id) {
+    String courseCode = "";
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "SELECT Course_Code FROM Assignments WHERE Id=?";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+
+      stmt.setInt(1, id);
+
+      ResultSet rs = stmt.executeQuery();
+
+      while (rs.next()) {
+        courseCode = rs.getString("Course_Code");
+      }
+
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return courseCode;
+
+  }
+
+  /**
+   * Change an assignment open time on the database.
+   *
+   * @param id the id of the assignment
+   * @param openTime the new open time
+   * @return whether the change was successful
+   */
+  public Boolean editOpenTime(int id, Date openTime) {
+
+    Boolean successful = false;
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "UPDATE Assignments SET Open_Time = ? "
+        + "WHERE id = ?";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+
+      stmt.setTimestamp(1, new Timestamp(openTime.getTime()));
+      stmt.setInt(2, id);
+
+      successful = stmt.executeUpdate() > 0;
+
+      c.close();
+      stmt.close();
+
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return successful;
+
+  }
+
+  /**
+   * Change an assignment close time on the database.
+   *
+   * @param id the id of the assignment
+   * @param closeDate the new open time
+   * @return whether the change was successful
+   */
+  public Boolean editCloseTime(int id, Date closeDate) {
+
+    Boolean successful = false;
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "UPDATE Assignments SET Close_Time = ? "
+        + "WHERE id = ?";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+
+      stmt.setTimestamp(1, new Timestamp(closeDate.getTime()));
+      stmt.setInt(2, id);
+
+      successful = stmt.executeUpdate() > 0;
+
+      c.close();
+      stmt.close();
+
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return successful;
+
   }
 
 }

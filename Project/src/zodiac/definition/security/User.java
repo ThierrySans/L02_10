@@ -1,7 +1,7 @@
 package zodiac.definition.security;
 
-import java.util.HashMap;
 import java.util.Map;
+import zodiac.dao.security.UserDao;
 
 public class User {
 
@@ -33,8 +33,7 @@ public class User {
    * new course so they will have access to it.
    */
   public void refreshPermissions() {
-    // TODO: Get permissions from DB
-    permissions = new HashMap<>();
+    permissions = new UserDao().getPermissions(utorId);
   }
 
   public String getUtorId() {

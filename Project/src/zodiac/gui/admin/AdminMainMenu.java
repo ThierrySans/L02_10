@@ -1,14 +1,43 @@
 package zodiac.gui.admin;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.util.Map.Entry;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 import zodiac.action.ClassAction;
+import zodiac.action.MarkAction;
 import zodiac.action.StudentAction;
 import zodiac.dao.ClassDao;
+import zodiac.dao.MarkDao;
 import zodiac.dao.StudentDao;
 import zodiac.definition.Class;
+import zodiac.definition.Mark;
 import zodiac.definition.Student;
+<<<<<<< HEAD:Project/src/zodiac/gui/admin/AdminMainMenu.java
 
 import static zodiac.util.AdminMainMenuConstants.*;
 
+=======
+import zodiac.definition.coursework.Assignment;
+import zodiac.definition.security.SecurityConstants;
+import zodiac.definition.security.User;
+import zodiac.util.ActiveUser;
+>>>>>>> pre-release:Project/src/zodiac/gui/MainMenu.java
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +46,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
 import java.util.List;
 
 /**
@@ -25,17 +53,33 @@ import java.util.List;
  * The AdminMainMenu class is the GUI of the
  * Mainmenu for the app. This main menu is for admins.
  */
+<<<<<<< HEAD:Project/src/zodiac/gui/admin/AdminMainMenu.java
 public class AdminMainMenu implements ItemListener {
+=======
+public class MainMenu implements ItemListener {
+    //Constants
+    public static String WELCOME_MESSAGE = "Welcome to the STAT_TRAKER admin app!";
+    public static String CREATE_CLASS = "Create a class";
+    public static String GET_CLASSES = "Get a list of classes";
+    public static String ADD_STUDENT = "Add a student";
+    public static String GET_STUDENT = "Get a list of students";
+    public static String ASS_MANAGER = "Open Assignment Manager";
+    public static String ADD_ASSIGNMENT_MARK = "Add assignment mark";
+    public static String GET_CLASS_MARK = "Get course mark";
+>>>>>>> pre-release:Project/src/zodiac/gui/MainMenu.java
 
     private JPanel cbPanel;
     private JComboBox cbOptions;
     private JPanel panelAddClass;
     private JPanel panelGetClass;
     private JPanel panelGetStudents;
+    private JPanel panelGetClassMark;
     private JTable classesTable;
     private DefaultTableModel classesTableModel;
     private JTable studentsTable;
+    private JTable markTable;
     private DefaultTableModel studentsTableModel;
+    private DefaultTableModel markTableModel;
     private JPanel cards;
 
     /**
@@ -48,7 +92,9 @@ public class AdminMainMenu implements ItemListener {
     {
         // Create the combo box JPanel and add all the options into it
         JPanel cbPanel = new JPanel(new FlowLayout());
-        String cbOptionList[] = {CREATE_CLASS, GET_CLASSES, ADD_STUDENT, GET_STUDENT, ASS_MANAGER};
+
+        String cbOptionList[] = {CREATE_CLASS, GET_CLASSES, ADD_STUDENT, GET_STUDENT,ADD_ASSIGNMENT_MARK,GET_CLASS_MARK, ASS_MANAGER};
+
         cbOptions = new JComboBox(cbOptionList);
         cbOptions.setEditable(false);
         cbOptions.addItemListener(this);
@@ -69,20 +115,47 @@ public class AdminMainMenu implements ItemListener {
         createAddClassPanel();
         createGetClassPanel();
         createGetStudentsPanel();
-
+        createGetMarkPanel();
         // create the JPanel to hold all the cards and add each card
         cards = new JPanel(new CardLayout());
         cards.add(panelAddClass, CREATE_CLASS);
         cards.add(panelGetClass, GET_CLASSES);
         cards.add(createAddStudentPanel(), ADD_STUDENT);
         cards.add(panelGetStudents, GET_STUDENT);
-
+        cards.add(createAddMarkPanel(), ADD_ASSIGNMENT_MARK);
+        cards.add(panelGetClassMark, GET_CLASS_MARK);
         // Add everything to the pane
         pane.add(topPanel, BorderLayout.PAGE_START);
         pane.add(cards, BorderLayout.CENTER);
     }
 
     /**
+     * Creates the Get Mark panel. The Get Class panel holds a table which is populated
+     * by the classes found in the database in the format (Assignment Name, mark).
+     */
+    private void createGetMarkPanel()
+    {
+    	panelGetClassMark = new JPanel(new BorderLayout());
+        JPanel searchPanel = new JPanel(new FlowLayout());
+        JLabel prompt = new JLabel("Enter  UTOR ID: ");
+        JTextField utorId_tx = new JTextField();
+        utorId_tx.setPreferredSize(new Dimension(300, 25));
+        utorId_tx.setMinimumSize(new Dimension(300, 25));
+        JLabel prompt2 = new JLabel("Enter Course code: ");
+        JTextField classCode_tx = new JTextField();
+        classCode_tx.setPreferredSize(new Dimension(300, 30));
+        classCode_tx.setMinimumSize(new Dimension(400, 30));
+        JButton submit = new JButton("Search");
+        submit.addActionListener(new GetMarkListener(utorId_tx,classCode_tx,searchPanel));
+        searchPanel.add(prompt);
+        searchPanel.add(utorId_tx);
+        searchPanel.add(prompt2);
+        searchPanel.add(classCode_tx);
+        searchPanel.add(submit);
+        panelGetClassMark.add(searchPanel, BorderLayout.NORTH);
+
+    }
+	/**
      * Generates the Add Class panel. The Add Class panel has 2 JTextFields
      * for the desired course code and name. You can then submit it and
      * enter that course into the database.
@@ -134,6 +207,59 @@ public class AdminMainMenu implements ItemListener {
         panelGetClass = new JPanel(new GridLayout());
         classesTable = new JTable();
         panelGetClass.add(classesTable);
+    }
+    
+    /**
+     * create the add mark panel.The panel has 3 JTextFields(utor_id,assignment_id,mark).
+     * 
+     */
+    private JPanel createAddMarkPanel()
+    {
+        // Create the BoxLayout for the Add mark panel
+        JPanel panelAddMark = new JPanel();
+        panelAddMark.setLayout(new BoxLayout(panelAddMark, BoxLayout.Y_AXIS));
+
+        // Generate various labels
+        JLabel label1 = new JLabel("Enter UTOR ID: ");
+        label1.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        label1.setBorder(new EmptyBorder(0, 0, 10, 0));
+
+        JLabel label2 = new JLabel("Enter Assignment ID: ");
+        label2.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        label2.setBorder(new EmptyBorder(20, 0, 10, 0));
+
+        JLabel label3 = new JLabel("Enter Mark: ");
+        label2.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        label2.setBorder(new EmptyBorder(20, 0, 10, 0));
+
+        // Create text fields
+        JTextField textUtorId = new JTextField();
+        textUtorId.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        textUtorId.setMaximumSize(new Dimension(600, 70));
+
+        JTextField textAssignmentId = new JTextField();
+        textAssignmentId .setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        textAssignmentId .setMaximumSize(new Dimension(600, 70));
+
+        JTextField textMark = new JTextField();
+        textMark.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        textMark.setMaximumSize(new Dimension(600, 70));
+
+
+        // Create button to submit information to database
+        JButton button = new JButton("Submit");
+        button.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        button.addActionListener(new AddMarkListener(textUtorId, textAssignmentId, textMark));
+        // Add contents to the panel
+        panelAddMark.add(label1);
+        panelAddMark.add(textUtorId);
+        panelAddMark.add(label2);
+        panelAddMark.add(textAssignmentId);
+        panelAddMark.add(label3);
+        panelAddMark.add(textMark);
+        panelAddMark.add(button);
+
+        return panelAddMark;
     }
 
     /**
@@ -361,6 +487,71 @@ public class AdminMainMenu implements ItemListener {
         }
 
     }
+    private class GetMarkListener implements ActionListener
+    {
+        private JTextField utorId_tx;
+        private JTextField courseCode_tx;
+        private JPanel panel;
+        public GetMarkListener(JTextField utorId_tx,JTextField courseCode_tx,JPanel panel) {
+            this.utorId_tx = utorId_tx;
+            this.courseCode_tx = courseCode_tx;
+            this.panel = panel;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            Mark mark = new MarkDao().getStudentMark(utorId_tx.getText(), courseCode_tx.getText());
+            String name=mark.getStudent().getFirstName()+","+mark.getStudent().getLastName();
+            panelGetClassMark.add(new JLabel("Student Name: " + name), BorderLayout.SOUTH);
+            String colNames[] = {"Assignment Name", "mark"};
+            markTableModel= new DefaultTableModel(0, colNames.length);
+            Object[] headers = {colNames[0], colNames[1]};
+            markTableModel.addRow(headers);
+            for (Entry<Assignment,Integer> i: mark.getMarkMap().entrySet()) {
+                Object[] data = {i.getKey().getName(),i.getValue()};
+                markTableModel.addRow(data);
+            }
+
+            if (markTable != null)
+            {
+            	panelGetClassMark.remove(markTable);
+            }
+
+            JTable lol = new JTable(markTableModel);
+            panelGetClassMark.add(lol, BorderLayout.CENTER);
+            panelGetClassMark.revalidate();
+        }
+
+    }
+    private class AddMarkListener implements ActionListener
+    {
+        private JTextField utorID;
+        private JTextField assignmentId;
+        private JTextField mark;
+
+        public AddMarkListener(JTextField utorID, JTextField assignmentId, JTextField mark) {
+            this.utorID = utorID;
+            this.assignmentId = assignmentId;
+            this.mark = mark;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+        	
+        	 try {
+				String result = MarkAction.addStudentMark(utorID.getText(), Integer.parseInt(assignmentId.getText()), Integer.parseInt(mark.getText()));
+				if(result.equals("")) {
+					 System.out.println("maybe student and the assignment are not in the same course!please check!");
+				}
+			} catch (NumberFormatException e) {
+				 System.err.println("number input error!");
+			}
+        }
+    }
+
+
+
+
 
     public static void main(String args[]) {
         JFrame frame = new JFrame("App");
@@ -372,6 +563,9 @@ public class AdminMainMenu implements ItemListener {
         frame.setVisible(true);
         frame.setSize(1280, 720);
 
+        // hardcoding the user
+        User us = new User(  "wandavi2", SecurityConstants.STUDENT_ROLE,"wang","david");
+        ActiveUser.INSTANCE.setUser(us);
         // Uncomment if you want the window to size to the contents on the screen
 //        frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

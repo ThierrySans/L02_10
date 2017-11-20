@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import zodiac.definition.security.SecurityConstants;
 import zodiac.definition.security.User;
 import zodiac.util.PostgreSqlJdbc;
 
@@ -33,6 +36,11 @@ public class UserDao {
       while (rs.next()) {
         hash = rs.getString("password");
       }
+
+      rs.close();
+      stmt.close();
+      c.close();
+
     } catch (Exception e) {
       // TODO Error Handling
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -65,6 +73,9 @@ public class UserDao {
         message = "Success";
       }
 
+      stmt.close();
+      c.close();
+
     } catch (Exception e) {
       // TODO Error Handling
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -92,6 +103,9 @@ public class UserDao {
 
     ResultSet rs = stmt.executeQuery();
     rs.next();
+    rs.close();
+    stmt.close();
+    c.close();
     return rs.getBoolean("registered");
   }
 
@@ -120,12 +134,78 @@ public class UserDao {
       String firstName = rs.getString("first_name");
       String role = rs.getString("role");
       user = new User(utorId, role, lastName, firstName);
+      rs.close();
+      stmt.close();
+      c.close();
 
     } catch (Exception e) {
       // TODO Error Handling
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
     return user;
+  }
+
+  /**
+   * Return a map of permissions mapping course code to permissions. See SecurityConstants for
+   * permission strings
+   *
+   * @param utorId user's utorId
+   * @return permissions mapped from course code to permission
+   */
+  public Map<String, String> getPermissions(String utorId) {
+
+    Map<String, String> permissions = new HashMap<>();
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql = "SELECT u.Role, c.Course_Code FROM UserClassMap c INNER JOIN Users u "
+        + "ON u.utor_Id=c.utor_Id WHERE u.utor_Id = ?";
+
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+      stmt.setString(1, utorId);
+
+      ResultSet rs = stmt.executeQuery();
+
+      while (rs.next()) {
+        String role = rs.getString("Role");
+        String course = rs.getString("Course_Code");
+
+        String permissionType;
+
+        // Currently, assume professors always can write and students only can read
+        switch (role) {
+          case SecurityConstants.PROFESSOR_ROLE: {
+            permissionType = SecurityConstants.WRITE_PERMISSION;
+            break;
+          }
+          case SecurityConstants.STUDENT_ROLE: {
+            permissionType = SecurityConstants.READ_PERMISSION;
+            break;
+          }
+          default: {
+            // Unknown role, give read permission
+            permissionType = SecurityConstants.READ_PERMISSION;
+          }
+        }
+
+        permissions.put(course, permissionType);
+      }
+
+      rs.close();
+      stmt.close();
+      c.close();
+
+
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return permissions;
+
   }
 
 }
