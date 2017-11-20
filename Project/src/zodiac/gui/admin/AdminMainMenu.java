@@ -551,10 +551,6 @@ public class AdminMainMenu implements ItemListener {
         frame.setVisible(true);
         frame.setSize(1280, 720);
 
-        // hardcoding the user
-//        User us = new User(  "wandavi2", SecurityConstants.STUDENT_ROLE,"wang","david");
-        User us = new User(  "proftest", SecurityConstants.PROFESSOR_ROLE,"wang","david");
-        ActiveUser.INSTANCE.setUser(us);
         // Uncomment if you want the window to size to the contents on the screen
 //        frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

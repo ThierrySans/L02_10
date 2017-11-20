@@ -84,9 +84,6 @@ public class UserMainMenu {
         UserMainMenu menu = new UserMainMenu();
         menu.setupMainMenu(frame);
 
-        User us = new User(  "proftest", SecurityConstants.PROFESSOR_ROLE,"wang","david");
-        ActiveUser.INSTANCE.setUser(us);
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1280, 720);
 
