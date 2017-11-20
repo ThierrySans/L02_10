@@ -77,6 +77,7 @@ public class GetAssignmentsMenu {
           // Double-click detected
           int index = list.locationToIndex(evt.getPoint());
           Assignment assignment = (Assignment) model.get(index);
+          assignment.setQuestionList(new QuestionAction().getQuestionsWithAnswer(assignment.getId()));
           User user = ActiveUser.INSTANCE.getUser();
           if(user.getRole() == SecurityConstants.STUDENT_ROLE){
             new AssignmentUI(assignment,new Student(user.getUtorId(),user.getLastName(),user.getFirstName())).setVisible(true);
@@ -105,7 +106,6 @@ public class GetAssignmentsMenu {
       for (Assignment a : results) {
 //                System.out.println(a.getName());
         // What the model displays is defined in Assignment.ToString
-        a.setQuestionList(new QuestionAction().getQuestionsWithAnswer(a.getId()));
         model.addElement(a);
       }
 
