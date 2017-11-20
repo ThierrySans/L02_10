@@ -36,12 +36,12 @@ public class StudentDao {
       stmt.setInt(3, questionId);
 
       ResultSet rs = stmt.executeQuery();
-     if(rs.next()){
-       message = rs.getString(1);
+      if(rs.next()){
+        message = rs.getString(1);
 
-     }else{
-       message = null;
-     };
+      }else{
+        message = null;
+      };
 
       rs.close();
       stmt.close();
@@ -66,7 +66,7 @@ public class StudentDao {
    * @return succefully string or fail
    */
   public static String addTempAnswerToQuestion(Student student, int assignmentId, int questionId,
-                                           String temp_answer) {
+                                               String temp_answer) {
     String message = "";
 
     Connection c;

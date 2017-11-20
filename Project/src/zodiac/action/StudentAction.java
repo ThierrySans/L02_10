@@ -57,12 +57,12 @@ public class StudentAction {
    * @return true if added succ, false otherwise
    */
   public static boolean addTempAnswerToQuestion(Student student, Assignment assignment,
-                                             Question question,String tempAnswer) {
+                                                Question question,String tempAnswer) {
     if (ActiveUser.INSTANCE.canRead(
             new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
 
-        StudentDao
-                .addTempAnswerToQuestion(student, assignment.getId(), question.getQid(),tempAnswer);
+      StudentDao
+              .addTempAnswerToQuestion(student, assignment.getId(), question.getQid(),tempAnswer);
 
       return true;
     } else {
