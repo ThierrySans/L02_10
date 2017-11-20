@@ -16,7 +16,7 @@ To run the latest Project, you will need to go to the [Release](https://github.c
 ### 3. Start-up your command line interface
 ```
 a/ Unzip the downloaded Project Release, and point your command line interface to the directory of unzip Project Release
-b/ Run "java -jar Project.jar"
+b/ To run the Admin view of the app, type "java -jar Admin.jar". If you want to run the user version of the app, type "java -jar Student.jar"
 
 ```
 
