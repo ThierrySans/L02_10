@@ -2,6 +2,7 @@ package zodiac.gui.user;
 
 import zodiac.action.AssignmentAction;
 import zodiac.action.ClassAction;
+import zodiac.action.QuestionAction;
 import zodiac.action.StudentAction;
 import zodiac.dao.StudentDao;
 import zodiac.dao.coursework.AssignmentDao;
@@ -95,6 +96,7 @@ public class UserSelectAssignmentMenu extends UserSubMenu {
                     if (name != null && id != null)
                     {
                         Assignment a = new Assignment(name, id);
+                        a.setQuestionList(new QuestionAction().getQuestionsWithAnswer(id));
                         // Debug line. Replace fixed ID and Course Name later
                         Student student = StudentAction.getStudent(DEBUG_ID,DEBUG_COURSE);
                         AssignmentUI frame = new AssignmentUI(a,student);
