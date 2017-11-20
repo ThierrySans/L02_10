@@ -73,7 +73,7 @@ public class AssignmentAction {
   public boolean changeAssignmentVisibility(Assignment assignment) {
     if (ActiveUser.INSTANCE.canWrite(
         new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
-      return new AssignmentDao().changeAssignmentVisibility(assignment);
+      return new AssignmentDao().changeAssignmentVisibility(assignment.getId(), assignment.getVisibility());
     } else {
       return false;
     }

@@ -1,9 +1,6 @@
-<<<<<<< HEAD:Project/src/zodiac/gui/admin/EditAssignmentMenu.java
-
 package zodiac.gui.admin;
-=======
-package zodiac.gui;
->>>>>>> pre-release:Project/src/zodiac/gui/EditAssignmentMenu.java
+
+
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

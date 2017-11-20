@@ -46,7 +46,7 @@ public class AssignmentDao {
         int id = rs.getInt("Id");
         String name = rs.getString("Assignment_Name");
         Assignment assignment = new Assignment(name, id);
-        assignment.setVisibility(rs.getString("Visibility"));
+//        assignment.setVisibility(rs.getString("Visibility"));
 
         int maxAttempts = rs.getInt("Max_Attempt");
         assignment.setMaxAttempt(maxAttempts);
@@ -308,7 +308,7 @@ public class AssignmentDao {
     return message;
   }
 
-  public boolean changeAssignmentVisibility(Assignment assignment) {
+  public boolean changeAssignmentVisibility(int aId, boolean visible) {
     boolean flag = false;
     Connection c;
     PreparedStatement stmt;
@@ -318,8 +318,8 @@ public class AssignmentDao {
     try {
       c = new PostgreSqlJdbc().getConnection();
       stmt = c.prepareStatement(sql);
-      stmt.setBoolean(1, assignment.getVisibility());
-      stmt.setInt(2, assignment.getId());
+      stmt.setBoolean(1, visible);
+      stmt.setInt(2, aId);
 
       stmt.execute();
       stmt.close();

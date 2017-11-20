@@ -45,21 +45,21 @@ public class UserSelectAssignmentMenu extends UserSubMenu {
         this.tblmodel.addRow(COL_NAMES);
 
         // Currently holds debug value
-        List<String> enrolled = StudentDao.getEnrolledClasses(DEBUG_ID);
-
-        if (enrolled != null)
-        {
-            for (String c : enrolled)
-            {
-                List<Assignment> assignments = new AssignmentDao().getAssignments(c);
-
-                for (Assignment a : assignments)
-                {
-                    Object row[] = {a.getId(), a.getName(), c, a.getHighScore()};
-                    this.tblmodel.addRow(row);
-                }
-            }
-        }
+//        List<String> enrolled = StudentDao.getEnrolledClasses(DEBUG_ID);
+//
+//        if (enrolled != null)
+//        {
+//            for (String c : enrolled)
+//            {
+//                List<Assignment> assignments = new AssignmentDao().getAssignments(c);
+//
+//                for (Assignment a : assignments)
+//                {
+//                    Object row[] = {a.getId(), a.getName(), c, a.getHighScore()};
+//                    this.tblmodel.addRow(row);
+//                }
+//            }
+//        }
 
         // Create the table and disable multiple selection and column reordering
         JTable table = new JTable(this.tblmodel);

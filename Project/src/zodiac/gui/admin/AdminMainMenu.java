@@ -27,17 +27,13 @@ import zodiac.dao.MarkDao;
 import zodiac.dao.StudentDao;
 import zodiac.definition.Class;
 import zodiac.definition.Mark;
+
 import zodiac.definition.Student;
-<<<<<<< HEAD:Project/src/zodiac/gui/admin/AdminMainMenu.java
-
-import static zodiac.util.AdminMainMenuConstants.*;
-
-=======
 import zodiac.definition.coursework.Assignment;
 import zodiac.definition.security.SecurityConstants;
 import zodiac.definition.security.User;
 import zodiac.util.ActiveUser;
->>>>>>> pre-release:Project/src/zodiac/gui/MainMenu.java
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -53,10 +49,7 @@ import java.util.List;
  * The AdminMainMenu class is the GUI of the
  * Mainmenu for the app. This main menu is for admins.
  */
-<<<<<<< HEAD:Project/src/zodiac/gui/admin/AdminMainMenu.java
 public class AdminMainMenu implements ItemListener {
-=======
-public class MainMenu implements ItemListener {
     //Constants
     public static String WELCOME_MESSAGE = "Welcome to the STAT_TRAKER admin app!";
     public static String CREATE_CLASS = "Create a class";
@@ -66,7 +59,6 @@ public class MainMenu implements ItemListener {
     public static String ASS_MANAGER = "Open Assignment Manager";
     public static String ADD_ASSIGNMENT_MARK = "Add assignment mark";
     public static String GET_CLASS_MARK = "Get course mark";
->>>>>>> pre-release:Project/src/zodiac/gui/MainMenu.java
 
     private JPanel cbPanel;
     private JComboBox cbOptions;
@@ -548,10 +540,6 @@ public class MainMenu implements ItemListener {
 			}
         }
     }
-
-
-
-
 
     public static void main(String args[]) {
         JFrame frame = new JFrame("App");

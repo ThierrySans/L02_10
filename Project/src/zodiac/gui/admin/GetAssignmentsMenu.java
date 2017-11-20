@@ -22,6 +22,7 @@ import zodiac.definition.Student;
 import zodiac.definition.coursework.Assignment;
 import zodiac.definition.security.SecurityConstants;
 import zodiac.definition.security.User;
+import zodiac.gui.user.AssignmentUI;
 import zodiac.util.ActiveUser;
 
 //import com.intellij.ui.components.JBScrollPane;
