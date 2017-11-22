@@ -24,6 +24,10 @@ public class Assignment {
   //field added
   private Boolean visibility;
 
+  private String type;
+
+  private boolean automark;
+
   /**
    * Constructor for Assignment.
    */
@@ -36,6 +40,8 @@ public class Assignment {
     this.name = name;
     this.visibility=true;
     this.maxAttempt = 0;
+    this.type = AssignmentTypesConstants.MULTIPLE_CHOICE;
+    this.automark = true;
   }
 
   public Assignment(String name, int id) {
@@ -140,5 +146,21 @@ public class Assignment {
   public String toString() {
     Integer myInt = new Integer(this.id);
     return StringUtils.join(myInt, " " ,this.name);
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public boolean isAutomark() {
+    return automark;
+  }
+
+  public void setAutomark(boolean automark) {
+    this.automark = automark;
   }
 }
