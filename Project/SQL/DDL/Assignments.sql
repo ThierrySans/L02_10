@@ -7,5 +7,7 @@ Create Table Assignments(
 	Visibility boolean NOT NULL DEFAULT True,
 	Max_Attempt int,
 	Open_Time timestamp,
-	Close_Time timestamp
+	Close_Time timestamp,
+	Assignment_Type varchar(100) NOT NULL DEFAULT 'Multiple Choice',
+	Automark boolean NOT NULL DEFAULT TRUE
 )
