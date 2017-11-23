@@ -21,19 +21,20 @@ public class AssignmentDao {
 
   /**
    * Gets an assignment which has the assignment ID aId.
+   *
    * @param aId the desired assignment ID.
    * @return the Assignment with the id aId.
    */
-  public List<Assignment> getAssignments(Integer aId)
-  {
+  public List<Assignment> getAssignments(Integer aId) {
     List<Assignment> assignments = new ArrayList<>();
 
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt "
-            + "FROM Assignments "
-            + "WHERE id = ? ";
+    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt,"
+        + "Assignment_Type, Automark "
+        + "FROM Assignments "
+        + "WHERE id = ? ";
 
     try {
       c = new PostgreSqlJdbc().getConnection();
@@ -41,12 +42,13 @@ public class AssignmentDao {
       stmt.setInt(1, aId);
       ResultSet rs = stmt.executeQuery();
 
-      while (rs.next())
-      {
+      while (rs.next()) {
         int id = rs.getInt("Id");
         String name = rs.getString("Assignment_Name");
         Assignment assignment = new Assignment(name, id);
-//        assignment.setVisibility(rs.getString("Visibility"));
+        assignment.setVisibility(rs.getBoolean("Visibility"));
+        assignment.setType(rs.getString("Assignment_Type"));
+        assignment.setAutomark(rs.getBoolean("Automark"));
 
         int maxAttempts = rs.getInt("Max_Attempt");
         assignment.setMaxAttempt(maxAttempts);
@@ -78,7 +80,8 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time "
+    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time,"
+        + "Assignment_Type, Automark "
         + "FROM Assignments "
         + "WHERE Course_Code = ? "
         + "ORDER BY Id ASC";
@@ -104,6 +107,12 @@ public class AssignmentDao {
         assignment.setOpenDate(openTime);
         assignment.setCloseDate(closeTime);
 
+        String type = rs.getString("Assignment_Type");
+        Boolean automark = rs.getBoolean("Automark");
+
+        assignment.setType(type);
+        assignment.setAutomark(automark);
+
         if (generateQuestions) {
           assignment.setQuestionList(new QuestionDao().getQuestions(id));
         }
@@ -123,6 +132,7 @@ public class AssignmentDao {
 
   /**
    * Gets the ID, name, and Visibility status of all assignments.
+   *
    * @return list of all assignments
    */
   public List<Assignment> getAllAssignments() {
@@ -131,8 +141,9 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name,Visibility, Max_Attempt, Open_Time, Close_Time "
-            + "FROM Assignments";
+    String sql = "SELECT Id, Assignment_Name,Visibility, Max_Attempt, Open_Time, Close_Time,"
+        + "Assignment_Type, Automark "
+        + "FROM Assignments";
 
     try {
       c = new PostgreSqlJdbc().getConnection();
@@ -152,6 +163,12 @@ public class AssignmentDao {
         assignment.setMaxAttempt(maxAttempt);
         assignment.setOpenDate(openTime);
         assignment.setCloseDate(closeTime);
+
+        String type = rs.getString("Assignment_Type");
+        Boolean automark = rs.getBoolean("Automark");
+
+        assignment.setType(type);
+        assignment.setAutomark(automark);
 
         assignments.add(assignment);
       }
@@ -420,8 +437,8 @@ public class AssignmentDao {
   }
 
   /**
-   * Get the course an assignment id belongs to.
-   * Used when only the assignment id is known and nothing else
+   * Get the course an assignment id belongs to. Used when only the assignment id is known and
+   * nothing else
    *
    * @param id the known id of the assignment
    * @return the course code the assignment belongs to
