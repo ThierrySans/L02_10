@@ -1,0 +1,23 @@
+apply plugin: 'java'
+
+version = '0.4-SNAPSHOT'
+
+sourceSets.main.java.srcDirs = ['src']
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'zodiac.gui.admin.AdminMainMenu'
+    }
+}
+
+
+dependencies {
+	compile	'de.svenkubiak:jBCrypt:0.4.1'
+	testCompile 'junit:junit:4.12'
+	compile	'org.apache.commons:commons-lang3:3.3'
+	compile	'org.postgresql:postgresql:9.4.1212'
+}	
