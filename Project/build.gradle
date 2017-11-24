@@ -1,9 +1,12 @@
 apply plugin: 'java'
+apply plugin: 'application'
 
-version = '0.4-SNAPSHOT'
+mainClassName = "zodiac.gui.admin.AdminMainMenu"
 
 sourceSets.main.java.srcDirs = ['src']
 sourceSets.test.java.srcDirs = ['test']
+
+version = 'V0.04'
 
 repositories {
     mavenCentral()
@@ -15,6 +18,7 @@ jar {
     }
 }
 
+defaultTasks 'run'
 
 dependencies {
 	compile	'de.svenkubiak:jBCrypt:0.4.1'
