@@ -103,9 +103,12 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 			if(temporalAnswer.get(question) != null){
 				Integer rs = null;
 				for(int p=0;p<question.getAnswerList().size();p++){
+					System.out.println(p+qas.get(question).get(p));
+					System.out.println(p+temporalAnswer.get(question));
 					if(qas.get(question).get(p).equals(temporalAnswer.get(question))){
 
 						rs = p;
+						break;
 					}
 
 				}
@@ -134,7 +137,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		// only set avaliable option visible
 		for (String answer: this.qas.get(this.questions.get(0))) {
 			JRadioButton rb = rdbts.get(i);
-			rb.setText(answer + String.valueOf(0));
+			rb.setText(answer);
 			i += 1;
 		}
 		try{
