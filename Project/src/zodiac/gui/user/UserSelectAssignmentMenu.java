@@ -1,5 +1,8 @@
 package zodiac.gui.user;
 
+import zodiac.action.AssignmentAction;
+import zodiac.action.ClassAction;
+import zodiac.action.QuestionAction;
 import zodiac.action.StudentAction;
 import zodiac.dao.StudentDao;
 import zodiac.dao.coursework.AssignmentDao;
@@ -17,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.List;
 
 public class UserSelectAssignmentMenu extends UserSubMenu {
@@ -45,21 +49,20 @@ public class UserSelectAssignmentMenu extends UserSubMenu {
         this.tblmodel.addRow(COL_NAMES);
 
         // Currently holds debug value
-//        List<String> enrolled = StudentDao.getEnrolledClasses(DEBUG_ID);
-//
-//        if (enrolled != null)
-//        {
-//            for (String c : enrolled)
-//            {
-//                List<Assignment> assignments = new AssignmentDao().getAssignments(c);
-//
-//                for (Assignment a : assignments)
-//                {
-//                    Object row[] = {a.getId(), a.getName(), c, a.getHighScore()};
-//                    this.tblmodel.addRow(row);
-//                }
-//            }
-//        }
+        try
+        {
+            List<Assignment> enrolled = new AssignmentAction().checkAssignments(DEBUG_COURSE);
+            for (Assignment a : enrolled)
+            {
+                Object row[] = {a.getId(), a.getName(), a.getHighScore()};
+                this.tblmodel.addRow(row);
+            }
+        }
+        catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(new JFrame(), e);
+        }
+
 
         // Create the table and disable multiple selection and column reordering
         JTable table = new JTable(this.tblmodel);
@@ -93,6 +96,7 @@ public class UserSelectAssignmentMenu extends UserSubMenu {
                     if (name != null && id != null)
                     {
                         Assignment a = new Assignment(name, id);
+                        a.setQuestionList(new QuestionAction().getQuestionsWithAnswer(id));
                         // Debug line. Replace fixed ID and Course Name later
                         Student student = StudentAction.getStudent(DEBUG_ID,DEBUG_COURSE);
                         AssignmentUI frame = new AssignmentUI(a,student);

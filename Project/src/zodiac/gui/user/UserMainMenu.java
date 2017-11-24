@@ -1,5 +1,9 @@
 package zodiac.gui.user;
 
+import zodiac.definition.security.SecurityConstants;
+import zodiac.definition.security.User;
+import zodiac.util.ActiveUser;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

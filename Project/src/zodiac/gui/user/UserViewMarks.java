@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,17 +87,26 @@ public class UserViewMarks extends UserSubMenu {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             String code = this.textField.getText();
-//            List<Assignment> res = new AssignmentAction().getAssignments(code);
-            List<Assignment> res = new ArrayList<>();
-            for (Assignment a : res)
+            try
             {
-                Object row[] = {a.getId(), a.getName(), a.getHighScore()};
-                tblmdl.addRow(row);
+                List<Assignment> res = new AssignmentAction().checkAssignments(code);
+//            List<Assignment> res = new ArrayList<>();
+                for (Assignment a : res)
+                {
+                    Object row[] = {a.getId(), a.getName(), a.getHighScore()};
+                    tblmdl.addRow(row);
+                }
+                table = new JTable(tblmdl);
+                table.setAlignmentX(0.f);
+                contentsPanel.add(table, BorderLayout.CENTER);
+                contentsPanel.revalidate();
             }
-            table = new JTable(tblmdl);
-            table.setAlignmentX(0.f);
-            contentsPanel.add(table, BorderLayout.CENTER);
-            contentsPanel.revalidate();
+            catch (SQLException e)
+            {
+                JOptionPane.showMessageDialog(new JFrame(), e);
+            }
+
+
         }
     }
 
