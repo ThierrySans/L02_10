@@ -1,28 +1,30 @@
 # Project directory
 
-## How to run this project
+## How to build and run this project
 
 ### 1. Prerequisites:
-```
-a/ Internet connection (the project uses a remote cloud SQL database server)
-b/ Java 8 runtime environment (the java version we tested on)
-c/ Project Release (see below how to get it)
-```
-### 2. Download Project Release
+  1. Internet connection
+  2. Java 8 runtime environment (the java version we tested on)
+  3. Source code
+  4. Gradle
+### 2. Download
 
-To run the latest Project, you will need to go to the [Release](https://github.com/CSCC01F17/L02_10/releases) tab, and download the latest zip of the project
+Clone the repo onto your computer
 
 
-### 3. Start-up your command line interface
-```
-a/ Unzip the downloaded Project Release, and point your command line interface to the directory of unzip Project Release
-b/ To run the Admin view of the app, type "java -jar Admin.jar". If you want to run the user version of the app, type "java -jar Student.jar"
+### 3. Build and run
+  1. Go into the directory "Project\" in your terminal
+  2. run "Gradle"
 
-```
+### 4. Import into IDE
+  1. Open your Java IDE (Such as Eclipse or IntelliJ)
+  2. Import Project
+  3. Gradle Project
+  4. Use "Project/" as the root folder
 
-### 4. What you can do with the project?
+### 5. What you can do with the project?
 
-Please refer to "readme.txt" in the Project Release for what you can do with the program.
+  * Add student
 
 ## New features
 - **Added the assignment manager for Admins**
