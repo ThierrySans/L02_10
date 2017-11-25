@@ -102,7 +102,7 @@ public class StudentAction {
   public static Integer validateAnswer(TreeMap<Question, String> QA) {
     Integer res = 0;
     for (Question question : QA.keySet()) {
-      if (question.getCorrectAnswer() == QA.get(question)) {
+      if (question.isAutoMark() && question.getCorrectAnswer().equals(QA.get(question))) {
         res += 1;
       }
     }

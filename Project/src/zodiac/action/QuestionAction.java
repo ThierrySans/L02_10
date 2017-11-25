@@ -11,10 +11,24 @@ import zodiac.util.ActiveUser;
 
 public class QuestionAction {
 
-  public String createQuestion(int assignmentid, String question) {
-    if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(assignmentid))) {
-      int newQuestion = new QuestionDao().addQuestion(question).getQid();
-      return new QuestionDao().addQuestionToAssignment(newQuestion, assignmentid);
+  public String createMultipleChoiceQuestion(int assignmentId, String question) {
+    return createQuestion(assignmentId, question, Question.MULTIPLE_CHOICE, true);
+  }
+
+  /**
+   * Create a new question for the given assignment.
+   *
+   * @param assignmentId the assignment to add the question to
+   * @param question the question
+   * @param questionType the type of question
+   * @param autoMark if it should be auto marked or not
+   * @return message to display on the UI
+   */
+  public String createQuestion(int assignmentId, String question, String questionType,
+      boolean autoMark) {
+    if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(assignmentId))) {
+      int newQuestion = new QuestionDao().addQuestion(question, questionType, autoMark).getQid();
+      return new QuestionDao().addQuestionToAssignment(newQuestion, assignmentId);
     } else {
       return MessageConstants.NO_PERMISSION_MESSAGE;
     }
