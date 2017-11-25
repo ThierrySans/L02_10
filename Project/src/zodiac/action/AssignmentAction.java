@@ -187,4 +187,16 @@ public class AssignmentAction {
     }
   }
 
+  public String editDeadlineAndExtraPoints(int assignmentId,Date deadline,Integer extraPoints) {
+	  if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(assignmentId))) {
+		  boolean flag = new AssignmentDao().editDeadlineAndExtraPoint(assignmentId, deadline, extraPoints);
+		  if(flag){
+			  return MessageConstants.EDIT_SUCCEED;
+		  }else{
+			  return MessageConstants.EDIT_FAILED;
+		  }
+      }
+	  return MessageConstants.NO_PERMISSION_MESSAGE;
+  }
+  
 }
