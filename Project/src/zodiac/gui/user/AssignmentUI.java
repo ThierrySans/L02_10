@@ -1,7 +1,6 @@
 package zodiac.gui.user;
 
 
-import zodiac.action.QuestionAction;
 import zodiac.action.StudentAction;
 import zodiac.definition.Student;
 import zodiac.definition.coursework.*;
@@ -98,7 +97,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 		}
 		// init temporal answer
 
-		TreeMap<Question, String> temporalAnswer = StudentAction.fetchTempAnswerFromAssignment(student,assignment);
+		TreeMap<Question, String> temporalAnswer = new StudentAction().fetchTempAnswerFromAssignment(student,assignment);
 		for(Question question:questions){
 			if(temporalAnswer.get(question) != null){
 				Integer rs = null;
@@ -195,9 +194,9 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 					qa.put(q, a);
 
 				}
-				StudentAction.addAnswerToAssignment(student, assignment, qa);
-				Integer result = StudentAction.validateAnswer(qa);
-				StudentAction.saveMark(student,assignment,result);
+				new StudentAction().addAnswerToAssignment(student, assignment, qa);
+				Integer result = new StudentAction().validateAnswer(qa);
+				new StudentAction().saveMark(assignment.getId(), student.getUtorId(),result);
 				lblNewLabel.setText("Your result: " + result);
 				Font f = lblNewLabel.getFont();
 				lblNewLabel.setFont(new Font(f.getName(), Font.BOLD, f.getSize()+4));
@@ -238,7 +237,7 @@ public class AssignmentUI extends JFrame implements  ActionListener{
 				contentPane.add(scrollPane);
 			}else {
 				// save current answer into database
-				StudentAction.addTempAnswerToQuestion(student,assignment,questions.get(currentAt),rdbts.get(answers.get(currentAt)).getText());
+				new StudentAction().addTempAnswerToQuestion(student,assignment,questions.get(currentAt),rdbts.get(answers.get(currentAt)).getText());
 
 
 				currentAt += 1;
