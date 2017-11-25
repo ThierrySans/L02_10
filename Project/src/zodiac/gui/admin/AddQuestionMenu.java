@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import zodiac.definition.coursework.QuestionTypeConstants;
 
 public class AddQuestionMenu {
+
+    JComboBox typeList;
+    JCheckBox checkAutoMark;
+
     JTextField ansField;
     JTextField textQuestion;
     JButton ansButton;
@@ -33,11 +37,11 @@ public class AddQuestionMenu {
         questionTypeLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         questionTypeLabel.setBorder(new EmptyBorder(0,0,10,0));
 
-        JComboBox typeList = new JComboBox(Question.getTypes().toArray());
+        typeList = new JComboBox(Question.getTypes().toArray());
         typeList.setSelectedIndex(0);
         typeList.setEditable(false);
 
-        JCheckBox checkAutoMark = new JCheckBox("Auto mark question");
+        checkAutoMark = new JCheckBox("Auto mark question");
         checkAutoMark.setAlignmentX(JCheckBox.CENTER_ALIGNMENT);
         checkAutoMark.setSelected(true);
 
@@ -112,7 +116,7 @@ public class AddQuestionMenu {
 
             if(actionEvent.getActionCommand() == button.getActionCommand()){
                 // add question
-                Question q =  new QuestionAction().createQuestion(question.getText(), QuestionTypeConstants.MULTIPLE_CHOICE, true);
+                Question q =  new QuestionAction().createQuestion(question.getText(), typeList.getSelectedItem().toString(), checkAutoMark.isSelected());
                 if(q!=null){
                     // add answer to that question
                     panel.remove(6);
