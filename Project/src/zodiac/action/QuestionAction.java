@@ -6,6 +6,7 @@ import zodiac.dao.coursework.AssignmentDao;
 import zodiac.dao.coursework.QuestionDao;
 import zodiac.definition.MessageConstants;
 import zodiac.definition.coursework.Question;
+import zodiac.definition.coursework.QuestionTypeConstants;
 import zodiac.definition.security.SecurityConstants;
 import zodiac.util.ActiveUser;
 
@@ -24,7 +25,7 @@ public class QuestionAction {
   }
 
   public String createMultipleChoiceQuestion(int assignmentId, String question) {
-    return createQuestion(question, Question.MULTIPLE_CHOICE, true, assignmentId);
+    return createQuestion(question, QuestionTypeConstants.MULTIPLE_CHOICE, true, assignmentId);
   }
 
   /**

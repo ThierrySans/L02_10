@@ -1,5 +1,6 @@
 package zodiac.definition.coursework;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +9,6 @@ import java.util.List;
  * >= 0 Assignments
  */
 public class Question implements Comparable {
-
-  public static final String MULTIPLE_CHOICE = "Multiple Choice";
-  public static final String TEXT_FIELD = "Text Field";
 
   private int qid;
   private List<String> answerList;
@@ -80,5 +78,28 @@ public class Question implements Comparable {
   @Override
   public String toString() {
     return question;
+  }
+
+  /**
+   * Return a list containing possible types of questions.
+   *
+   * @return list of the type of questions
+   */
+  public static List<String> getTypes() {
+    Field[] types = QuestionTypeConstants.class.getDeclaredFields();
+
+    List<String> typesAsString = new ArrayList<>();
+
+    for (Field type : types) {
+      type.setAccessible(true);
+      try {
+        typesAsString.add((String)type.get(""));
+      } catch (IllegalAccessException e) {
+        // Should never happen but required to be handled
+        e.printStackTrace();
+      }
+    }
+
+    return typesAsString;
   }
 }

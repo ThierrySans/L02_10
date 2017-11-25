@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import zodiac.definition.coursework.Question;
+import zodiac.definition.coursework.QuestionTypeConstants;
 import zodiac.util.PostgreSqlJdbc;
 
 public class QuestionDao {
@@ -113,7 +114,7 @@ public class QuestionDao {
   }
 
   public Question addQuestion(String question) {
-    return addQuestion(question, Question.MULTIPLE_CHOICE, true);
+    return addQuestion(question, QuestionTypeConstants.MULTIPLE_CHOICE, true);
   }
 
   /**
