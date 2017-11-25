@@ -12,5 +12,6 @@
     <orderEntry type="library" name="org.apache.commons:commons-lang3:3.3" level="project" />
     <orderEntry type="library" name="de.svenkubiak:jBCrypt:0.4.1" level="project" />
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="itext5-itextpdf-5.5.12" level="project" />
   </component>
 </module>
