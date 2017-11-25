@@ -1,11 +1,23 @@
 package zodiac.gui.user;
 
-import javax.swing.*;
-import java.awt.*;
+import static zodiac.util.UserMainMenuConstants.LOGOFF;
+import static zodiac.util.UserMainMenuConstants.MAIN_MENU;
+import static zodiac.util.UserMainMenuConstants.START_ASS;
+import static zodiac.util.UserMainMenuConstants.VIEW_MARKS;
+import static zodiac.util.UserMainMenuConstants.WELCOME_BANNER;
+
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static zodiac.util.UserMainMenuConstants.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class UserMainMenu {
 
