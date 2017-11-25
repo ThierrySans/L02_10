@@ -13,7 +13,11 @@ public class ClassAction {
    * Add API to create a Class object.
    */
   public String addClass(String courseCode, String className) {
-    return new ClassDao().addEditClass(courseCode, className);
+    String message = new ClassDao().addEditClass(courseCode, className);
+
+    // Update permissions with the newly added course
+    ActiveUser.INSTANCE.getUser().refreshPermissions();
+    return message;
   }
 
   /**
@@ -25,6 +29,9 @@ public class ClassAction {
     List<Class> classes = new ClassDao().getClasses();
 
     List<Class> classesToRemove = new ArrayList<>();
+
+    // In case of newly added courses
+    ActiveUser.INSTANCE.getUser().refreshPermissions();
 
     // Remove courses without read permission
     for (Class course : classes) {
