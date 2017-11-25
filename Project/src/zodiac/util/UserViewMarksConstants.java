@@ -3,7 +3,7 @@ package zodiac.util;
 public final class UserViewMarksConstants {
 
     /**
-     * UserViewMarks AdminMainMenuConstants
+     * GuiViewMarks AdminMainMenuConstants
      */
     public static final String USER_VIEW_MARKS_ASS_ID = "Assignment ID";
     public static final String USER_VIEW_MARKS_ASS_NAME = "Assignment Name";

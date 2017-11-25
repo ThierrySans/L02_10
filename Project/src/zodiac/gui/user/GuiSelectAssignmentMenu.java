@@ -1,13 +1,11 @@
 package zodiac.gui.user;
 
 import zodiac.action.AssignmentAction;
-import zodiac.action.ClassAction;
 import zodiac.action.QuestionAction;
 import zodiac.action.StudentAction;
-import zodiac.dao.StudentDao;
-import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.Student;
 import zodiac.definition.coursework.Assignment;
+import zodiac.gui.GuiSubMenu;
 
 import static zodiac.util.UserAssignmentSelectConstants.*;
 import static zodiac.util.UserMainMenuConstants.MAIN_MENU;
@@ -23,13 +21,13 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserSelectAssignmentMenu extends UserSubMenu {
+public class GuiSelectAssignmentMenu extends GuiSubMenu {
 
     private DefaultTableModel tblmodel;
 
     /**
-     * Creates the JPanel for the UserSelectAssignmentMenu.
-     * @return the complete UserSelectAssignmentMenu JPanel
+     * Creates the JPanel for the GuiSelectAssignmentMenu.
+     * @return the complete GuiSelectAssignmentMenu JPanel
      */
     public JPanel setUpMenu()
     {

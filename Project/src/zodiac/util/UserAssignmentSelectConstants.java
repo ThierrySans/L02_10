@@ -3,7 +3,7 @@ package zodiac.util;
 public final class UserAssignmentSelectConstants {
 
     /**
-    UserSelectAssignmentMenu AdminMainMenuConstants
+    GuiSelectAssignmentMenu AdminMainMenuConstants
      */
     public static final String ASS_ID = "ID";
     public static final String ASS_NAME = "Name";

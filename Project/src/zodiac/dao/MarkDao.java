@@ -3,7 +3,10 @@ package zodiac.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import zodiac.definition.Mark;
 import zodiac.definition.Student;
@@ -14,10 +17,9 @@ import zodiac.util.PostgreSqlJdbc;
  */
 public class MarkDao {
 	/**
-	 * 
-	 * @param utor_id Student's id
+	 * @param utor_id  Student's id
 	 * @param assignId assignment's id
-	 * @param mark the mark of this assignment
+	 * @param mark     the mark of this assignment
 	 * @return message
 	 */
 	public String addStudentAssignMark(String utor_id, int assignId, int mark) {
@@ -43,105 +45,134 @@ public class MarkDao {
 		}
 		return message;
 	}
+
 	/**
 	 * <p>Check all the assignment's marks for this student</p>
+	 *
 	 * @param utorId student's id
 	 * @return mark Object
 	 */
 	public Mark getStudentMark(String utorId) {
 		Mark mark = new Mark();
-	    Connection c;
-	    PreparedStatement stmt;
-	    String sql = "SELECT utor_id, last_name, first_name "
-	        + "FROM Users "
-	        + "WHERE utor_id = ?";
-	    try {
-	      c = new PostgreSqlJdbc().getConnection();
-	      stmt = c.prepareStatement(sql);
-	      stmt.setString(1, utorId);
-	      ResultSet rs = stmt.executeQuery();
-	      
-	      while (rs.next()) {
-	        String utor_id = rs.getString("utor_id");
-	        String lname = rs.getString("last_name");
-	        String fname = rs.getString("first_name");
-	        mark.setStudent(new Student(utor_id,lname,fname));
-	      }
-	      rs.close();
-	      stmt.close();
-	      sql = "SELECT a.id,a.Assignment_Name,u.Mark  "
-	  	        + "FROM Assignments a,UserAssignMarkMap u "
-	  	        + "WHERE u.utor_id = ? and a.id=u.Assignment_Id "
-	  	        + " ORDER BY u.Mark desc";
-	      stmt = c.prepareStatement(sql);
-	      stmt.setString(1, utorId);
-	      ResultSet set = stmt.executeQuery();
-	      HashMap<Assignment,Integer> markMap = new HashMap<Assignment,Integer>();
-	      while(set.next()){
-	    	  int id = set.getInt("id");
-	    	  String assignName = set.getString("Assignment_Name");
-	    	  int score = set.getInt("Mark");
-	    	  markMap.put(new Assignment(assignName,id),score);
-	      }
-	      set.close();
-	      stmt.close();
-	      c.close();
-	    } catch (Exception e) {
-	      // TODO Error Handling
-	      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-	    }
-	    return mark;
+		Connection c;
+		PreparedStatement stmt;
+		String sql = "SELECT utor_id, last_name, first_name "
+				+ "FROM Users "
+				+ "WHERE utor_id = ?";
+		try {
+			c = new PostgreSqlJdbc().getConnection();
+			stmt = c.prepareStatement(sql);
+			stmt.setString(1, utorId);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				String utor_id = rs.getString("utor_id");
+				String lname = rs.getString("last_name");
+				String fname = rs.getString("first_name");
+				mark.setStudent(new Student(utor_id, lname, fname));
+			}
+			rs.close();
+			stmt.close();
+			sql = "SELECT a.id,a.Assignment_Name,u.Mark  "
+					+ "FROM Assignments a,UserAssignMarkMap u "
+					+ "WHERE u.utor_id = ? and a.id=u.Assignment_Id "
+					+ " ORDER BY u.Mark desc";
+			stmt = c.prepareStatement(sql);
+			stmt.setString(1, utorId);
+			ResultSet set = stmt.executeQuery();
+			HashMap<Assignment, Integer> markMap = new HashMap<Assignment, Integer>();
+			while (set.next()) {
+				int id = set.getInt("id");
+				String assignName = set.getString("Assignment_Name");
+				int score = set.getInt("Mark");
+				markMap.put(new Assignment(assignName, id), score);
+			}
+			set.close();
+			stmt.close();
+			c.close();
+		} catch (Exception e) {
+			// TODO Error Handling
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+		return mark;
 	}
+
 	/**
 	 * <p>query all assignment's marks of the course for this student</p>
-	 * @param utorId student's id
+	 *
+	 * @param utorId      student's id
 	 * @param course_code course code
 	 * @return mark Object
 	 */
-	public Mark getStudentMark(String utorId,String course_code) {
+	public Mark getStudentMark(String utorId, String course_code) {
 		Mark mark = new Mark();
-	    Connection c;
-	    PreparedStatement stmt;
-	    String sql = "SELECT utor_id, last_name, first_name "
-	        + "FROM Users "
-	        + "WHERE utor_id = ?";
-	    try {
-	      c = new PostgreSqlJdbc().getConnection();
-	      stmt = c.prepareStatement(sql);
-	      stmt.setString(1, utorId);
-	      ResultSet rs = stmt.executeQuery();
-	      
-	      while (rs.next()) {
-	        String utor_id = rs.getString("utor_id");
-	        String lname = rs.getString("last_name");
-	        String fname = rs.getString("first_name");
-	        mark.setStudent(new Student(utor_id,lname,fname));
-	      }
-	      rs.close();
-	      stmt.close();
-	      sql = "SELECT a.id,a.Assignment_Name,u.Mark  "
-	  	        + "FROM Assignments a,UserAssignMarkMap u "
-	  	        + "WHERE u.utor_id = ? and a.id=u.Assignment_Id and a.Course_Code =?"
-	  	        + " ORDER BY u.Mark desc";
-	      stmt = c.prepareStatement(sql);
-	      stmt.setString(1, utorId);
-	      stmt.setString(2, course_code);
-	      ResultSet set = stmt.executeQuery();
-	      HashMap<Assignment,Integer> markMap = new HashMap<Assignment,Integer>();
-	      while(set.next()){
-	    	  int id = set.getInt("id");
-	    	  String assignName = set.getString("Assignment_Name");
-	    	  int score = set.getInt("Mark");
-	    	  markMap.put(new Assignment(assignName,id),score);
-	      }
-	      mark.setMarkMap(markMap);
-	      set.close();
-	      stmt.close();
-	      c.close();
-	    } catch (Exception e) {
-	      // TODO Error Handling
-	      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-	    }
-	    return mark;
+		Connection c;
+		PreparedStatement stmt;
+		String sql = "SELECT utor_id, last_name, first_name "
+				+ "FROM Users "
+				+ "WHERE utor_id = ?";
+		try {
+			c = new PostgreSqlJdbc().getConnection();
+			stmt = c.prepareStatement(sql);
+			stmt.setString(1, utorId);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				String utor_id = rs.getString("utor_id");
+				String lname = rs.getString("last_name");
+				String fname = rs.getString("first_name");
+				mark.setStudent(new Student(utor_id, lname, fname));
+			}
+			rs.close();
+			stmt.close();
+			sql = "SELECT a.id,a.Assignment_Name,u.Mark  "
+					+ "FROM Assignments a,UserAssignMarkMap u "
+					+ "WHERE u.utor_id = ? and a.id=u.Assignment_Id and a.Course_Code =?"
+					+ " ORDER BY u.Mark desc";
+			stmt = c.prepareStatement(sql);
+			stmt.setString(1, utorId);
+			stmt.setString(2, course_code);
+			ResultSet set = stmt.executeQuery();
+			HashMap<Assignment, Integer> markMap = new HashMap<Assignment, Integer>();
+			while (set.next()) {
+				int id = set.getInt("id");
+				String assignName = set.getString("Assignment_Name");
+				int score = set.getInt("Mark");
+				markMap.put(new Assignment(assignName, id), score);
+			}
+			mark.setMarkMap(markMap);
+			set.close();
+			stmt.close();
+			c.close();
+		} catch (Exception e) {
+			// TODO Error Handling
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+		return mark;
+	}
+
+	public List<String[]> getMarkReport(String courseCode) {
+		List<String[]> res = new ArrayList<>();
+		Connection c;
+		PreparedStatement stmt;
+		String sql = "SELECT DISTINCT userclassmap.utor_id, userassignmarkmap.assignment_id, assignments.assignment_name, userassignmarkmap.mark FROM" +
+				" userassignmarkmap INNER JOIN assignments ON assignments.id =userassignmarkmap.assignment_id " +
+				" INNER JOIN userclassmap ON (userclassmap.utor_id=userassignmarkmap.utor_id AND userclassmap.course_code = ?)";
+		try {
+			c = new PostgreSqlJdbc().getConnection();
+			stmt = c.prepareStatement(sql);
+			stmt.setString(1, courseCode);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				String row[] = {rs.getString("utor_id"), rs.getString("assignment_id"), rs.getString("assignment_name"), rs.getString("mark")};
+				res.add(row);
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+		return res;
 	}
 }

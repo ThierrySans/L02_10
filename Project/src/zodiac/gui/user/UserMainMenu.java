@@ -1,9 +1,5 @@
 package zodiac.gui.user;
 
-import zodiac.definition.security.SecurityConstants;
-import zodiac.definition.security.User;
-import zodiac.util.ActiveUser;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,8 +22,8 @@ public class UserMainMenu {
 
         this.cards = new JPanel(new CardLayout());
         this.cards.add(this.generateMainMenu(), MAIN_MENU);
-        this.cards.add(new UserSelectAssignmentMenu().setUpMenu(), START_ASS);
-        this.cards.add(new UserViewMarks().setUpMenu(), VIEW_MARKS);
+        this.cards.add(new GuiSelectAssignmentMenu().setUpMenu(), START_ASS);
+        this.cards.add(new GuiViewMarks().setUpMenu(), VIEW_MARKS);
 
         panel.add(this.cards);
 

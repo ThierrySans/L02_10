@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zodiac.dao.ClassDao;
+import zodiac.dao.MarkDao;
+import zodiac.dao.StudentDao;
 import zodiac.definition.Class;
+import zodiac.definition.Mark;
+import zodiac.definition.Student;
 import zodiac.util.ActiveUser;
 
 public class ClassAction {
@@ -36,6 +40,16 @@ public class ClassAction {
     classes.removeAll(classesToRemove);
     return classes;
 
+  }
+
+  public List<Student> getStudentsInClass(String courseCode)
+  {
+    return new StudentDao().getStudentsInClass(courseCode);
+  }
+
+  public List<String[]> getMarksInClass(String courseCode)
+  {
+    return new MarkDao().getMarkReport(courseCode);
   }
 
 }
