@@ -1,6 +1,7 @@
 package zodiac.gui.admin;
 
 
+import zodiac.action.QuestionAction;
 import zodiac.dao.coursework.QuestionDao;
 import zodiac.definition.coursework.Question;
 
@@ -95,12 +96,12 @@ public class AddQuestionMenu {
 
             if(actionEvent.getActionCommand() == button.getActionCommand()){
                 // add question
-                Question q =  new QuestionDao().addQuestion(question.getText());
+                Question q =  new QuestionAction().createQuestion(question.getText(), Question.MULTIPLE_CHOICE, true);
                 if(q!=null){
                     // add answer to that question
                     panel.remove(6);
                     for(int i=0;i<answers.size();i++){
-                        new QuestionDao().addAnswerToQuestion(q.getQid(),answers.get(i),answersValidity.get(i));
+                        new QuestionAction().addAnswer(q.getQid(),answers.get(i),answersValidity.get(i));
                         // remove component from panel
                         panel.remove(6);
                     }
