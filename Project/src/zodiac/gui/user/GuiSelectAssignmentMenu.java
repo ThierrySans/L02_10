@@ -20,6 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
+import zodiac.util.ActiveUser;
 
 public class GuiSelectAssignmentMenu extends GuiSubMenu {
 
@@ -96,7 +97,7 @@ public class GuiSelectAssignmentMenu extends GuiSubMenu {
                         Assignment a = new Assignment(name, id);
                         a.setQuestionList(new QuestionAction().getQuestionsWithAnswer(id));
                         // Debug line. Replace fixed ID and Course Name later
-                        Student student = new StudentAction().getStudent(DEBUG_ID,DEBUG_COURSE);
+                        Student student = new StudentAction().getStudent(ActiveUser.INSTANCE.getUser().getUtorId(),DEBUG_COURSE);
                         AssignmentUi frame = new AssignmentUi(a,student);
                         frame.setVisible(true);
                     }
