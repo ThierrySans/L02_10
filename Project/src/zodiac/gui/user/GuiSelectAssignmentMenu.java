@@ -97,7 +97,7 @@ public class GuiSelectAssignmentMenu extends GuiSubMenu {
                         a.setQuestionList(new QuestionAction().getQuestionsWithAnswer(id));
                         // Debug line. Replace fixed ID and Course Name later
                         Student student = new StudentAction().getStudent(DEBUG_ID,DEBUG_COURSE);
-                        AssignmentUI frame = new AssignmentUI(a,student);
+                        AssignmentUi frame = new AssignmentUi(a,student);
                         frame.setVisible(true);
                     }
             }

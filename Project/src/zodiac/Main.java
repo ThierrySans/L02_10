@@ -169,7 +169,7 @@ public class Main {
 //                      EventQueue.invokeLater(new Runnable() {
 //                        public void run() {
 //                          try {
-//                            AssignmentUI frame = new AssignmentUI(a,student);
+//                            AssignmentUi frame = new AssignmentUi(a,student);
 //                            frame.setVisible(true);
 //                          } catch (Exception e) {
 //                            e.printStackTrace();
