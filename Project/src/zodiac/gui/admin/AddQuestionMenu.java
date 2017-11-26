@@ -131,6 +131,8 @@ public class AddQuestionMenu {
                     ansField.setText("");
                     textQuestion.setText("");
                 }
+                panel.updateUI();
+                panel.revalidate();
 
 
 

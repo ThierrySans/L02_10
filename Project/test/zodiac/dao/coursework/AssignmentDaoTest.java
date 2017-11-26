@@ -73,9 +73,7 @@ public class AssignmentDaoTest {
     public void testEditAssignmentName()
     {
         int targetId = 26;
-        Assignment a = new Assignment("MemeLord", targetId);
-//        a.setMaxAttempt(5);
-        String res = new AssignmentDao().editAssignment(a);
+        String res = new AssignmentDao().editAssignment(targetId, "MemeLord");
         assertEquals("Assignment Name Modified", res);
     }
 

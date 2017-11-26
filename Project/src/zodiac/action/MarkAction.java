@@ -1,9 +1,12 @@
 package zodiac.action;
 
+import java.util.Date;
+
 import zodiac.dao.MarkDao;
 import zodiac.dao.StudentDao;
 import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.Mark;
+import zodiac.definition.coursework.Assignment;
 import zodiac.util.ActiveUser;
 
 public class MarkAction {
@@ -16,6 +19,13 @@ public class MarkAction {
 		if(StudentDao.getStudent(utor_id, courseCode) == null) {
 			return result;
 		}
+		Assignment assign = new AssignmentAction().getAssignment(assignId);
+		if(assign.getEarlySubmissionDeadline()!=null&&assign.getExtraPoints()!=null) {
+			if(new Date().before(assign.getEarlySubmissionDeadline())){
+				mark+=assign.getExtraPoints();
+			}
+		}
+		
 		result = new MarkDao().addStudentAssignMark(utor_id, assignId, mark);
 		return result;
 	}

@@ -2,33 +2,32 @@ package zodiac.gui.user;
 
 import zodiac.action.AssignmentAction;
 import zodiac.definition.coursework.Assignment;
+import zodiac.gui.GuiSubMenu;
 
 import javax.swing.*;
 
 import static zodiac.util.UserMainMenuConstants.MAIN_MENU;
 import static zodiac.util.UserViewMarksConstants.*;
 
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class represents a window for Students to view their marks
  * in various courses.
  */
-public class UserViewMarks extends UserSubMenu {
+public class GuiViewMarks extends GuiSubMenu {
     private UneditableTableModel tblmdl;
     private JPanel contentsPanel;
     private JTable table;
 
     /**
-     * Sets up the UserViewMarks menu.
+     * Sets up the GuiViewMarks menu.
      * @return the completed JPanel menu
      */
     public JPanel setUpMenu()
