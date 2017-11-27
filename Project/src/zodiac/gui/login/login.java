@@ -67,6 +67,10 @@ public class login {
 
     }
 
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("login");
         frame.setContentPane(new login().mainPanel);
