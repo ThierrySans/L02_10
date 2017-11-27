@@ -56,9 +56,10 @@ public class login {
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
+                String loginresult = potentialUser.login(username, password);
                 result = new JDialog();
                 result.setSize(new Dimension(200, 100));
-                if (registerBool == true){
+                if (loginresult.equals("Logged in")){
                     output = "Login Successful";
                     if(pt.getUser(username).getRole().equals(SecurityConstants.PROFESSOR_ROLE)){
                         String[] args = {};
@@ -73,7 +74,7 @@ public class login {
                     oldFrame.setVisible(false);
                 }
                 else {
-                    output = "Login Failed";
+                    output = loginresult;
                 }
                 JLabel prompt = new JLabel(output);
                 result.add(prompt);

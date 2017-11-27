@@ -4,9 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import zodiac.action.security.UserAction;
 import zodiac.dao.security.UserDao;
 
@@ -35,18 +32,6 @@ public class register {
                 result.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                 result.setVisible(true);
 
-            }
-        });
-        usernameField.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                usernameField.setText("");
-            }
-        });
-        passwordField1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                passwordField1.setText("");
             }
         });
     }
