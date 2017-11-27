@@ -91,7 +91,6 @@ public class GuiViewMarks extends GuiSubMenu {
             List<String[]> res = new MarkDao().getMarkReportForStudent(ActiveUser.INSTANCE.getUser().getUtorId(), code);
             for (String[] a : res)
             {
-<<<<<<< HEAD
                 List<Assignment> res = new AssignmentAction().checkAssignments(code, ActiveUser.INSTANCE.getUser().getUtorId());
 //            List<Assignment> res = new ArrayList<>();
                 tblmdl = new UneditableTableModel(0, USER_VIEW_MARKS_COLUMNS.length);
@@ -108,10 +107,6 @@ public class GuiViewMarks extends GuiSubMenu {
             catch (SQLException e)
             {
                 JOptionPane.showMessageDialog(new JFrame(), e);
-=======
-                Object row[] = {a[0], a[1], a[2]};
-                tblmdl.addRow(row);
->>>>>>> f0f31980fca46a1c22d3eccc9e0fe7ac79e1a206
             }
             table = new JTable(tblmdl);
             table.setAlignmentX(0.f);
