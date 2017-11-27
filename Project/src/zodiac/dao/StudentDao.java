@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import zodiac.definition.Student;
+import zodiac.definition.security.SecurityConstants;
 import zodiac.util.PostgreSqlJdbc;
 
 public class StudentDao {
@@ -228,12 +229,14 @@ public class StudentDao {
         + " INNER JOIN UserClassMap m"
         + " ON u.UTOR_Id=m.UTOR_Id"
         + " WHERE m.Course_Code = ?"
+        + " AND u.Role = ?"
         + " ORDER BY UTOR_Id desc";
 
     try {
       c = new PostgreSqlJdbc().getConnection();
       stmt = c.prepareStatement(sql);
       stmt.setString(1, courseCode);
+      stmt.setString(2, SecurityConstants.STUDENT_ROLE);
       ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) {

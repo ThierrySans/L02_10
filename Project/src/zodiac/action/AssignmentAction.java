@@ -31,6 +31,21 @@ public class AssignmentAction {
    * @return List<Assignment>
    * @throws SQLException Catch this exception and display error message on UI when caught
    */
+  public List<Assignment> checkAssignments(String courseCode,String userID) throws SQLException {
+    if (ActiveUser.INSTANCE.canWrite(courseCode)) {
+      return new AssignmentDao().getAssignments(courseCode,userID);
+    } else if (ActiveUser.INSTANCE.canRead(courseCode)) {
+      return onlyVisibleAssignments(new AssignmentDao().getAssignments(courseCode,userID));
+    } else {
+      return new ArrayList<>();
+    }
+  }
+  /**
+   * Added api to check all assignments in a course
+   *
+   * @return List<Assignment>
+   * @throws SQLException Catch this exception and display error message on UI when caught
+   */
   public List<Assignment> checkAssignments(String courseCode) throws SQLException {
     if (ActiveUser.INSTANCE.canWrite(courseCode)) {
       return new AssignmentDao().getAssignments(courseCode);

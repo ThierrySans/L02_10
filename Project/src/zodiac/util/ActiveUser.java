@@ -12,6 +12,11 @@ public enum ActiveUser {
 
   private ActiveUser() {
     user = null;
+
+    // DEBUG CODE
+    // TODO: REMOVE ON RELEASE
+    // user = new User(  "proftest", SecurityConstants.PROFESSOR_ROLE,"wang","david");
+    //user = new User(  "wandavi2", SecurityConstants.PROFESSOR_ROLE,"wang","david");
   }
 
   public void logOff() {
