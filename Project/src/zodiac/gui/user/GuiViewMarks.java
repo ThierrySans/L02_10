@@ -88,8 +88,7 @@ public class GuiViewMarks extends GuiSubMenu {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             String code = this.textField.getText();
-            List<String[]> res = new MarkDao().getMarkReportForStudent(ActiveUser.INSTANCE.getUser().getUtorId(), code);
-            for (String[] a : res)
+            try
             {
                 List<Assignment> res = new AssignmentAction().checkAssignments(code, ActiveUser.INSTANCE.getUser().getUtorId());
 //            List<Assignment> res = new ArrayList<>();
@@ -108,10 +107,6 @@ public class GuiViewMarks extends GuiSubMenu {
             {
                 JOptionPane.showMessageDialog(new JFrame(), e);
             }
-            table = new JTable(tblmdl);
-            table.setAlignmentX(0.f);
-            contentsPanel.add(table, BorderLayout.CENTER);
-            contentsPanel.revalidate();
 
 
         }
