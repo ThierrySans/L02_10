@@ -68,6 +68,9 @@ public class login {
                         String[] args = {};
                         UserMainMenu.main(args);
                     }
+
+                    JFrame oldFrame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
+                    oldFrame.setVisible(false);
                 }
                 else {
                     output = "Login Failed";
