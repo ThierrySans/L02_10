@@ -5,10 +5,16 @@ import zodiac.action.security.UserAction;
 import zodiac.dao.security.UserDao;
 import zodiac.gui.admin.*;
 import zodiac.gui.user.*;
+import zodiac.gui.login.register;
+import zodiac.gui.admin.AdminMainMenu;
+import zodiac.definition.security.SecurityConstants;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.security.Security;
 import java.sql.SQLException;
 
 public class login {
@@ -16,6 +22,7 @@ public class login {
     private JPanel mainPanel;
     private JTextField usernameField;
     private JButton loginButton;
+    private JButton registerButton;
     private String username;
     private String password;
     private JDialog result;
@@ -53,6 +60,14 @@ public class login {
                 result.setSize(new Dimension(200, 100));
                 if (registerBool == true){
                     output = "Login Successful";
+                    if(pt.getUser(username).getRole() == SecurityConstants.PROFESSOR_ROLE){
+                        String[] args = {};
+                        AdminMainMenu.main(args);
+                    }
+                    else{
+                        String[] args = {};
+                        UserMainMenu.main(args);
+                    }
                 }
                 else {
                     output = "Login Failed";
@@ -65,6 +80,25 @@ public class login {
             }
         });
 
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] args = {};
+                register.main(args);
+            }
+        });
+        usernameField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                usernameField.setText("");
+            }
+        });
+        passwordField1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                passwordField1.setText("");
+            }
+        });
     }
 
     public JPanel getMainPanel() {
