@@ -1,15 +1,23 @@
 package zodiac.gui.user;
 
-import zodiac.definition.security.SecurityConstants;
-import zodiac.definition.security.User;
-import zodiac.util.ActiveUser;
+import static zodiac.util.UserMainMenuConstants.LOGOFF;
+import static zodiac.util.UserMainMenuConstants.MAIN_MENU;
+import static zodiac.util.UserMainMenuConstants.START_ASS;
+import static zodiac.util.UserMainMenuConstants.VIEW_MARKS;
+import static zodiac.util.UserMainMenuConstants.WELCOME_BANNER;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static zodiac.util.UserMainMenuConstants.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class UserMainMenu {
 
@@ -26,8 +34,8 @@ public class UserMainMenu {
 
         this.cards = new JPanel(new CardLayout());
         this.cards.add(this.generateMainMenu(), MAIN_MENU);
-        this.cards.add(new UserSelectAssignmentMenu().setUpMenu(), START_ASS);
-        this.cards.add(new UserViewMarks().setUpMenu(), VIEW_MARKS);
+        this.cards.add(new GuiSelectAssignmentMenu().setUpMenu(), START_ASS);
+        this.cards.add(new GuiViewMarks().setUpMenu(), VIEW_MARKS);
 
         panel.add(this.cards);
 
