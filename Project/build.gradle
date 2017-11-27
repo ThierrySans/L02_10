@@ -16,6 +16,10 @@ jar {
     manifest {
         attributes 'Main-Class': 'zodiac.gui.login.login'
     }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 defaultTasks 'run'
