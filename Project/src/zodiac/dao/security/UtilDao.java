@@ -32,11 +32,10 @@ public class UtilDao {
 
     rs.next();
 
-    c.close();
-    stmt.close();
-
     Date now = rs.getTimestamp(1);
 
+    c.close();
+    stmt.close();
     rs.close();
 
     return now;

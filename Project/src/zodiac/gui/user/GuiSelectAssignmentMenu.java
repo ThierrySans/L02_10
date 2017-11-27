@@ -51,6 +51,15 @@ public class GuiSelectAssignmentMenu extends GuiSubMenu {
         try
         {
             List<Assignment> enrolled = new AssignmentAction().checkAssignments(DEBUG_COURSE);
+            List<Assignment> enrolled_marks = new AssignmentAction().checkAssignments(DEBUG_COURSE,ActiveUser.INSTANCE.getUser().getUtorId());
+
+            for (Assignment a : enrolled){
+                for(Assignment ass: enrolled_marks){
+                    if(ass.getId() ==a.getId()){
+                        a.setHighScore(ass.getHighScore());
+                    }
+                }
+            }
             for (Assignment a : enrolled)
             {
                 Object row[] = {a.getId(), a.getName(), a.getHighScore()};

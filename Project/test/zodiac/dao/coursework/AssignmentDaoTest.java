@@ -12,7 +12,7 @@ public class AssignmentDaoTest {
     @Test
     public void testGetAssignment()
     {
-        List<Assignment> res = new AssignmentDao().getAssignments("CSCC01");
+        List<Assignment> res = new AssignmentDao().getAssignments("CSCC01","qwe");
         int tick = 0;
         for (Assignment a : res)
         {
@@ -27,7 +27,7 @@ public class AssignmentDaoTest {
     @Test
     public void testGetAssignmentCourseDne()
     {
-        List<Assignment> res = new AssignmentDao().getAssignments("XDXD69");
+        List<Assignment> res = new AssignmentDao().getAssignments("XDXD69","qwe");
         assertTrue(res.size() == 0);
     }
 
@@ -35,7 +35,7 @@ public class AssignmentDaoTest {
     public void testAddAssignment()
     {
         new AssignmentDao().addAssignment("UnitTesting", "CSCC01");
-        List<Assignment> res = new AssignmentDao().getAssignments("CSCC01");
+        List<Assignment> res = new AssignmentDao().getAssignments("CSCC01","qwe");
         int i = 0;
         boolean found = false;
         while (!found && i < res.size())

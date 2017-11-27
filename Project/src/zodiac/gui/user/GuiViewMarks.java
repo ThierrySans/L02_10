@@ -1,8 +1,10 @@
 package zodiac.gui.user;
 
 import zodiac.action.AssignmentAction;
+import zodiac.dao.MarkDao;
 import zodiac.definition.coursework.Assignment;
 import zodiac.gui.GuiSubMenu;
+import zodiac.util.ActiveUser;
 
 import javax.swing.*;
 
@@ -88,8 +90,9 @@ public class GuiViewMarks extends GuiSubMenu {
             String code = this.textField.getText();
             try
             {
-                List<Assignment> res = new AssignmentAction().checkAssignments(code);
+                List<Assignment> res = new AssignmentAction().checkAssignments(code, ActiveUser.INSTANCE.getUser().getUtorId());
 //            List<Assignment> res = new ArrayList<>();
+                tblmdl = new UneditableTableModel(0, USER_VIEW_MARKS_COLUMNS.length);
                 for (Assignment a : res)
                 {
                     Object row[] = {a.getId(), a.getName(), a.getHighScore()};
