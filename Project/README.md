@@ -26,14 +26,25 @@ Clone the repo onto your computer
 ### 5. What you can do with the project?
 
   * Add student
+  * Add Course
+  * Add Assignment to Course
+    * Assignments can have a limited number of attempts or infinite number of attempts
+    * Assignments can be set to visibile or not to students
+    * Assignments can be have their visibility be set automatically be open and close times
+  * Add Question to Assignment
+    * Questions can be multiple choice or text field
+    * Questions can be auto marked if desired
+  * Register as a student if a professor has added them to a course
+  * Complete assignments as a student
+  * See assignment marks
+  * Export Assignment to a PDF
+  * See summary of class average
 
-## New features
-- **Added the assignment manager for Admins**
-    - Can get assignments from certain courses. Double clicking the results will allow aspects of the assignment to be changed
-    - Add assignments to a course
-    - Insert new questions into database and can allocate questions to different assignments
-- Add the marks of students to the database for certain assignments
-- **Add a Student view to the app!**
-- Students can view their marks in courses they are enrolled in
-- Students can see assignments that are open to them.
-- Students can double click on their open Assignments to answer the questions within. They can also save their progress before submission
+## New features in V0.04
+- Users can register and login
+  - Professors have to be added to DB before they can register
+  - Students need to be added by a professor to a course first
+- Questions can be a text field question instead of multiple choice
+- Questions may not be specified to not auto mark
+- Export Assignment to a PDF
+- Professors can see a summary of their class' work on an assignment
