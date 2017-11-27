@@ -103,10 +103,11 @@ public class UserDao {
 
     ResultSet rs = stmt.executeQuery();
     rs.next();
+    boolean registered = rs.getBoolean("registered");
     rs.close();
     stmt.close();
     c.close();
-    return rs.getBoolean("registered");
+    return registered;
   }
 
   /**
