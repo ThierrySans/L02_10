@@ -34,7 +34,7 @@ public class PostgreSqlJdbc {
 
 	public static void main(String[] args) {
 		Connection conn = new PostgreSqlJdbc().getConnection();
-		//alter table Assignments drop column ÁÐÃû
+		//alter table Assignments drop column
 		String sql ="select * from UserAssignMarkMap";
 		try {
 			PreparedStatement pre = conn.prepareStatement(sql);

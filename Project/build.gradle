@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = "zodiac.gui.admin.AdminMainMenu"
+mainClassName = "zodiac.gui.login.login"
 
 sourceSets.main.java.srcDirs = ['src']
 sourceSets.test.java.srcDirs = ['test']
@@ -14,7 +14,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'zodiac.gui.admin.AdminMainMenu'
+        attributes 'Main-Class': 'zodiac.gui.login.login'
     }
 }
 
@@ -25,5 +25,6 @@ dependencies {
 	compile	'org.apache.commons:commons-lang3:3.3'
 	compile	'org.postgresql:postgresql:9.4.1212'
     compile 'com.itextpdf:itextpdf:5.5.12'
+    compile 'com.intellij:forms_rt:7.0.3'
 	testCompile 'junit:junit:4.12'
 }	
