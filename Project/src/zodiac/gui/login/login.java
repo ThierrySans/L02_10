@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.security.Security;
 import java.sql.SQLException;
+import zodiac.util.ActiveUser;
 
 public class login {
     private JPasswordField passwordField1;
@@ -61,7 +62,7 @@ public class login {
                 result.setSize(new Dimension(200, 100));
                 if (loginresult.equals("Logged in")){
                     output = "Login Successful";
-                    if(pt.getUser(username).getRole().equals(SecurityConstants.PROFESSOR_ROLE)){
+                    if(ActiveUser.INSTANCE.getUser().getRole().equals(SecurityConstants.PROFESSOR_ROLE)){
                         String[] args = {};
                         AdminMainMenu.main(args);
                     }
