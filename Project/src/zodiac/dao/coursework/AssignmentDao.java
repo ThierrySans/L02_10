@@ -15,47 +15,8 @@ import zodiac.util.PostgreSqlJdbc;
 
 public class AssignmentDao {
 
-
-    public List<Assignment> getAssignments(String courseCode) {
-        return getAssignments(courseCode, false);
-    }
-  public List<Assignment> getAssignments(String courseCode,String userID) {
-      List<Assignment> assignments = new ArrayList<>();
-
-      Connection c;
-      PreparedStatement stmt;
-
-      String sql = "SELECT Mark, Assignment_Name,Assignment_Id"
-              + " FROM Assignments INNER JOIN UserAssignMarkMap ON Assignments.Id = UserAssignMarkMap.Assignment_Id "
-              + " WHERE utor_id = ? AND course_code = ?";
-
-      try {
-          c = new PostgreSqlJdbc().getConnection();
-          stmt = c.prepareStatement(sql);
-          stmt.setString(1, userID);
-          stmt.setString(2, courseCode);
-          ResultSet rs = stmt.executeQuery();
-
-          while (rs.next())
-          {
-              int id = rs.getInt("Assignment_Id");
-              int mark = rs.getInt("mark");
-              String name = rs.getString("Assignment_Name");
-              Assignment assignment = new Assignment(name, id);
-              assignment.setCurrScore(mark);
-              assignment.setHighScore(mark);
-              assignments.add(assignment);
-          }
-
-          rs.close();
-          stmt.close();
-          c.close();
-      } catch (Exception e) {
-          // TODO Error Handling
-          System.err.println(e.getClass().getName() + ": " + e.getMessage());
-      }
-
-      return assignments;
+  public List<Assignment> getAssignments(String courseCode) {
+    return getAssignments(courseCode, false);
   }
 
   /**
@@ -70,7 +31,7 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt "
+    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt,Deadline,Extra_points "
             + "FROM Assignments "
             + "WHERE id = ? ";
 
@@ -89,6 +50,21 @@ public class AssignmentDao {
 
         int maxAttempts = rs.getInt("Max_Attempt");
         assignment.setMaxAttempt(maxAttempts);
+        
+        Date openTime = rs.getTimestamp("Open_Time");
+		Date closeTime = rs.getTimestamp("Close_Time");
+		assignment.setOpenDate(openTime);
+		assignment.setCloseDate(closeTime);
+		Timestamp timestamp = rs.getTimestamp("deadline");
+		if(timestamp != null) {
+					
+			assignment.setEarlySubmissionDeadline(new Date(timestamp.getTime()));
+		}
+		Integer extraPoints = rs.getInt("Extra_points");
+		if(extraPoints!=null) {
+			assignment.setExtraPoints(extraPoints);
+		}
+
 
         assignments.add(assignment);
       }
@@ -117,7 +93,7 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time "
+    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time,Deadline,Extra_points "
         + "FROM Assignments "
         + "WHERE Course_Code = ? "
         + "ORDER BY Id ASC";
@@ -147,6 +123,17 @@ public class AssignmentDao {
           assignment.setQuestionList(new QuestionDao().getQuestions(id));
         }
         assignments.add(assignment);
+        
+        Timestamp timestamp = rs.getTimestamp("deadline");
+		if(timestamp != null) {
+			
+			assignment.setEarlySubmissionDeadline(new Date(timestamp.getTime()));
+		}
+		Integer extraPoints = rs.getInt("Extra_points");
+		if(extraPoints!=null) {
+			assignment.setExtraPoints(extraPoints);
+		}
+		assignments.add(assignment);
       }
 
       rs.close();
@@ -170,7 +157,7 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name,Visibility, Max_Attempt, Open_Time, Close_Time "
+    String sql = "SELECT Id, Assignment_Name,Visibility, Max_Attempt, Open_Time, Close_Time,Deadline,Extra_points "
             + "FROM Assignments";
 
     try {
@@ -191,6 +178,15 @@ public class AssignmentDao {
         assignment.setMaxAttempt(maxAttempt);
         assignment.setOpenDate(openTime);
         assignment.setCloseDate(closeTime);
+        Timestamp timestamp = rs.getTimestamp("deadline");
+		if(timestamp != null) {
+			
+			assignment.setEarlySubmissionDeadline(new Date(timestamp.getTime()));
+		}
+		Integer extraPoints = rs.getInt("Extra_points");
+		if(extraPoints!=null) {
+			assignment.setExtraPoints(extraPoints);
+		}
 
         assignments.add(assignment);
       }
