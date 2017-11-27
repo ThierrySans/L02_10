@@ -139,19 +139,19 @@ public class Main {
 
 
 
-        case "getAssignments": {
-          System.out.print("Enter Course ID: ");
-          String courseId = StringUtils.trimToEmpty(scanner.nextLine());
-          try {
-            List<Assignment> assignments = new AssignmentAction().checkAssignments(courseId);
-            for (Assignment assignment : assignments) {
-              System.out.println(assignment.getName() + " Id: " + assignment.getId());
-            }
-          } catch (SQLException e) {
-            System.out.println(MessageConstants.ERROR);
-          }
-          break;
-        }
+//        case "getAssignments": {
+//          System.out.print("Enter Course ID: ");
+//          String courseId = StringUtils.trimToEmpty(scanner.nextLine());
+//          try {
+//            List<Assignment> assignments = new AssignmentAction().checkAssignments(courseId);
+//            for (Assignment assignment : assignments) {
+//              System.out.println(assignment.getName() + " Id: " + assignment.getId());
+//            }
+//          } catch (SQLException e) {
+//            System.out.println(MessageConstants.ERROR);
+//          }
+//          break;
+//        }
 //        case "answerAssignment":{
 //        	 System.out.print("Enter User ID: ");
 //       	 String userId = StringUtils.trimToEmpty(scanner.nextLine());

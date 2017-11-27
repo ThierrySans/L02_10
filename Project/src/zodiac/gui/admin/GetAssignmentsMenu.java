@@ -101,7 +101,7 @@ public class GetAssignmentsMenu {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
       System.out.println(this.courseCode);
-      List<Assignment> results = new AssignmentDao().getAssignments (this.courseCode.getText());
+      List<Assignment> results = new AssignmentDao().getAssignments (this.courseCode.getText(),ActiveUser.INSTANCE.getUser().getUtorId());
       model.clear();
       for (Assignment a : results) {
 //                System.out.println(a.getName());

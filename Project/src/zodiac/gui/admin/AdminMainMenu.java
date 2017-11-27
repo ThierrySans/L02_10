@@ -58,6 +58,7 @@ public class AdminMainMenu implements ItemListener {
     private DefaultTableModel studentsTableModel;
     private DefaultTableModel markTableModel;
     private JPanel cards;
+    private String choice = CREATE_CLASS;
 
     /**
      * Sets up the main menu GUI as a CardLayout and adds each
@@ -362,21 +363,25 @@ public class AdminMainMenu implements ItemListener {
     public void itemStateChanged(ItemEvent evt)
     {
         CardLayout cl = (CardLayout)(cards.getLayout());
+        String newChoice =  (String)evt.getItem();;
+        if(!choice.equals(newChoice)){
+            choice = newChoice;
+            if (choice.equals(ASS_MANAGER))
+            {
 
-        String choice = (String)evt.getItem();
-        if (choice.equals(GET_CLASSES))
-        {
-            updateClassesTable();
+                JFrame managerWindow = new JFrame("Assignment Manager");
+                new AssignmentManagerMenu().generateContents(managerWindow);
+
+                managerWindow.pack();
+                managerWindow.setVisible(true);
+            }
+            else if (choice.equals(GET_CLASSES))
+            {
+                updateClassesTable();
+
+            }
         }
-        else if (choice.equals(ASS_MANAGER))
-        {
-            JFrame managerWindow = new JFrame("Assignment Manager");
-            new AssignmentManagerMenu().generateContents(managerWindow);
 
-            managerWindow.pack();
-            managerWindow.setVisible(true);
-
-        }
         cl.show(cards, (String)evt.getItem());
     }
 
