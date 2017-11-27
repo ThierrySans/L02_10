@@ -12,6 +12,8 @@ import zodiac.definition.security.SecurityConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.security.Security;
 import java.sql.SQLException;
 
@@ -83,6 +85,18 @@ public class login {
             public void actionPerformed(ActionEvent e) {
                 String[] args = {};
                 register.main(args);
+            }
+        });
+        usernameField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                usernameField.setText("");
+            }
+        });
+        passwordField1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                passwordField1.setText("");
             }
         });
     }
