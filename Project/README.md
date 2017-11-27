@@ -14,7 +14,8 @@ Clone the repo onto your computer
 
 ### 3. Build and run
   1. Go into the directory "Project/" in your terminal
-  2. run "Gradle"
+  2. run "Gradle" to run the program
+  3. run "Gradle jar" to only build a runnable jar
 
 ### 4. Import into IDE
   1. Open your Java IDE (Such as Eclipse or IntelliJ)
