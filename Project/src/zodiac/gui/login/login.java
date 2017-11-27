@@ -60,7 +60,7 @@ public class login {
                 result.setSize(new Dimension(200, 100));
                 if (registerBool == true){
                     output = "Login Successful";
-                    if(pt.getUser(username).getRole() == SecurityConstants.PROFESSOR_ROLE){
+                    if(pt.getUser(username).getRole().equals(SecurityConstants.PROFESSOR_ROLE)){
                         String[] args = {};
                         AdminMainMenu.main(args);
                     }
