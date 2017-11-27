@@ -175,4 +175,30 @@ public class MarkDao {
 		}
 		return res;
 	}
+
+	public List<String[]> getMarkReportForStudent(String utorId ,String courseCode) {
+		List<String[]> res = new ArrayList<>();
+		Connection c;
+		PreparedStatement stmt;
+		String sql = "SELECT DISTINCT userassignmarkmap.assignment_id, assignments.assignment_name, userassignmarkmap.mark FROM\n" +
+				" userassignmarkmap INNER JOIN assignments ON (assignments.id =userassignmarkmap.assignment_id \n" +
+				" AND userassignmarkmap.utor_id= ? AND assignments.course_code = ?)";
+		try {
+			c = new PostgreSqlJdbc().getConnection();
+			stmt = c.prepareStatement(sql);
+			stmt.setString(1, utorId);
+			stmt.setString(2, courseCode);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				String row[] = {rs.getString("assignment_id"), rs.getString("assignment_name"), rs.getString("mark")};
+				res.add(row);
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+		return res;
+	}
 }
