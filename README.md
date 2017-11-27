@@ -2,7 +2,7 @@
 
 This is group repostitory for CSCC01 Lecture 02 - Group 10  
 
-For instructions on how to run the project, see [Project](https://github.com/CSCC01F17/L02_10/tree/master/Project)
+For features and instructions on how to run the project, see [Project](https://github.com/CSCC01F17/L02_10/tree/master/Project)
 
 Directory structure:
 ```
