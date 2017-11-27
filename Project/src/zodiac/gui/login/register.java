@@ -66,6 +66,7 @@ public class register {
     panel1.setLayout(
         new com.intellij.uiDesigner.core.GridLayoutManager(7, 5, new Insets(0, 0, 0, 0), -1, -1));
     usernameField = new JTextField();
+    usernameField.setText("Username");
     panel1.add(usernameField, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 3, 3,
         com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST,
         com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
@@ -73,6 +74,7 @@ public class register {
         com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1),
         null, 0, false));
     passwordField1 = new JPasswordField();
+    passwordField1.setText("Password");
     panel1.add(passwordField1, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 3, 3,
         com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST,
         com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
