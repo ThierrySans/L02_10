@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import zodiac.definition.Student;
-import zodiac.definition.coursework.Assignment;
 import zodiac.util.PostgreSqlJdbc;
 
 public class StudentDao {
@@ -182,7 +181,7 @@ public class StudentDao {
   /**
    * Save mark of particular assignment for student into database, also increase an attempt.
    */
-  public static void saveMark(Student student, Assignment ass, Integer mark) {
+  public static void saveMark(Integer aId, String utorId, Integer mark) {
     String message = "";
 
     Connection c;
@@ -193,8 +192,8 @@ public class StudentDao {
     try {
       c = new PostgreSqlJdbc().getConnection();
       stmt = c.prepareStatement(sql);
-      stmt.setString(1, student.getUtorId());
-      stmt.setInt(2, ass.getId());
+      stmt.setString(1, utorId);
+      stmt.setInt(2, aId);
       stmt.setInt(3, mark);
 
       ResultSet rs = stmt.executeQuery();

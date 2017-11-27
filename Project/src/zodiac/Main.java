@@ -1,6 +1,5 @@
 package zodiac;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
@@ -110,7 +109,7 @@ public class Main {
           System.out.print("Enter Question: ");
           String AssignmentQuestion = StringUtils.trimToEmpty(scanner.nextLine());
           int AssignmentID = Integer.valueOf(AssignmentIDstr);
-          System.out.println(new QuestionAction().createQuestion(AssignmentID, AssignmentQuestion));
+          System.out.println(new QuestionAction().createMultipleChoiceQuestion(AssignmentID, AssignmentQuestion));
           break;
         }
 
@@ -170,7 +169,7 @@ public class Main {
 //                      EventQueue.invokeLater(new Runnable() {
 //                        public void run() {
 //                          try {
-//                            AssignmentUI frame = new AssignmentUI(a,student);
+//                            AssignmentUi frame = new AssignmentUi(a,student);
 //                            frame.setVisible(true);
 //                          } catch (Exception e) {
 //                            e.printStackTrace();

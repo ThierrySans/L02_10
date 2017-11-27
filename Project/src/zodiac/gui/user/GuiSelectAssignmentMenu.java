@@ -1,13 +1,11 @@
 package zodiac.gui.user;
 
 import zodiac.action.AssignmentAction;
-import zodiac.action.ClassAction;
 import zodiac.action.QuestionAction;
 import zodiac.action.StudentAction;
-import zodiac.dao.StudentDao;
-import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.Student;
 import zodiac.definition.coursework.Assignment;
+import zodiac.gui.GuiSubMenu;
 
 import static zodiac.util.UserAssignmentSelectConstants.*;
 import static zodiac.util.UserMainMenuConstants.MAIN_MENU;
@@ -22,14 +20,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
+import zodiac.util.ActiveUser;
 
-public class UserSelectAssignmentMenu extends UserSubMenu {
+public class GuiSelectAssignmentMenu extends GuiSubMenu {
 
     private DefaultTableModel tblmodel;
 
     /**
-     * Creates the JPanel for the UserSelectAssignmentMenu.
-     * @return the complete UserSelectAssignmentMenu JPanel
+     * Creates the JPanel for the GuiSelectAssignmentMenu.
+     * @return the complete GuiSelectAssignmentMenu JPanel
      */
     public JPanel setUpMenu()
     {
@@ -98,8 +97,8 @@ public class UserSelectAssignmentMenu extends UserSubMenu {
                         Assignment a = new Assignment(name, id);
                         a.setQuestionList(new QuestionAction().getQuestionsWithAnswer(id));
                         // Debug line. Replace fixed ID and Course Name later
-                        Student student = StudentAction.getStudent(DEBUG_ID,DEBUG_COURSE);
-                        AssignmentUI frame = new AssignmentUI(a,student);
+                        Student student = new StudentAction().getStudent(ActiveUser.INSTANCE.getUser().getUtorId(),DEBUG_COURSE);
+                        AssignmentUi frame = new AssignmentUi(a,student);
                         frame.setVisible(true);
                     }
             }
