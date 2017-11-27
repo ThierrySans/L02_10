@@ -160,8 +160,6 @@ public class AssignmentDao {
         if (generateQuestions) {
           assignment.setQuestionList(new QuestionDao().getQuestions(id));
         }
-        assignments.add(assignment);
-
         Timestamp timestamp = rs.getTimestamp("deadline");
         if (timestamp != null) {
 

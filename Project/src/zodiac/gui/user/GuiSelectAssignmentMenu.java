@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.List;
 import zodiac.util.ActiveUser;
 
-public class GuiSelectAssignmentMenu extends GuiSubMenu {
+public class    GuiSelectAssignmentMenu extends GuiSubMenu {
 
     private DefaultTableModel tblmodel;
 
@@ -53,15 +53,12 @@ public class GuiSelectAssignmentMenu extends GuiSubMenu {
             List<Assignment> enrolled = new AssignmentAction().checkAssignments(DEBUG_COURSE);
             List<Assignment> enrolled_marks = new AssignmentAction().checkAssignments(DEBUG_COURSE,ActiveUser.INSTANCE.getUser().getUtorId());
 
-            for (Assignment a : enrolled){
-                for(Assignment ass: enrolled_marks){
-                    if(ass.getId() ==a.getId()){
+            for (Assignment a : enrolled) {
+                for (Assignment ass : enrolled_marks) {
+                    if (ass.getId() == a.getId()) {
                         a.setHighScore(ass.getHighScore());
                     }
                 }
-            }
-            for (Assignment a : enrolled)
-            {
                 Object row[] = {a.getId(), a.getName(), a.getHighScore()};
                 this.tblmodel.addRow(row);
             }
