@@ -1,7 +1,6 @@
 package zodiac.action;
 
 import java.util.TreeMap;
-
 import zodiac.dao.StudentDao;
 import zodiac.dao.coursework.AssignmentDao;
 import zodiac.definition.MessageConstants;
@@ -16,8 +15,7 @@ public class StudentAction {
    * API validating answers for questions
    *
    * @param QA a map from Question object to answer string
-   * @return Score in interger, depends on if the answer is correct for
-   * that Question
+   * @return Score in interger, depends on if the answer is correct for that Question
    */
 
   public Integer validateAnswer(TreeMap<Question, String> QA) {
@@ -37,14 +35,16 @@ public class StudentAction {
    * @param assignment the assignment this answer belong
    * @return empty qa set if student has no permission, else question answers map
    */
-  public TreeMap<Question, String> fetchTempAnswerFromAssignment(Student student, Assignment assignment) {
+  public TreeMap<Question, String> fetchTempAnswerFromAssignment(Student student,
+      Assignment assignment) {
 
-    TreeMap<Question,String> qa = new TreeMap<Question, String>();
+    TreeMap<Question, String> qa = new TreeMap<Question, String>();
 
     if (ActiveUser.INSTANCE.canRead(
-            new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
-      for(Question question:assignment.getQuestionList()){
-        qa.put(question, StudentDao.fetchTempAnswerFromQuestion(student,assignment.getId(),question.getQid()));
+        new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
+      for (Question question : assignment.getQuestionList()) {
+        qa.put(question,
+            StudentDao.fetchTempAnswerFromQuestion(student, assignment.getId(), question.getQid()));
       }
 
     }
@@ -57,16 +57,16 @@ public class StudentAction {
    * @param student the answer is added under this student
    * @param assignment the assignment this answer belong
    * @param question the question to answers map
-   * @param  tempAnswer the temporal answer
+   * @param tempAnswer the temporal answer
    * @return true if added succ, false otherwise
    */
   public boolean addTempAnswerToQuestion(Student student, Assignment assignment,
-                                         Question question, String tempAnswer) {
+      Question question, String tempAnswer) {
     if (ActiveUser.INSTANCE.canRead(
-            new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
+        new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
 
       StudentDao
-              .addTempAnswerToQuestion(student, assignment.getId(), question.getQid(),tempAnswer);
+          .addTempAnswerToQuestion(student, assignment.getId(), question.getQid(), tempAnswer);
 
       return true;
     } else {
@@ -94,7 +94,7 @@ public class StudentAction {
    * @return true if added succ, false otherwise
    */
   public boolean addAnswerToAssignment(Student student, Assignment assignment,
-                                       TreeMap<Question, String> qa) {
+      TreeMap<Question, String> qa) {
     if (ActiveUser.INSTANCE.canRead(
         new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
       for (Question question : qa.keySet()) {
@@ -123,9 +123,6 @@ public class StudentAction {
   /**
    * Return whether the student has used all their attempts of an assignment or not.
    *
-   *
-   * @param aId
-   * @param utorId
    * @return true if the student has used all their attempts, false otherwise
    */
   public boolean usedAllAttempts(int aId, String utorId) {

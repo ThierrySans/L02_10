@@ -31,15 +31,16 @@ public class AssignmentAction {
    * @return List<Assignment>
    * @throws SQLException Catch this exception and display error message on UI when caught
    */
-  public List<Assignment> checkAssignments(String courseCode,String userID) throws SQLException {
+  public List<Assignment> checkAssignments(String courseCode, String userID) throws SQLException {
     if (ActiveUser.INSTANCE.canWrite(courseCode)) {
-      return new AssignmentDao().getAssignments(courseCode,userID);
+      return new AssignmentDao().getAssignments(courseCode, userID);
     } else if (ActiveUser.INSTANCE.canRead(courseCode)) {
-      return onlyVisibleAssignments(new AssignmentDao().getAssignments(courseCode,userID));
+      return onlyVisibleAssignments(new AssignmentDao().getAssignments(courseCode, userID));
     } else {
       return new ArrayList<>();
     }
   }
+
   /**
    * Added api to check all assignments in a course
    *
@@ -56,8 +57,7 @@ public class AssignmentAction {
     }
   }
 
-  public Assignment getAssignment(Integer id)
-  {
+  public Assignment getAssignment(Integer id) {
     return new AssignmentDao().getAssignments(id).get(0);
   }
 
@@ -88,7 +88,8 @@ public class AssignmentAction {
   public boolean changeAssignmentVisibility(Assignment assignment) {
     if (ActiveUser.INSTANCE.canWrite(
         new AssignmentDao().getCourseOfAssignment(assignment.getId()))) {
-      return new AssignmentDao().changeAssignmentVisibility(assignment.getId(), assignment.getVisibility());
+      return new AssignmentDao()
+          .changeAssignmentVisibility(assignment.getId(), assignment.getVisibility());
     } else {
       return false;
     }
@@ -202,16 +203,17 @@ public class AssignmentAction {
     }
   }
 
-  public String editDeadlineAndExtraPoints(int assignmentId,Date deadline,Integer extraPoints) {
-	  if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(assignmentId))) {
-		  boolean flag = new AssignmentDao().editDeadlineAndExtraPoint(assignmentId, deadline, extraPoints);
-		  if(flag){
-			  return MessageConstants.EDIT_SUCCEED;
-		  }else{
-			  return MessageConstants.EDIT_FAILED;
-		  }
+  public String editDeadlineAndExtraPoints(int assignmentId, Date deadline, Integer extraPoints) {
+    if (ActiveUser.INSTANCE.canWrite(new AssignmentDao().getCourseOfAssignment(assignmentId))) {
+      boolean flag = new AssignmentDao()
+          .editDeadlineAndExtraPoint(assignmentId, deadline, extraPoints);
+      if (flag) {
+        return MessageConstants.EDIT_SUCCEED;
+      } else {
+        return MessageConstants.EDIT_FAILED;
       }
-	  return MessageConstants.NO_PERMISSION_MESSAGE;
+    }
+    return MessageConstants.NO_PERMISSION_MESSAGE;
   }
-  
+
 }

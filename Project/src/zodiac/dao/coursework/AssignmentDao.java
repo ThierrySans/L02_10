@@ -15,61 +15,62 @@ import zodiac.util.PostgreSqlJdbc;
 
 public class AssignmentDao {
 
-   public List<Assignment> getAssignments(String courseCode) {
-        return getAssignments(courseCode, false);
-	}
-   public List<Assignment> getAssignments(String courseCode,String userID) {
-     List<Assignment> assignments = new ArrayList<>();
+  public List<Assignment> getAssignments(String courseCode) {
+    return getAssignments(courseCode, false);
+  }
 
-     Connection c;
-     PreparedStatement stmt;
-
-     String sql = "SELECT Mark, Assignment_Name,Assignment_Id"
-         + " FROM Assignments INNER JOIN UserAssignMarkMap ON Assignments.Id = UserAssignMarkMap.Assignment_Id "
-         + " WHERE utor_id = ? AND course_code = ?";
-
-     try {
-       c = new PostgreSqlJdbc().getConnection();
-       stmt = c.prepareStatement(sql);
-       stmt.setString(1, userID);
-       stmt.setString(2, courseCode);
-       ResultSet rs = stmt.executeQuery();
-
-       while (rs.next()) {
-         int id = rs.getInt("Assignment_Id");
-         int mark = rs.getInt("mark");
-         String name = rs.getString("Assignment_Name");
-         Assignment assignment = new Assignment(name, id);
-         assignment.setCurrScore(mark);
-         assignment.setHighScore(mark);
-         assignments.add(assignment);
-       }
-
-       rs.close();
-       stmt.close();
-       c.close();
-     } catch (Exception e) {
-       // TODO Error Handling
-       System.err.println(e.getClass().getName() + ": " + e.getMessage());
-     }
-
-     return assignments;
-   }
-
-  /**
-   * Gets an assignment which has the assignment ID aId.
-   * @param aId the desired assignment ID.
-   * @return the Assignment with the id aId.
-   */
-  public List<Assignment> getAssignments(Integer aId)
-  {
+  public List<Assignment> getAssignments(String courseCode, String userID) {
     List<Assignment> assignments = new ArrayList<>();
 
     Connection c;
     PreparedStatement stmt;
 
+    String sql = "SELECT Mark, Assignment_Name,Assignment_Id"
+        + " FROM Assignments INNER JOIN UserAssignMarkMap ON Assignments.Id = UserAssignMarkMap.Assignment_Id "
+        + " WHERE utor_id = ? AND course_code = ?";
 
-    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time,Deadline,Extra_points "
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+      stmt.setString(1, userID);
+      stmt.setString(2, courseCode);
+      ResultSet rs = stmt.executeQuery();
+
+      while (rs.next()) {
+        int id = rs.getInt("Assignment_Id");
+        int mark = rs.getInt("mark");
+        String name = rs.getString("Assignment_Name");
+        Assignment assignment = new Assignment(name, id);
+        assignment.setCurrScore(mark);
+        assignment.setHighScore(mark);
+        assignments.add(assignment);
+      }
+
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+
+    return assignments;
+  }
+
+  /**
+   * Gets an assignment which has the assignment ID aId.
+   *
+   * @param aId the desired assignment ID.
+   * @return the Assignment with the id aId.
+   */
+  public List<Assignment> getAssignments(Integer aId) {
+    List<Assignment> assignments = new ArrayList<>();
+
+    Connection c;
+    PreparedStatement stmt;
+
+    String sql =
+        "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time,Deadline,Extra_points "
             + "FROM Assignments "
             + "WHERE id = ? ";
 
@@ -79,8 +80,7 @@ public class AssignmentDao {
       stmt.setInt(1, aId);
       ResultSet rs = stmt.executeQuery();
 
-      while (rs.next())
-      {
+      while (rs.next()) {
         int id = rs.getInt("Id");
         String name = rs.getString("Assignment_Name");
         Assignment assignment = new Assignment(name, id);
@@ -88,21 +88,20 @@ public class AssignmentDao {
 
         int maxAttempts = rs.getInt("Max_Attempt");
         assignment.setMaxAttempt(maxAttempts);
-        
-        Date openTime = rs.getTimestamp("Open_Time");
-		Date closeTime = rs.getTimestamp("Close_Time");
-		assignment.setOpenDate(openTime);
-		assignment.setCloseDate(closeTime);
-		Timestamp timestamp = rs.getTimestamp("deadline");
-		if(timestamp != null) {
-					
-			assignment.setEarlySubmissionDeadline(new Date(timestamp.getTime()));
-		}
-		Integer extraPoints = rs.getInt("Extra_points");
-		if(extraPoints!=null) {
-			assignment.setExtraPoints(extraPoints);
-		}
 
+        Date openTime = rs.getTimestamp("Open_Time");
+        Date closeTime = rs.getTimestamp("Close_Time");
+        assignment.setOpenDate(openTime);
+        assignment.setCloseDate(closeTime);
+        Timestamp timestamp = rs.getTimestamp("deadline");
+        if (timestamp != null) {
+
+          assignment.setEarlySubmissionDeadline(new Date(timestamp.getTime()));
+        }
+        Integer extraPoints = rs.getInt("Extra_points");
+        if (extraPoints != null) {
+          assignment.setExtraPoints(extraPoints);
+        }
 
         assignments.add(assignment);
       }
@@ -131,10 +130,11 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time,Deadline,Extra_points "
-        + "FROM Assignments "
-        + "WHERE Course_Code = ? "
-        + "ORDER BY Id ASC";
+    String sql =
+        "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time,Deadline,Extra_points "
+            + "FROM Assignments "
+            + "WHERE Course_Code = ? "
+            + "ORDER BY Id ASC";
 
     try {
       c = new PostgreSqlJdbc().getConnection();
@@ -161,17 +161,17 @@ public class AssignmentDao {
           assignment.setQuestionList(new QuestionDao().getQuestions(id));
         }
         assignments.add(assignment);
-        
+
         Timestamp timestamp = rs.getTimestamp("deadline");
-		if(timestamp != null) {
-			
-			assignment.setEarlySubmissionDeadline(new Date(timestamp.getTime()));
-		}
-		Integer extraPoints = rs.getInt("Extra_points");
-		if(extraPoints!=null) {
-			assignment.setExtraPoints(extraPoints);
-		}
-		assignments.add(assignment);
+        if (timestamp != null) {
+
+          assignment.setEarlySubmissionDeadline(new Date(timestamp.getTime()));
+        }
+        Integer extraPoints = rs.getInt("Extra_points");
+        if (extraPoints != null) {
+          assignment.setExtraPoints(extraPoints);
+        }
+        assignments.add(assignment);
       }
 
       rs.close();
@@ -187,6 +187,7 @@ public class AssignmentDao {
 
   /**
    * Gets the ID, name, and Visibility status of all assignments.
+   *
    * @return list of all assignments
    */
   public List<Assignment> getAllAssignments() {
@@ -195,7 +196,8 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name,Visibility, Max_Attempt, Open_Time, Close_Time,Deadline,Extra_points "
+    String sql =
+        "SELECT Id, Assignment_Name,Visibility, Max_Attempt, Open_Time, Close_Time,Deadline,Extra_points "
             + "FROM Assignments";
 
     try {
@@ -217,14 +219,14 @@ public class AssignmentDao {
         assignment.setOpenDate(openTime);
         assignment.setCloseDate(closeTime);
         Timestamp timestamp = rs.getTimestamp("deadline");
-		if(timestamp != null) {
-			
-			assignment.setEarlySubmissionDeadline(new Date(timestamp.getTime()));
-		}
-		Integer extraPoints = rs.getInt("Extra_points");
-		if(extraPoints!=null) {
-			assignment.setExtraPoints(extraPoints);
-		}
+        if (timestamp != null) {
+
+          assignment.setEarlySubmissionDeadline(new Date(timestamp.getTime()));
+        }
+        Integer extraPoints = rs.getInt("Extra_points");
+        if (extraPoints != null) {
+          assignment.setExtraPoints(extraPoints);
+        }
 
         assignments.add(assignment);
       }
@@ -344,9 +346,6 @@ public class AssignmentDao {
   /**
    * Edit the name of a given assignment.
    *
-   *
-   * @param aId
-   * @param assignName
    * @return message generated by the database
    */
   public String editAssignment(int aId, String assignName) {
@@ -407,238 +406,233 @@ public class AssignmentDao {
 
   }
 
-	public boolean editDeadlineAndExtraPoint(int assignmentId, Date deadline, Integer extraPoints) {
-		boolean success = false;
-		Connection c;
-		PreparedStatement stmt;
+  public boolean editDeadlineAndExtraPoint(int assignmentId, Date deadline, Integer extraPoints) {
+    boolean success = false;
+    Connection c;
+    PreparedStatement stmt;
 
-		String sql = "update Assignments set ";
-		if (deadline != null && extraPoints != null) {
-			sql += "deadline=?,extra_points=?";
-		} else if (deadline != null) {
-			sql += "deadline=?";
-		} else if (extraPoints != null) {
-			sql += "extra_points=?";
-		}
-		sql+=" where id=?";
-		try {
-			c = new PostgreSqlJdbc().getConnection();
-			stmt = c.prepareStatement(sql);
-			if (deadline != null && extraPoints != null) {
-				stmt.setTimestamp(1, new Timestamp(deadline.getTime()));
-				stmt.setInt(2, extraPoints);
-				stmt.setInt(3, assignmentId);
-			} else if (deadline != null) {
-				stmt.setTimestamp(1, new Timestamp(deadline.getTime()));
-				stmt.setInt(2, assignmentId);
-			} else if (extraPoints != null) {
-				stmt.setInt(1, extraPoints);
-				stmt.setInt(2, assignmentId);
-			}
-			success = stmt.executeUpdate() > 0;
-			stmt.close();
-			c.close();
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-		}
-		return success;
-	}
+    String sql = "update Assignments set ";
+    if (deadline != null && extraPoints != null) {
+      sql += "deadline=?,extra_points=?";
+    } else if (deadline != null) {
+      sql += "deadline=?";
+    } else if (extraPoints != null) {
+      sql += "extra_points=?";
+    }
+    sql += " where id=?";
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
+      if (deadline != null && extraPoints != null) {
+        stmt.setTimestamp(1, new Timestamp(deadline.getTime()));
+        stmt.setInt(2, extraPoints);
+        stmt.setInt(3, assignmentId);
+      } else if (deadline != null) {
+        stmt.setTimestamp(1, new Timestamp(deadline.getTime()));
+        stmt.setInt(2, assignmentId);
+      } else if (extraPoints != null) {
+        stmt.setInt(1, extraPoints);
+        stmt.setInt(2, assignmentId);
+      }
+      success = stmt.executeUpdate() > 0;
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
+    return success;
+  }
 
-	public int getStudentUsedAttempts(int assignmentId, String studentUtorId) {
-		int usedAttempts = 0;
+  public int getStudentUsedAttempts(int assignmentId, String studentUtorId) {
+    int usedAttempts = 0;
 
-		Connection c;
-		PreparedStatement stmt;
+    Connection c;
+    PreparedStatement stmt;
 
-		String sql = "SELECT UsedAttempts FROM UserAssignMarkMap WHERE Assignment_Id = ? AND" + " UTOR_Id = ?";
+    String sql =
+        "SELECT UsedAttempts FROM UserAssignMarkMap WHERE Assignment_Id = ? AND" + " UTOR_Id = ?";
 
-		try {
-			c = new PostgreSqlJdbc().getConnection();
-			stmt = c.prepareStatement(sql);
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
 
-			stmt.setInt(1, assignmentId);
-			stmt.setString(2, studentUtorId);
+      stmt.setInt(1, assignmentId);
+      stmt.setString(2, studentUtorId);
 
-			ResultSet rs = stmt.executeQuery();
+      ResultSet rs = stmt.executeQuery();
 
-			rs.next();
+      rs.next();
 
-			usedAttempts = rs.getInt("UsedAttempts");
+      usedAttempts = rs.getInt("UsedAttempts");
 
-			rs.close();
-			stmt.close();
-			c.close();
-		} catch (Exception e) {
-			// TODO Error Handling
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-		}
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
 
-		return usedAttempts;
-	}
+    return usedAttempts;
+  }
 
-	public int getStudentUsedAttempts(Assignment assignment, Student student) {
-		return getStudentUsedAttempts(assignment.getId(), student.getUtorId());
-	}
+  public int getStudentUsedAttempts(Assignment assignment, Student student) {
+    return getStudentUsedAttempts(assignment.getId(), student.getUtorId());
+  }
 
-	/**
-	 * Get all student's used attempts for an assignment.
-	 *
-	 * @param id
-	 *            the id of the assignment
-	 * @return map of used attempts keyed to student's utor id
-	 */
-	public Map<String, Integer> getAllStudentsUsedAttempts(int id) {
-		Map<String, Integer> allUsedAttempts = new HashMap<>();
+  /**
+   * Get all student's used attempts for an assignment.
+   *
+   * @param id the id of the assignment
+   * @return map of used attempts keyed to student's utor id
+   */
+  public Map<String, Integer> getAllStudentsUsedAttempts(int id) {
+    Map<String, Integer> allUsedAttempts = new HashMap<>();
 
-		Connection c;
-		PreparedStatement stmt;
+    Connection c;
+    PreparedStatement stmt;
 
-		String sql = "SELECT UTOR_Id, UsedAttempts FROM UserAssignMarkMap WHERE Assignment_Id = ?";
+    String sql = "SELECT UTOR_Id, UsedAttempts FROM UserAssignMarkMap WHERE Assignment_Id = ?";
 
-		try {
-			c = new PostgreSqlJdbc().getConnection();
-			stmt = c.prepareStatement(sql);
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
 
-			stmt.setInt(1, id);
+      stmt.setInt(1, id);
 
-			ResultSet rs = stmt.executeQuery();
+      ResultSet rs = stmt.executeQuery();
 
-			while (rs.next()) {
-				String utorId = rs.getString("UTOR_Id");
-				Integer usedAttempts = rs.getInt("UsedAttempts");
-				allUsedAttempts.put(utorId, usedAttempts);
-			}
+      while (rs.next()) {
+        String utorId = rs.getString("UTOR_Id");
+        Integer usedAttempts = rs.getInt("UsedAttempts");
+        allUsedAttempts.put(utorId, usedAttempts);
+      }
 
-			rs.close();
-			stmt.close();
-			c.close();
-		} catch (Exception e) {
-			// TODO Error Handling
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-		}
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
 
-		return allUsedAttempts;
-	}
+    return allUsedAttempts;
+  }
 
-	public Map<String, Integer> getAllStudentsUsedAttempts(Assignment assignment) {
-		return getAllStudentsUsedAttempts(assignment.getId());
-	}
+  public Map<String, Integer> getAllStudentsUsedAttempts(Assignment assignment) {
+    return getAllStudentsUsedAttempts(assignment.getId());
+  }
 
-	/**
-	 * Get the course an assignment id belongs to. Used when only the assignment
-	 * id is known and nothing else
-	 *
-	 * @param id
-	 *            the known id of the assignment
-	 * @return the course code the assignment belongs to
-	 */
-	public String getCourseOfAssignment(int id) {
-		String courseCode = "";
+  /**
+   * Get the course an assignment id belongs to. Used when only the assignment id is known and
+   * nothing else
+   *
+   * @param id the known id of the assignment
+   * @return the course code the assignment belongs to
+   */
+  public String getCourseOfAssignment(int id) {
+    String courseCode = "";
 
-		Connection c;
-		PreparedStatement stmt;
-		String sql = "SELECT Course_Code FROM Assignments WHERE Id=?";
+    Connection c;
+    PreparedStatement stmt;
+    String sql = "SELECT Course_Code FROM Assignments WHERE Id=?";
 
-		try {
-			c = new PostgreSqlJdbc().getConnection();
-			stmt = c.prepareStatement(sql);
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
 
-			stmt.setInt(1, id);
+      stmt.setInt(1, id);
 
-			ResultSet rs = stmt.executeQuery();
+      ResultSet rs = stmt.executeQuery();
 
-			while (rs.next()) {
-				courseCode = rs.getString("Course_Code");
-			}
+      while (rs.next()) {
+        courseCode = rs.getString("Course_Code");
+      }
 
-			rs.close();
-			stmt.close();
-			c.close();
-		} catch (Exception e) {
-			// TODO Error Handling
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-		}
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
 
-		return courseCode;
+    return courseCode;
 
-	}
+  }
 
-	/**
-	 * Change an assignment open time on the database.
-	 *
-	 * @param id
-	 *            the id of the assignment
-	 * @param openTime
-	 *            the new open time
-	 * @return whether the change was successful
-	 */
-	public Boolean editOpenTime(int id, Date openTime) {
+  /**
+   * Change an assignment open time on the database.
+   *
+   * @param id the id of the assignment
+   * @param openTime the new open time
+   * @return whether the change was successful
+   */
+  public Boolean editOpenTime(int id, Date openTime) {
 
-		Boolean successful = false;
+    Boolean successful = false;
 
-		Connection c;
-		PreparedStatement stmt;
+    Connection c;
+    PreparedStatement stmt;
 
-		String sql = "UPDATE Assignments SET Open_Time = ? " + "WHERE id = ?";
+    String sql = "UPDATE Assignments SET Open_Time = ? " + "WHERE id = ?";
 
-		try {
-			c = new PostgreSqlJdbc().getConnection();
-			stmt = c.prepareStatement(sql);
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
 
-			stmt.setTimestamp(1, new Timestamp(openTime.getTime()));
-			stmt.setInt(2, id);
+      stmt.setTimestamp(1, new Timestamp(openTime.getTime()));
+      stmt.setInt(2, id);
 
-			successful = stmt.executeUpdate() > 0;
+      successful = stmt.executeUpdate() > 0;
 
-			c.close();
-			stmt.close();
+      c.close();
+      stmt.close();
 
-		} catch (Exception e) {
-			// TODO Error Handling
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-		}
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
 
-		return successful;
+    return successful;
 
-	}
+  }
 
-	/**
-	 * Change an assignment close time on the database.
-	 *
-	 * @param id
-	 *            the id of the assignment
-	 * @param closeDate
-	 *            the new open time
-	 * @return whether the change was successful
-	 */
-	public Boolean editCloseTime(int id, Date closeDate) {
+  /**
+   * Change an assignment close time on the database.
+   *
+   * @param id the id of the assignment
+   * @param closeDate the new open time
+   * @return whether the change was successful
+   */
+  public Boolean editCloseTime(int id, Date closeDate) {
 
-		Boolean successful = false;
+    Boolean successful = false;
 
-		Connection c;
-		PreparedStatement stmt;
+    Connection c;
+    PreparedStatement stmt;
 
-		String sql = "UPDATE Assignments SET Close_Time = ? " + "WHERE id = ?";
+    String sql = "UPDATE Assignments SET Close_Time = ? " + "WHERE id = ?";
 
-		try {
-			c = new PostgreSqlJdbc().getConnection();
-			stmt = c.prepareStatement(sql);
+    try {
+      c = new PostgreSqlJdbc().getConnection();
+      stmt = c.prepareStatement(sql);
 
-			stmt.setTimestamp(1, new Timestamp(closeDate.getTime()));
-			stmt.setInt(2, id);
+      stmt.setTimestamp(1, new Timestamp(closeDate.getTime()));
+      stmt.setInt(2, id);
 
-			successful = stmt.executeUpdate() > 0;
+      successful = stmt.executeUpdate() > 0;
 
-			c.close();
-			stmt.close();
+      c.close();
+      stmt.close();
 
-		} catch (Exception e) {
-			// TODO Error Handling
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-		}
+    } catch (Exception e) {
+      // TODO Error Handling
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+    }
 
-		return successful;
+    return successful;
 
-	}
+  }
 
 }

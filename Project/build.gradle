@@ -25,10 +25,10 @@ jar {
 defaultTasks 'run'
 
 dependencies {
-	compile	'de.svenkubiak:jBCrypt:0.4.1'
-	compile	'org.apache.commons:commons-lang3:3.3'
-	compile	'org.postgresql:postgresql:9.4.1212'
+    compile 'de.svenkubiak:jBCrypt:0.4.1'
+    compile 'org.apache.commons:commons-lang3:3.3'
+    compile 'org.postgresql:postgresql:9.4.1212'
     compile 'com.itextpdf:itextpdf:5.5.12'
     compile 'com.intellij:forms_rt:7.0.3'
-	testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12'
 }	

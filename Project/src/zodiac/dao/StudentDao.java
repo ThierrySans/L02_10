@@ -20,14 +20,15 @@ public class StudentDao {
    * @param questionId the question id this answer belong
    * @return succefully string or null
    */
-  public static String fetchTempAnswerFromQuestion(Student student, int assignmentId, int questionId) {
+  public static String fetchTempAnswerFromQuestion(Student student, int assignmentId,
+      int questionId) {
     String message = "";
 
     Connection c;
     PreparedStatement stmt;
 
     String sql = "SELECT temp_answer From userassignquesansmap"
-            + " WHERE utor_id  = ? AND assignment_id = ? AND question_id = ?";
+        + " WHERE utor_id  = ? AND assignment_id = ? AND question_id = ?";
     try {
       c = new PostgreSqlJdbc().getConnection();
       stmt = c.prepareStatement(sql);
@@ -36,12 +37,13 @@ public class StudentDao {
       stmt.setInt(3, questionId);
 
       ResultSet rs = stmt.executeQuery();
-      if(rs.next()){
+      if (rs.next()) {
         message = rs.getString(1);
 
-      }else{
+      } else {
         message = null;
-      };
+      }
+      ;
 
       rs.close();
       stmt.close();
@@ -66,7 +68,7 @@ public class StudentDao {
    * @return succefully string or fail
    */
   public static String addTempAnswerToQuestion(Student student, int assignmentId, int questionId,
-                                               String temp_answer) {
+      String temp_answer) {
     String message = "";
 
     Connection c;

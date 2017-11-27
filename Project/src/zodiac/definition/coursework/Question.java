@@ -25,6 +25,29 @@ public class Question implements Comparable {
 
   }
 
+  /**
+   * Return a list containing possible types of questions.
+   *
+   * @return list of the type of questions
+   */
+  public static List<String> getTypes() {
+    Field[] types = QuestionTypeConstants.class.getDeclaredFields();
+
+    List<String> typesAsString = new ArrayList<>();
+
+    for (Field type : types) {
+      type.setAccessible(true);
+      try {
+        typesAsString.add((String) type.get(""));
+      } catch (IllegalAccessException e) {
+        // Should never happen but required to be handled
+        e.printStackTrace();
+      }
+    }
+
+    return typesAsString;
+  }
+
   public int getQid() {
     return qid;
   }
@@ -78,28 +101,5 @@ public class Question implements Comparable {
   @Override
   public String toString() {
     return question;
-  }
-
-  /**
-   * Return a list containing possible types of questions.
-   *
-   * @return list of the type of questions
-   */
-  public static List<String> getTypes() {
-    Field[] types = QuestionTypeConstants.class.getDeclaredFields();
-
-    List<String> typesAsString = new ArrayList<>();
-
-    for (Field type : types) {
-      type.setAccessible(true);
-      try {
-        typesAsString.add((String)type.get(""));
-      } catch (IllegalAccessException e) {
-        // Should never happen but required to be handled
-        e.printStackTrace();
-      }
-    }
-
-    return typesAsString;
   }
 }
