@@ -31,7 +31,7 @@ public class AssignmentDao {
     Connection c;
     PreparedStatement stmt;
 
-    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt,Deadline,Extra_points "
+    String sql = "SELECT Id, Assignment_Name, Visibility, Max_Attempt, Open_Time, Close_Time,Deadline,Extra_points "
             + "FROM Assignments "
             + "WHERE id = ? ";
 
